@@ -1,7 +1,6 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,15 +30,11 @@ import {
 import { buildItems, type NavItem } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { useGetProfileInfoQuery } from '@/store/api/endpoints/common/ProfileSettings/ProfileApi';
-import { UserRole } from '@/types/next-auth';
 import formatChoiceFieldValue, { getInitials } from '@/utils/formatters';
-import { getStartNewJourneyUrl } from '@/utils/redirectPath';
-import { isLandlord_Admin_LettingAgent } from '@/utils/rolePermissions';
 import {
   ChevronRight,
   LogOut,
   Package,
-  Plus,
   ReceiptText,
   Settings,
   User,
@@ -219,7 +214,7 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                       return (
                         <SidebarMenuSubItem key={child.href || child.label}>
                           <SidebarMenuSubButton
-                            asChild
+                            render={<Link href={child.href || '#'} />}
                             isActive={childActive}
                             style={
                               childActive
@@ -232,14 +227,12 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                             }
                             className='h-9 rounded-lg border-b-2 border-transparent data-active:bg-black/5 data-active:shadow-none data-active:hover:bg-black/10 dark:data-active:bg-white/10 dark:data-active:hover:bg-white/15'
                           >
-                            <Link href={child.href || '#'}>
-                              <child.icon
-                                style={{ color: getIconColor(child.label) }}
-                                className='h-4 w-4'
-                              />
+                            <child.icon
+                              style={{ color: getIconColor(child.label) }}
+                              className='h-4 w-4'
+                            />
 
-                              <span>{child.label}</span>
-                            </Link>
+                            <span>{child.label}</span>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       );
@@ -251,7 +244,7 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
               item.href && (
                 <>
                   <SidebarMenuButton
-                    asChild
+                    render={<Link href={item.href} />}
                     isActive={isNavActive(pathname, item.href)}
                     tooltip={item.label}
                     style={
@@ -261,10 +254,8 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                     }
                     className='h-9 rounded-lg border-b-2 border-transparent data-active:bg-black/10 data-active:hover:bg-black/15 dark:data-active:bg-white/10 dark:data-active:hover:bg-white/15'
                   >
-                    <Link href={item.href}>
-                      <item.icon style={{ color: getIconColor(item.label) }} />
-                      <span>{item.label}</span>
-                    </Link>
+                    <item.icon style={{ color: getIconColor(item.label) }} />
+                    <span>{item.label}</span>
                   </SidebarMenuButton>
                   {item.badge ? (
                     <SidebarMenuBadge className='bg-danger rounded-full px-1.5 text-[10px] font-semibold text-white!'>
@@ -285,8 +276,7 @@ const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;
-  const userRole = user?.role as UserRole | undefined;
-  const navItems = buildItems({ role: userRole });
+  const navItems = buildItems();
 
   const { data: profileData, isLoading } = useGetProfileInfoQuery(undefined);
 
@@ -300,12 +290,7 @@ const AppSidebar: React.FC = () => {
     );
   }
 
-  const getProfilePath = () => {
-    if (userRole === 'SUPER_ADMIN') {
-      return '/super-admin/profile';
-    }
-    return '/client/profile-settings';
-  };
+  const getProfilePath = () => '/client/profile-settings';
 
   return (
     <Sidebar collapsible='icon'>
@@ -339,26 +324,6 @@ const AppSidebar: React.FC = () => {
 
       <SidebarSeparator className='mx-0 h-px!' />
 
-      {isLandlord_Admin_LettingAgent(session?.user?.role ?? null) && (
-        <Link
-          href={getStartNewJourneyUrl(session)}
-          passHref
-          className='flex justify-center px-3'
-        >
-          <Button
-            type='button'
-            size='lg'
-            variant='secondary'
-            className='rounded-xlf mt-3 w-full gap-2 group-data-[collapsible=icon]:mb-0 group-data-[collapsible=icon]:w-9 group-data-[collapsible=icon]:px-0'
-          >
-            <Plus className='size-4' />
-            <span className='group-data-[collapsible=icon]:hidden'>
-              Start New Journey
-            </span>
-          </Button>
-        </Link>
-      )}
-
       <SidebarContent className='gap-1 px-2 py-2'>
         <SidebarGroup className='p-0'>
           <SidebarGroupLabel className='px-3 text-[11px] font-semibold tracking-wider uppercase'>
@@ -374,32 +339,24 @@ const AppSidebar: React.FC = () => {
         <SidebarSeparator className='mx-0 h-px!' />
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type='button'
-              className='flex w-full cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors outline-none group-data-[collapsible=icon]:justify-center'
-            >
-              <Avatar size='lg'>
-                <AvatarImage
-                  src={profileData?.profile_image ?? undefined}
-                  alt='User profile picture'
-                />
-                <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
-                  {getInitials(profileData?.first_name) ?? 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div className='min-w-0 group-data-[collapsible=icon]:hidden'>
-                <p className='truncate text-sm font-semibold'>
-                  {formatChoiceFieldValue(profileData?.title) ?? ''}{' '}
-                  {profileData?.first_name} {profileData?.middle_name}{' '}
-                  {profileData?.last_name}
-                </p>
-                <Badge className='truncate text-xs'>
-                  {formatChoiceFieldValue(userRole)}
-                </Badge>
-              </div>
-              <Settings size={16} />
-            </button>
+          <DropdownMenuTrigger className='flex w-full cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors outline-none group-data-[collapsible=icon]:justify-center'>
+            <Avatar size='lg'>
+              <AvatarImage
+                src={profileData?.profile_image ?? undefined}
+                alt='User profile picture'
+              />
+              <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
+                {getInitials(profileData?.first_name) ?? 'U'}
+              </AvatarFallback>
+            </Avatar>
+            <div className='min-w-0 group-data-[collapsible=icon]:hidden'>
+              <p className='truncate text-sm font-semibold'>
+                {formatChoiceFieldValue(profileData?.title) ?? ''}{' '}
+                {profileData?.first_name} {profileData?.middle_name}{' '}
+                {profileData?.last_name}
+              </p>
+            </div>
+            <Settings size={16} />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align='end' className='w-56'>
@@ -419,34 +376,24 @@ const AppSidebar: React.FC = () => {
             <Link href={getProfilePath()} passHref>
               <DropdownMenuItem className='cursor-pointer'>
                 <User className='size-4' />
-                {userRole === 'SUPER_ADMIN' ? 'Profile' : 'Profile Settings'}
+                Profile Settings
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            {userRole === 'LANDLORD' && (
-              <>
-                <Link
-                  href='/client/landlord/billing-and-plans/billing'
-                  passHref
-                >
-                  <DropdownMenuItem className='cursor-pointer'>
-                    <ReceiptText className='size-4' />
-                    Billing
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <Link
-                  href='/client/landlord/billing-and-plans/pricing-plans'
-                  passHref
-                >
-                  <DropdownMenuItem className='cursor-pointer'>
-                    <Package className='size-4' />
-                    Pricing Plans
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-              </>
-            )}
+            <Link href='/client/billing-and-plans/billing' passHref>
+              <DropdownMenuItem className='cursor-pointer'>
+                <ReceiptText className='size-4' />
+                Billing
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+            <Link href='/client/billing-and-plans/pricing-plans' passHref>
+              <DropdownMenuItem className='cursor-pointer'>
+                <Package className='size-4' />
+                Pricing Plans
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               variant='destructive'
               onClick={() => handleSignOut()}

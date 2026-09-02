@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        phone: { label: 'Phone', type: 'text' },
       },
       async authorize(credentials) {
         const res = await fetch(
@@ -55,8 +55,8 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: profile.id,
-          email: profile.email,
-          role: profile.role,
+          phone: profile.phone,
+          is_admin: profile.is_admin,
           accessToken: access,
           refreshToken: refresh,
         };
@@ -103,8 +103,8 @@ export const authOptions: NextAuthOptions = {
             if (profileRes.ok) {
               const profile = await profileRes.json();
               token.id = profile.id;
-              token.email = profile.email;
-              token.role = profile.role;
+              token.phone = profile.phone;
+              token.is_admin = profile.is_admin;
               token.accessToken = access;
               token.refreshToken = refresh;
             }
@@ -121,8 +121,8 @@ export const authOptions: NextAuthOptions = {
       // ✅ Credentials sign-in flow
       if (user) {
         token.id = user.id;
-        token.email = user.email;
-        token.role = user.role;
+        token.phone = user.phone;
+        token.is_admin = user.is_admin;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }
@@ -132,8 +132,8 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session, token }) {
       session.user.id = token.id;
-      session.user.email = token.email || '';
-      session.user.role = token.role;
+      session.user.phone = token.phone || '';
+      session.user.is_admin = token.is_admin;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       return session;

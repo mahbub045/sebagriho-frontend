@@ -1,18 +1,11 @@
 import 'next-auth';
 import 'next-auth/jwt';
 
-export type UserRole =
-  | 'SUPER_ADMIN'
-  | 'LANDLORD'
-  | 'ADMIN'
-  | 'LETTING_AGENT'
-  | 'MORTGAGE_ADVISER'
-  | 'TENANT';
-
 declare module 'next-auth' {
   interface User {
     id: string;
-    role: UserRole;
+    phone: string;
+    is_admin: boolean;
     accessToken: string;
     refreshToken: string;
   }
@@ -20,8 +13,8 @@ declare module 'next-auth' {
   interface Session {
     user: {
       id: string;
-      email: string;
-      role: string;
+      phone: string;
+      is_admin: boolean;
       accessToken: string;
       refreshToken: string;
     };
@@ -31,7 +24,8 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
-    role: string;
+    phone: string;
+    is_admin: boolean;
     accessToken: string;
     refreshToken: string;
   }
