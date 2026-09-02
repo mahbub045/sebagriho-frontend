@@ -11,17 +11,29 @@ export default withAuth(
       return NextResponse.redirect(new URL('/auth/signin', req.url));
     }
 
+    const isAdmin = Boolean(
+      (token as { is_admin?: boolean } | undefined)?.is_admin,
+    );
+    const organizationSlug = (
+      token as { organization_slug?: string } | undefined
+    )?.organization_slug;
+
     if (path === '/' || path === '') {
-      return NextResponse.redirect(new URL(getDashboardPath(), req.url));
+      return NextResponse.redirect(
+        new URL(getDashboardPath(isAdmin, organizationSlug), req.url),
+      );
     }
 
-    const isClientPath =
-      path === '/client' ||
-      path.startsWith('/client/') ||
-      path === '/client/dashboard' ||
-      path.startsWith('/client/dashboard/');
+    const isAdminRoute =
+      isAdmin && (path === '/super-admin' || path.startsWith('/super-admin/'));
 
-    if (!isClientPath) {
+    const isOrganizationRoute =
+      Boolean(organizationSlug) &&
+      (path === `/${organizationSlug}` ||
+        path === `/${organizationSlug}/` ||
+        path.startsWith(`/${organizationSlug}/`));
+
+    if (!isAdminRoute && !isOrganizationRoute) {
       return NextResponse.redirect(new URL('/auth/access-denied', req.url));
     }
 
