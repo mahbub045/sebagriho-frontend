@@ -19,8 +19,9 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        // email: { label: 'Email', type: 'email' },
         phone: { label: 'Phone', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const res = await fetch(
@@ -91,7 +92,7 @@ export const authOptions: NextAuthOptions = {
             const { access, refresh } = await res.json();
 
             const profileRes = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}/auth/profile`,
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/me`,
               {
                 headers: {
                   Authorization: `Bearer ${access}`,
