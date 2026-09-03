@@ -1,11 +1,15 @@
+import { Button } from '@/components/ui/button';
+import { Bell } from 'lucide-react';
+
 export default function Notification() {
   return (
-    <button
-      type='button'
-      className='inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-sm text-foreground transition-colors hover:bg-accent'
+    <Button
+      variant='ghost'
+      size='icon-sm'
+      className='border border-gray-200 dark:border-gray-700'
       aria-label='Notifications'
     >
-      🔔
-    </button>
+      <Bell className='h-4 w-4' />
+    </Button>
   );
 }

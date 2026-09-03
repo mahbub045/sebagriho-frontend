@@ -269,7 +269,14 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
 const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const navItems = buildItems(Boolean(session?.user.is_admin));
+
+  // Extract organization slug from pathname (e.g., '/acme/dashboard' -> 'acme')
+  const organizationSlug = pathname.split('/')[1];
+
+  const navItems = buildItems(
+    Boolean(session?.user.is_admin),
+    organizationSlug,
+  );
 
   const { data: profileData, isLoading } = useGetProfileInfoQuery(undefined);
 
