@@ -11,6 +11,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -32,7 +38,7 @@ import { buildItems, type NavItem } from '@/lib/navigation';
 import { useGetProfileInfoQuery } from '@/lib/services/endpoints/common/ProfileInfoApi';
 import { cn } from '@/lib/utils';
 import { getInitials } from '@/utils/formatters';
-import { ChevronRight, LogOut, Settings, User } from 'lucide-react';
+import { ChevronRight, LogOut, Menu, Settings, User } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -62,6 +68,23 @@ function getActiveParentLabels(items: NavItem[], pathname: string): string[] {
     }
   }
   return labels;
+}
+
+// True if this item (or any of its children) is the active route.
+function isItemActive(item: NavItem, pathname: string): boolean {
+  if (item.href && isNavActive(pathname, item.href)) return true;
+  if (Array.isArray(item.children)) {
+    return item.children.some(
+      (child) => child.href && isNavActive(pathname, child.href),
+    );
+  }
+  return false;
+}
+
+// The first navigable href for an item — its own href, or its first child's.
+function firstHref(item: NavItem): string | undefined {
+  if (item.href) return item.href;
+  return item.children?.find((c) => c.href)?.href;
 }
 
 // Unique, deterministic colors for icons — same label always maps to the same
@@ -158,19 +181,14 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
     });
   };
 
-  const isParentActive = (item: NavItem): boolean => {
-    if (Array.isArray(item.children)) {
-      return item.children.some(
-        (child) => child.href && isNavActive(pathname, child.href),
-      );
-    }
-    return item.href ? isNavActive(pathname, item.href) : false;
-  };
+  const isParentActive = (item: NavItem): boolean =>
+    isItemActive(item, pathname);
 
   return (
     <SidebarMenu>
       {items.map((item, index) => {
-        const key = item.href || `${item.label}-${index}`;
+        // Ensure unique keys by combining href, label, and index
+        const key = `${item.href || item.label}-${index}`;
         const hasChildren =
           Array.isArray(item.children) && item.children.length > 0;
         const isActive = isParentActive(item);
@@ -201,12 +219,13 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                 </SidebarMenuButton>
                 {openItems.has(item.label) && (
                   <SidebarMenuSub>
-                    {item.children!.map((child) => {
+                    {item.children!.map((child, childIndex) => {
                       const childActive = child.href
                         ? isNavActive(pathname, child.href)
                         : false;
+                      const childKey = `${child.href || child.label}-${childIndex}`;
                       return (
-                        <SidebarMenuSubItem key={child.href || child.label}>
+                        <SidebarMenuSubItem key={childKey}>
                           <SidebarMenuSubButton
                             render={<Link href={child.href || '#'} />}
                             isActive={childActive}
@@ -266,6 +285,119 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
   );
 }
 
+// Facebook-style bottom tab bar for mobile. Shows the first few top-level
+// nav items as direct tabs, plus a "Menu" tab that opens a bottom sheet with
+// the full nav tree and account actions.
+function MobileBottomNav({
+  items,
+  pathname,
+  profileData,
+}: {
+  items: NavItem[];
+  pathname: string;
+  profileData?: { name?: string; phone?: string; profile_image?: string };
+}) {
+  const MAX_TABS = 4;
+  const tabItems = items.slice(0, MAX_TABS);
+  const [sheetOpen, setSheetOpen] = React.useState(false);
+
+  return (
+    <nav className='bg-background/95 supports-backdrop-blur:bg-background/80 fixed inset-x-0 bottom-0 z-50 flex h-14 items-stretch border-t pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden'>
+      {tabItems.map((item, index) => {
+        const active = isItemActive(item, pathname);
+        const href = firstHref(item);
+        const color = getIconColor(item.label);
+
+        return (
+          <Link
+            key={`${item.href ?? item.label}-${index}`}
+            href={href || '#'}
+            className='flex flex-1 flex-col items-center justify-center gap-1'
+          >
+            <item.icon
+              className='h-5.5 w-5.5 shrink-0 stroke-[1.75]'
+              style={{ color: active ? color : 'var(--muted-foreground)' }}
+            />
+            <span
+              className={cn(
+                'max-w-full truncate px-1 text-[10px] leading-none font-medium',
+                active ? 'text-foreground' : 'text-muted-foreground',
+              )}
+            >
+              {item.label}
+            </span>
+          </Link>
+        );
+      })}
+
+      <button
+        type='button'
+        onClick={() => setSheetOpen(true)}
+        className='flex flex-1 flex-col items-center justify-center gap-1'
+      >
+        <Menu className='text-muted-foreground h-5.5 w-5.5 shrink-0 stroke-[1.75]' />
+        <span className='text-muted-foreground text-[10px] leading-none font-medium'>
+          Menu
+        </span>
+      </button>
+
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent side='bottom' className='max-h-[85vh] overflow-y-auto'>
+          <SheetHeader>
+            <SheetTitle className='flex items-center gap-3 text-left'>
+              <Avatar size='lg'>
+                <AvatarImage
+                  src={profileData?.profile_image ?? undefined}
+                  alt='User profile picture'
+                />
+                <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
+                  {getInitials(profileData?.name) ?? 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <div className='min-w-0'>
+                <p className='truncate text-sm font-semibold'>
+                  {profileData?.name ?? 'User'}
+                </p>
+                <p className='text-muted-foreground truncate text-xs font-normal'>
+                  {profileData?.phone}
+                </p>
+              </div>
+            </SheetTitle>
+          </SheetHeader>
+
+          <div className='px-2 pb-2'>
+            <NavMenu items={items} pathname={pathname} />
+          </div>
+
+          <SidebarSeparator className='mx-2 h-px!' />
+
+          <div className='space-y-1 p-2'>
+            <Link
+              href='/client/profile-settings'
+              onClick={() => setSheetOpen(false)}
+              className='hover:bg-accent flex items-center gap-2 rounded-lg px-3 py-2 text-sm'
+            >
+              <User className='size-4' />
+              Profile Settings
+            </Link>
+            <button
+              type='button'
+              onClick={() => {
+                setSheetOpen(false);
+                handleSignOut();
+              }}
+              className='hover:bg-accent text-destructive flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm'
+            >
+              <LogOut className='size-4' />
+              Sign out
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </nav>
+  );
+}
+
 const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -282,128 +414,127 @@ const AppSidebar: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Sidebar collapsible='icon'>
-        <div className='flex h-full items-center justify-center'>
+      <>
+        <Sidebar collapsible='icon' className='hidden md:contents'>
+          <div className='flex h-full items-center justify-center'>
+            <Loading />
+          </div>
+        </Sidebar>
+        <div className='bg-background fixed inset-x-0 bottom-0 z-50 flex h-16 items-center justify-center border-t md:hidden'>
           <Loading />
         </div>
-      </Sidebar>
+      </>
     );
   }
 
   const getProfilePath = () => '/client/profile-settings';
 
   return (
-    <Sidebar collapsible='icon'>
-      <SidebarHeader className='gap-0 px-4 py-4 group-data-[collapsible=icon]:px-2'>
-        <div className='flex items-center gap-2 group-data-[collapsible=icon]:hidden'>
-          <Image
-            src='/images/logo-black.png'
-            alt='Sebagriho'
-            width={400}
-            height={150}
-            className='h-12 w-40 rounded-xl dark:hidden'
-            loading='eager'
-          />
-          <Image
-            src='/images/logo-white.png'
-            alt='Sebagriho'
-            width={400}
-            height={150}
-            className='hidden h-12 w-40 rounded-xl dark:block'
-            loading='eager'
-          />
-        </div>
+    <>
+      <Sidebar collapsible='icon' className='hidden md:contents'>
+        <SidebarHeader className='gap-0 px-4 py-4 group-data-[collapsible=icon]:px-2'>
+          <div className='flex items-center gap-2 group-data-[collapsible=icon]:hidden'>
+            <Image
+              src='/images/logo-black.png'
+              alt='Sebagriho'
+              width={400}
+              height={150}
+              className='h-12 w-40 rounded-xl dark:hidden'
+              loading='eager'
+            />
+            <Image
+              src='/images/logo-white.png'
+              alt='Sebagriho'
+              width={400}
+              height={150}
+              className='hidden h-12 w-40 rounded-xl dark:block'
+              loading='eager'
+            />
+          </div>
 
-        <Badge
-          variant='secondary'
-          className='group-data-[collapsible=icon]:hidden'
-        >
-          Premium Plan
-        </Badge>
-      </SidebarHeader>
+          <Badge
+            variant='secondary'
+            className='group-data-[collapsible=icon]:hidden'
+          >
+            Premium Plan
+          </Badge>
+        </SidebarHeader>
 
-      <SidebarSeparator className='mx-0 h-px!' />
-
-      <SidebarContent className='gap-1 px-2 py-2'>
-        <SidebarGroup className='p-0'>
-          <SidebarGroupLabel className='px-3 text-[11px] font-semibold tracking-wider uppercase'>
-            Menu
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <NavMenu items={navItems} pathname={pathname} />
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-      <SidebarFooter className='p-4 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:p-2'>
         <SidebarSeparator className='mx-0 h-px!' />
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className='flex w-full cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors outline-none group-data-[collapsible=icon]:justify-center'>
-            <Avatar size='lg'>
-              <AvatarImage
-                src={profileData?.profile_image ?? undefined}
-                alt='User profile picture'
-              />
-              <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
-                {getInitials(profileData?.name) ?? 'U'}
-              </AvatarFallback>
-            </Avatar>
-            <div className='min-w-0 group-data-[collapsible=icon]:hidden'>
-              <p className='truncate text-sm font-semibold'>
-                {profileData?.name ?? 'User'}
-              </p>
-            </div>
-            <Settings size={16} />
-          </DropdownMenuTrigger>
+        <SidebarContent className='gap-1 px-2 py-2'>
+          <SidebarGroup className='p-0'>
+            <SidebarGroupLabel className='px-3 text-[11px] font-semibold tracking-wider uppercase'>
+              Menu
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <NavMenu items={navItems} pathname={pathname} />
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-          <DropdownMenuContent align='end' className='w-56'>
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>
-                <div className='flex flex-col gap-1'>
-                  <span className='font-medium'>{profileData?.name}</span>
-                  <span className='text-muted-foreground text-xs font-normal'>
-                    {profileData?.phone}
-                  </span>
-                </div>
-              </DropdownMenuLabel>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <Link href={getProfilePath()} passHref>
-              <DropdownMenuItem className='cursor-pointer'>
-                <User className='size-4' />
-                Profile Settings
-              </DropdownMenuItem>
-            </Link>
-            {/* <DropdownMenuSeparator />
-            <Link href='/client/billing-and-plans/billing' passHref>
-              <DropdownMenuItem className='cursor-pointer'>
-                <ReceiptText className='size-4' />
-                Billing
-              </DropdownMenuItem>
-            </Link>
-            <DropdownMenuSeparator />
-            <Link href='/client/billing-and-plans/pricing-plans' passHref>
-              <DropdownMenuItem className='cursor-pointer'>
-                <Package className='size-4' />
-                Pricing Plans
-              </DropdownMenuItem>
-            </Link> */}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant='destructive'
-              onClick={() => handleSignOut()}
-              className='cursor-pointer'
-            >
-              <LogOut className='size-4' />
-              Sign out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarFooter>
+        <SidebarFooter className='p-4 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:p-2'>
+          <SidebarSeparator className='mx-0 h-px!' />
 
-      <SidebarRail />
-    </Sidebar>
+          <DropdownMenu>
+            <DropdownMenuTrigger className='flex w-full cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors outline-none group-data-[collapsible=icon]:justify-center'>
+              <Avatar size='lg'>
+                <AvatarImage
+                  src={profileData?.profile_image ?? undefined}
+                  alt='User profile picture'
+                />
+                <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
+                  {getInitials(profileData?.name) ?? 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <div className='min-w-0 group-data-[collapsible=icon]:hidden'>
+                <p className='truncate text-sm font-semibold'>
+                  {profileData?.name ?? 'User'}
+                </p>
+              </div>
+              <Settings size={16} />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align='end' className='w-56'>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>
+                  <div className='flex flex-col gap-1'>
+                    <span className='font-medium'>{profileData?.name}</span>
+                    <span className='text-muted-foreground text-xs font-normal'>
+                      {profileData?.phone}
+                    </span>
+                  </div>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <Link href={getProfilePath()} passHref>
+                <DropdownMenuItem className='cursor-pointer'>
+                  <User className='size-4' />
+                  Profile Settings
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant='destructive'
+                onClick={() => handleSignOut()}
+                className='cursor-pointer'
+              >
+                <LogOut className='size-4' />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarFooter>
+
+        <SidebarRail />
+      </Sidebar>
+
+      <MobileBottomNav
+        items={navItems}
+        pathname={pathname}
+        profileData={profileData}
+      />
+    </>
   );
 };
 
