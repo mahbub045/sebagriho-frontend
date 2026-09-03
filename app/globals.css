@@ -178,7 +178,7 @@ textarea {
   @apply focus:ring-primary/70 h-auto min-h-8 w-full rounded-md border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 shadow-inner transition-shadow focus:ring-1 focus:outline-none dark:border-white/12 dark:bg-white/6 dark:text-white dark:placeholder-white/60;
 }
 
-.text_decoration_hover {
+.text_decoration_underline {
   text-decoration: none;
   color: var(--primary) !important;
   position: relative;
@@ -186,8 +186,8 @@ textarea {
   display: inline-block;
 }
 
-.text_decoration_hover::before,
-.text_decoration_hover::after {
+.text_decoration_underline::before,
+.text_decoration_underline::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -206,26 +206,26 @@ textarea {
 }
 
 /* left half: shows the first half of the gradient, grows left → middle */
-.text_decoration_hover::before {
+.text_decoration_underline::before {
   left: 0;
   background-position: 0% 0;
   transform-origin: left;
 }
 
 /* right half: shows the second half of the gradient, grows right → middle */
-.text_decoration_hover::after {
+.text_decoration_underline::after {
   right: 0;
   background-position: 100% 0;
   transform-origin: right;
 }
 
-.text_decoration_hover:hover::before,
-.text_decoration_hover:hover::after,
-.text_decoration_hover:focus::before,
-.text_decoration_hover:focus::after,
-.text_decoration_hover:active::before,
-.text_decoration_hover:active::after,
-.text_decoration_hover:focus-visible::before,
-.text_decoration_hover:focus-visible::after {
+.text_decoration_underline:hover::before,
+.text_decoration_underline:hover::after,
+.text_decoration_underline:focus::before,
+.text_decoration_underline:focus::after,
+.text_decoration_underline:active::before,
+.text_decoration_underline:active::after,
+.text_decoration_underline:focus-visible::before,
+.text_decoration_underline:focus-visible::after {
   transform: scaleX(1);
 }

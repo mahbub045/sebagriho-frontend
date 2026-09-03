@@ -3,6 +3,7 @@
 import Loading from '@/components/common/CustomLoader/Loading';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-const SigninPage: React.FC = () => {
+export default function SigninPage() {
   const router = useRouter();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -45,9 +46,9 @@ const SigninPage: React.FC = () => {
   };
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_35%),linear-gradient(135deg,#f8fafc_0%,#eef4ff_45%,#f8fafc_100%)] p-4'>
-      <div className='grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white/80 shadow-[0_20px_60px_rgba(15,23,42,0.12)] backdrop-blur-md lg:grid-cols-[1.1fr_0.9fr]'>
-        <div className='hidden flex-col justify-between bg-slate-950 p-8 text-white lg:flex'>
+    <div className='flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_35%),linear-gradient(135deg,#f8fafc_0%,#eef4ff_45%,#f8fafc_100%)] p-4 dark:bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_35%),linear-gradient(135deg,#020617_0%,#0b1220_45%,#020617_100%)]'>
+      <div className='grid w-full max-w-5xl overflow-hidden rounded-[28px] border border-slate-200 bg-white/80 shadow-[0_20px_60px_rgba(15,23,42,0.12)] backdrop-blur-md lg:grid-cols-[1.1fr_0.9fr] dark:border-slate-800 dark:bg-slate-900/70 dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)]'>
+        <div className='hidden flex-col justify-between bg-slate-950 p-8 text-white lg:flex dark:bg-black'>
           <div>
             <div className='mb-10 flex items-center gap-3'>
               <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500 font-bold text-white'>
@@ -71,13 +72,16 @@ const SigninPage: React.FC = () => {
 
           <div className='rounded-2xl border border-white/10 bg-white/5 p-5'>
             <p className='text-sm text-slate-300'>
-              “Every customer interaction, every order, and every update in one
-              centralized workspace.”
+              Every customer interaction, every order, and every update in one
+              centralized workspace.
             </p>
           </div>
         </div>
 
-        <div className='flex items-center justify-center p-6 sm:p-8 lg:p-10'>
+        <div className='relative flex items-center justify-center p-6 sm:p-8 lg:p-10'>
+          <span className='absolute top-4 right-4'>
+            <ThemeToggle />
+          </span>
           <div className='w-full max-w-md'>
             <div className='mb-8 lg:hidden'>
               <div className='mb-4 flex items-center gap-3'>
@@ -85,19 +89,21 @@ const SigninPage: React.FC = () => {
                   S
                 </div>
                 <div>
-                  <p className='text-lg font-semibold text-slate-900'>
+                  <p className='text-lg font-semibold text-slate-900 dark:text-slate-100'>
                     Sebagriho
                   </p>
-                  <p className='text-xs text-slate-500'>Business Portal</p>
+                  <p className='text-xs text-slate-500 dark:text-slate-400'>
+                    Business Portal
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className='mb-6'>
-              <p className='text-sm font-medium tracking-[0.25em] text-blue-600 uppercase'>
+              <p className='text-primary text-sm font-medium tracking-[0.25em] uppercase'>
                 Sign in
               </p>
-              <h2 className='mt-3 text-3xl font-bold tracking-tight text-slate-900'>
+              <h2 className='mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100'>
                 Access your account
               </h2>
             </div>
@@ -106,7 +112,7 @@ const SigninPage: React.FC = () => {
               <div className='space-y-2'>
                 <label
                   htmlFor='phone'
-                  className='text-sm font-medium text-slate-700'
+                  className='text-sm font-medium text-slate-700 dark:text-slate-300'
                 >
                   Phone Number
                 </label>
@@ -116,6 +122,7 @@ const SigninPage: React.FC = () => {
                   placeholder='e.g. +234 812 345 6789'
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  className='dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500'
                 />
               </div>
 
@@ -123,14 +130,13 @@ const SigninPage: React.FC = () => {
                 <div className='flex items-center justify-between'>
                   <label
                     htmlFor='password'
-                    className='text-sm font-medium text-slate-700'
+                    className='text-sm font-medium text-slate-700 dark:text-slate-300'
                   >
                     Password
                   </label>
                   <Link
                     href='/auth/forgot-password'
-
-                    className='text-primary/80 hover:text-primary text-sm font-medium transition'
+                    className='text-primary/80 text_decoration_underline text-sm font-medium'
                   >
                     Forgot password?
                   </Link>
@@ -142,6 +148,7 @@ const SigninPage: React.FC = () => {
                     placeholder='Enter your password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className='dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500'
                   />
 
                   <button
@@ -175,6 +182,4 @@ const SigninPage: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default SigninPage;
+}
