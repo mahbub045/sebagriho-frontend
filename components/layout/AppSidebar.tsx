@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -26,27 +27,20 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   SidebarSeparator,
-} from '@/components/ui/sidebar';
-import { buildItems, type NavItem } from '@/lib/navigation';
-import { cn } from '@/lib/utils';
-import { useGetProfileInfoQuery } from '@/store/api/endpoints/common/ProfileSettings/ProfileApi';
-import formatChoiceFieldValue, { getInitials } from '@/utils/formatters';
-import {
-  ChevronRight,
-  LogOut,
-  Package,
-  ReceiptText,
-  Settings,
-  User,
-} from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
-import Loading from '../common/CustomLoader/Loading';
-import { handleSignOut } from '../SignOut';
-import { Badge } from '../ui/badge';
+} from "@/components/ui/sidebar";
+import { buildItems, type NavItem } from "@/lib/navigation";
+import { useGetProfileInfoQuery } from "@/lib/services/endpoints/common/ProfileInfoApi";
+import { cn } from "@/lib/utils";
+import { getInitials } from "@/utils/formatters";
+import { ChevronRight, LogOut, Settings, User } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
+import Loading from "../common/CustomLoader/Loading";
+import { handleSignOut } from "../SignOut";
+import { Badge } from "../ui/badge";
 
 function isNavActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -74,47 +68,47 @@ function getActiveParentLabels(items: NavItem[], pathname: string): string[] {
 // color, regardless of active/inactive state. Defined at module scope so the
 // array/function identity is stable across renders.
 const ICON_COLORS = [
-  '#6366f1', // indigo
-  '#ec4899', // pink
-  '#14b8a6', // teal
-  '#f59e0b', // amber
-  '#8b5cf6', // violet
-  '#ef4444', // red
-  '#22c55e', // green
-  '#06b6d4', // cyan
-  '#f97316', // orange
-  '#0ea5e9', // sky
-  '#a855f7', // purple
-  '#84cc16', // lime
-  '#f43f5e', // rose
-  '#10b981', // emerald
-  '#eab308', // yellow
-  '#3b82f6', // blue
-  '#d946ef', // fuchsia
-  '#0d9488', // teal-dark
-  '#dc2626', // red-dark
-  '#65a30d', // lime-dark
-  '#ea580c', // orange-dark
-  '#7c3aed', // violet-dark
-  '#0891b2', // cyan-dark
-  '#db2777', // pink-dark
-  '#059669', // emerald-dark
-  '#4f46e5', // indigo-dark
-  '#9333ea', // purple-dark
-  '#ca8a04', // amber-dark
-  '#e11d48', // rose-dark
-  '#2563eb', // blue-dark
-  '#16a34a', // green-dark
-  '#c026d3', // fuchsia-dark
-  '#0284c7', // sky-dark
-  '#b91c1c', // red-darker
-  '#15803d', // green-darker
-  '#6d28d9', // violet-darker
-  '#be185d', // pink-darker
-  '#a16207', // yellow-dark
-  '#0e7490', // cyan-darker
-  '#4338ca', // indigo-darker
-  '#c2410c', // orange-darker
+  "#6366f1", // indigo
+  "#ec4899", // pink
+  "#14b8a6", // teal
+  "#f59e0b", // amber
+  "#8b5cf6", // violet
+  "#ef4444", // red
+  "#22c55e", // green
+  "#06b6d4", // cyan
+  "#f97316", // orange
+  "#0ea5e9", // sky
+  "#a855f7", // purple
+  "#84cc16", // lime
+  "#f43f5e", // rose
+  "#10b981", // emerald
+  "#eab308", // yellow
+  "#3b82f6", // blue
+  "#d946ef", // fuchsia
+  "#0d9488", // teal-dark
+  "#dc2626", // red-dark
+  "#65a30d", // lime-dark
+  "#ea580c", // orange-dark
+  "#7c3aed", // violet-dark
+  "#0891b2", // cyan-dark
+  "#db2777", // pink-dark
+  "#059669", // emerald-dark
+  "#4f46e5", // indigo-dark
+  "#9333ea", // purple-dark
+  "#ca8a04", // amber-dark
+  "#e11d48", // rose-dark
+  "#2563eb", // blue-dark
+  "#16a34a", // green-dark
+  "#c026d3", // fuchsia-dark
+  "#0284c7", // sky-dark
+  "#b91c1c", // red-darker
+  "#15803d", // green-darker
+  "#6d28d9", // violet-darker
+  "#be185d", // pink-darker
+  "#a16207", // yellow-dark
+  "#0e7490", // cyan-darker
+  "#4338ca", // indigo-darker
+  "#c2410c", // orange-darker
 ];
 
 function getIconColor(key: string) {
@@ -194,14 +188,14 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                       ? { borderBottomColor: getIconColor(item.label) }
                       : undefined
                   }
-                  className='h-9 cursor-pointer rounded-lg border-b-2 border-transparent data-active:bg-black/10 data-active:shadow-none data-active:hover:bg-black/15 dark:data-active:bg-white/15 dark:data-active:hover:bg-white/20'
+                  className="h-9 cursor-pointer rounded-lg border-b-2 border-transparent data-active:bg-black/10 data-active:shadow-none data-active:hover:bg-black/15 dark:data-active:bg-white/15 dark:data-active:hover:bg-white/20"
                 >
                   <item.icon style={{ color: getIconColor(item.label) }} />
                   <span>{item.label}</span>
                   <ChevronRight
                     className={cn(
-                      'ml-auto transition-transform',
-                      openItems.has(item.label) && 'rotate-90',
+                      "ml-auto transition-transform",
+                      openItems.has(item.label) && "rotate-90",
                     )}
                   />
                 </SidebarMenuButton>
@@ -214,7 +208,7 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                       return (
                         <SidebarMenuSubItem key={child.href || child.label}>
                           <SidebarMenuSubButton
-                            render={<Link href={child.href || '#'} />}
+                            render={<Link href={child.href || "#"} />}
                             isActive={childActive}
                             style={
                               childActive
@@ -225,11 +219,11 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                                   }
                                 : undefined
                             }
-                            className='h-9 rounded-lg border-b-2 border-transparent data-active:bg-black/5 data-active:shadow-none data-active:hover:bg-black/10 dark:data-active:bg-white/10 dark:data-active:hover:bg-white/15'
+                            className="h-9 rounded-lg border-b-2 border-transparent data-active:bg-black/5 data-active:shadow-none data-active:hover:bg-black/10 dark:data-active:bg-white/10 dark:data-active:hover:bg-white/15"
                           >
                             <child.icon
                               style={{ color: getIconColor(child.label) }}
-                              className='h-4 w-4'
+                              className="h-4 w-4"
                             />
 
                             <span>{child.label}</span>
@@ -252,13 +246,13 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
                         ? { borderBottomColor: getIconColor(item.label) }
                         : undefined
                     }
-                    className='h-9 rounded-lg border-b-2 border-transparent data-active:bg-black/10 data-active:hover:bg-black/15 dark:data-active:bg-white/10 dark:data-active:hover:bg-white/15'
+                    className="h-9 rounded-lg border-b-2 border-transparent data-active:bg-black/10 data-active:hover:bg-black/15 dark:data-active:bg-white/10 dark:data-active:hover:bg-white/15"
                   >
                     <item.icon style={{ color: getIconColor(item.label) }} />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
                   {item.badge ? (
-                    <SidebarMenuBadge className='bg-danger rounded-full px-1.5 text-[10px] font-semibold text-white!'>
+                    <SidebarMenuBadge className="bg-danger rounded-full px-1.5 text-[10px] font-semibold text-white!">
                       {item.badge}
                     </SidebarMenuBadge>
                   ) : null}
@@ -275,58 +269,59 @@ function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
 const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const user = session?.user;
-  const navItems = buildItems();
+  const navItems = buildItems(Boolean(session?.user.is_admin));
 
   const { data: profileData, isLoading } = useGetProfileInfoQuery(undefined);
 
   if (isLoading) {
     return (
-      <Sidebar collapsible='icon'>
-        <div className='flex h-full items-center justify-center'>
+      <Sidebar collapsible="icon">
+        <div className="flex h-full  justify-center items-center">
           <Loading />
         </div>
       </Sidebar>
     );
   }
 
-  const getProfilePath = () => '/client/profile-settings';
+
+  
+  const getProfilePath = () => "/client/profile-settings";
 
   return (
-    <Sidebar collapsible='icon'>
-      <SidebarHeader className='gap-0 px-4 py-4 group-data-[collapsible=icon]:px-2'>
-        <div className='flex items-center gap-2 group-data-[collapsible=icon]:hidden'>
+    <Sidebar collapsible="icon">
+      <SidebarHeader className="gap-0 px-4 py-4 group-data-[collapsible=icon]:px-2 ">
+        <div className="flex items-center gap-2 group-data-[collapsible=icon]:hidden">
           <Image
-            src='/images/logo-black.png'
-            alt='Landkeeper'
+            src="/images/logo-black.png"
+            alt="Sebagriho"
             width={400}
             height={150}
-            className='h-12 w-40 rounded-xl dark:hidden'
-            loading='eager'
+            className="h-12 w-40 rounded-xl dark:hidden"
+            loading="eager"
           />
           <Image
-            src='/images/logo-white.png'
-            alt='Landkeeper'
+            src="/images/logo-white.png"
+            alt="Sebagriho"
             width={400}
             height={150}
-            className='hidden h-12 w-40 rounded-xl dark:block'
-            loading='eager'
+            className="hidden h-12 w-40 rounded-xl dark:block"
+            loading="eager"
           />
         </div>
 
         <Badge
-          variant='secondary'
-          className='group-data-[collapsible=icon]:hidden'
+          variant="secondary"
+          className="group-data-[collapsible=icon]:hidden"
         >
           Premium Plan
         </Badge>
       </SidebarHeader>
 
-      <SidebarSeparator className='mx-0 h-px!' />
+      <SidebarSeparator className="mx-0 h-px!" />
 
-      <SidebarContent className='gap-1 px-2 py-2'>
-        <SidebarGroup className='p-0'>
-          <SidebarGroupLabel className='px-3 text-[11px] font-semibold tracking-wider uppercase'>
+      <SidebarContent className="gap-1 px-2 py-2">
+        <SidebarGroup className="p-0">
+          <SidebarGroupLabel className="px-3 text-[11px] font-semibold tracking-wider uppercase">
             Menu
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -335,51 +330,47 @@ const AppSidebar: React.FC = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className='p-4 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:p-2'>
-        <SidebarSeparator className='mx-0 h-px!' />
+      <SidebarFooter className="p-4 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:p-2">
+        <SidebarSeparator className="mx-0 h-px!" />
 
         <DropdownMenu>
-          <DropdownMenuTrigger className='flex w-full cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors outline-none group-data-[collapsible=icon]:justify-center'>
-            <Avatar size='lg'>
+          <DropdownMenuTrigger className="flex w-full cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors outline-none group-data-[collapsible=icon]:justify-center">
+            <Avatar size="lg">
               <AvatarImage
                 src={profileData?.profile_image ?? undefined}
-                alt='User profile picture'
+                alt="User profile picture"
               />
-              <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
-                {getInitials(profileData?.first_name) ?? 'U'}
+              <AvatarFallback className="bg-primary text-xs font-semibold text-white">
+                {getInitials(profileData?.name) ?? "U"}
               </AvatarFallback>
             </Avatar>
-            <div className='min-w-0 group-data-[collapsible=icon]:hidden'>
-              <p className='truncate text-sm font-semibold'>
-                {formatChoiceFieldValue(profileData?.title) ?? ''}{' '}
-                {profileData?.first_name} {profileData?.middle_name}{' '}
-                {profileData?.last_name}
+            <div className="min-w-0 group-data-[collapsible=icon]:hidden">
+              <p className="truncate text-sm font-semibold">
+                {profileData?.name ?? "User"}
               </p>
             </div>
             <Settings size={16} />
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align='end' className='w-56'>
-            <DropdownMenuLabel>
-              <div className='flex flex-col gap-1'>
-                <span className='font-medium'>
-                  {formatChoiceFieldValue(profileData?.title) ?? ''}{' '}
-                  {profileData?.first_name} {profileData?.middle_name}{' '}
-                  {profileData?.last_name}
-                </span>
-                <span className='text-muted-foreground text-xs font-normal'>
-                  {profileData?.email}
-                </span>
-              </div>
-            </DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>
+                <div className="flex flex-col gap-1">
+                  <span className="font-medium">{profileData?.name}</span>
+                  <span className="text-muted-foreground text-xs font-normal">
+                    {profileData?.phone}
+                  </span>
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <Link href={getProfilePath()} passHref>
-              <DropdownMenuItem className='cursor-pointer'>
-                <User className='size-4' />
+              <DropdownMenuItem className="cursor-pointer">
+                <User className="size-4" />
                 Profile Settings
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <Link href='/client/billing-and-plans/billing' passHref>
               <DropdownMenuItem className='cursor-pointer'>
                 <ReceiptText className='size-4' />
@@ -392,14 +383,14 @@ const AppSidebar: React.FC = () => {
                 <Package className='size-4' />
                 Pricing Plans
               </DropdownMenuItem>
-            </Link>
+            </Link> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              variant='destructive'
+              variant="destructive"
               onClick={() => handleSignOut()}
-              className='cursor-pointer'
+              className="cursor-pointer"
             >
-              <LogOut className='size-4' />
+              <LogOut className="size-4" />
               Sign out
             </DropdownMenuItem>
           </DropdownMenuContent>
