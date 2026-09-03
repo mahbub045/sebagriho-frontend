@@ -316,7 +316,7 @@ function MobileBottomNav({
           >
             <item.icon
               className='h-5.5 w-5.5 shrink-0 stroke-[1.75]'
-              style={{ color: active ? color : 'var(--muted-foreground)' }}
+              style={{ color }}
             />
             <span
               className={cn(
@@ -335,7 +335,10 @@ function MobileBottomNav({
         onClick={() => setSheetOpen(true)}
         className='flex flex-1 flex-col items-center justify-center gap-1'
       >
-        <Menu className='text-muted-foreground h-5.5 w-5.5 shrink-0 stroke-[1.75]' />
+        <Menu
+          className='h-5.5 w-5.5 shrink-0 stroke-[1.75]'
+          style={{ color: getIconColor('Menu') }}
+        />
         <span className='text-muted-foreground text-[10px] leading-none font-medium'>
           Menu
         </span>
@@ -415,7 +418,7 @@ const AppSidebar: React.FC = () => {
   if (isLoading) {
     return (
       <>
-        <Sidebar collapsible='icon' className='hidden md:contents'>
+        <Sidebar collapsible='icon'>
           <div className='flex h-full items-center justify-center'>
             <Loading />
           </div>
@@ -431,7 +434,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <>
-      <Sidebar collapsible='icon' className='hidden md:contents'>
+      <Sidebar collapsible='icon'>
         <SidebarHeader className='gap-0 px-4 py-4 group-data-[collapsible=icon]:px-2'>
           <div className='flex items-center gap-2 group-data-[collapsible=icon]:hidden'>
             <Image

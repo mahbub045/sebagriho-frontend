@@ -1,4 +1,4 @@
-import { Building2, LayoutDashboard, type LucideIcon } from 'lucide-react';
+import { Building2, LayoutDashboard, Users, type LucideIcon } from 'lucide-react';
 
 export type NavItem = {
   label: string;
@@ -27,33 +27,9 @@ export const buildItems = (
       {
         label: 'Users',
         href: '/super-admin/users',
-        icon: Building2,
+        icon: Users,
       },
-      {
-        label: 'Users',
-        href: '/super-admin/users',
-        icon: Building2,
-      },
-      {
-        label: 'Users',
-        href: '/super-admin/users',
-        icon: Building2,
-      },
-      {
-        label: 'Users',
-        href: '/super-admin/users',
-        icon: Building2,
-      },
-      {
-        label: 'Users',
-        href: '/super-admin/users',
-        icon: Building2,
-      },
-      {
-        label: 'Users',
-        href: '/super-admin/users',
-        icon: Building2,
-      },
+ 
 
     ];
   }
