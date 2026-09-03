@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -115,7 +116,6 @@ const SigninPage: React.FC = () => {
                   placeholder='e.g. +234 812 345 6789'
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className='h-12 rounded-xl border-slate-200 bg-slate-50 px-4 text-base text-slate-900 shadow-sm transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100'
                 />
               </div>
 
@@ -127,12 +127,13 @@ const SigninPage: React.FC = () => {
                   >
                     Password
                   </label>
-                  <button
-                    type='button'
-                    className='text-sm font-medium text-blue-600 transition hover:text-blue-500'
+                  <Link
+                    href='/auth/forgot-password'
+
+                    className='text-primary/80 hover:text-primary text-sm font-medium transition'
                   >
                     Forgot password?
-                  </button>
+                  </Link>
                 </div>
                 <div className='relative'>
                   <Input
@@ -141,13 +142,12 @@ const SigninPage: React.FC = () => {
                     placeholder='Enter your password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className='h-12 rounded-xl border-slate-200 bg-slate-50 px-4 pr-11 text-base text-slate-900 shadow-sm transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100'
                   />
 
                   <button
                     type='button'
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className='absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition hover:text-slate-600'
+                    className='text-primary/80 hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition'
                     aria-label={
                       showPassword ? 'Hide password' : 'Show password'
                     }
@@ -159,16 +159,6 @@ const SigninPage: React.FC = () => {
                     )}
                   </button>
                 </div>
-              </div>
-
-              <div className='flex items-center justify-between gap-3 pt-1'>
-                <label className='flex items-center gap-2 text-sm text-slate-600'>
-                  <input
-                    type='checkbox'
-                    className='h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500'
-                  />
-                  Remember me
-                </label>
               </div>
 
               <Button
