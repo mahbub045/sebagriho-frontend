@@ -276,7 +276,7 @@ const AppSidebar: React.FC = () => {
   if (isLoading) {
     return (
       <Sidebar collapsible='icon'>
-        <div className='flex h-full  justify-center items-center'>
+        <div className='flex h-full items-center justify-center'>
           <Loading />
         </div>
       </Sidebar>
@@ -294,7 +294,7 @@ const AppSidebar: React.FC = () => {
             alt='Sebagriho'
             width={400}
             height={150}
-            className='h-12 w-40 rounded-xl dark:hidden      '
+            className='h-12 w-40 rounded-xl dark:hidden'
             loading='eager'
           />
           <Image

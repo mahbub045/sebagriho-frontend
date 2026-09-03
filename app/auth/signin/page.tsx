@@ -59,10 +59,10 @@ const SigninPage: React.FC = () => {
             </div>
 
             <div className='space-y-5'>
-              <p className='text-sm font-medium uppercase tracking-[0.25em] text-slate-400'>
+              <p className='text-sm font-medium tracking-[0.25em] text-slate-400 uppercase'>
                 Welcome back
               </p>
-              <h1 className='max-w-sm text-4xl font-bold leading-tight'>
+              <h1 className='max-w-sm text-4xl leading-tight font-bold'>
                 Manage your operations from one place.
               </h1>
             </div>
@@ -93,7 +93,7 @@ const SigninPage: React.FC = () => {
             </div>
 
             <div className='mb-6'>
-              <p className='text-sm font-medium uppercase tracking-[0.25em] text-blue-600'>
+              <p className='text-sm font-medium tracking-[0.25em] text-blue-600 uppercase'>
                 Sign in
               </p>
               <h2 className='mt-3 text-3xl font-bold tracking-tight text-slate-900'>
@@ -143,11 +143,14 @@ const SigninPage: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className='h-12 rounded-xl border-slate-200 bg-slate-50 px-4 pr-11 text-base text-slate-900 shadow-sm transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100'
                   />
+
                   <button
                     type='button'
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className='absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600'
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className='absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition hover:text-slate-600'
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
                   >
                     {showPassword ? (
                       <EyeOff className='h-5 w-5' />
