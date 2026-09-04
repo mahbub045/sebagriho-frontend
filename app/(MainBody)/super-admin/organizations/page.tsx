@@ -1,4 +1,4 @@
-import OrganizationsContainer from '@/components/super-admin/organizations';
+import OrganizationsContainer from '@/components/superAdmin/Organizations';
 
 export default function OrganizationsPage() {
   return <OrganizationsContainer />;

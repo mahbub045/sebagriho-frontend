@@ -21,7 +21,7 @@ const MainBodyShell: React.FC<{ children: React.ReactNode }> = ({
         <AppSidebar />
         <SidebarInset className='flex min-h-svh min-w-0 flex-col'>
           <AppNavbar />
-          <div className='flex-1 bg-[#F4F2F2] p-4 md:p-6 dark:bg-[#1a1a1a]'>
+          <div className='flex-1 bg-[#F4F2F2] p-3 md:p-4 dark:bg-[#1a1a1a]'>
             {children}
           </div>
           <AppFooter />

@@ -8,7 +8,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Home } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight, Home, RotateCw } from 'lucide-react';
 import React from 'react';
 
 interface BreadcrumbItem {
@@ -26,7 +27,38 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   }
 
   return (
-    <Breadcrumb className='mb-6'>
+    <Breadcrumb className='mb-6 flex items-center justify-between'>
+      <div className='border-border bg-background inline-flex items-center rounded-lg border p-0.5 shadow-sm'>
+        <Button
+          variant='ghost'
+          size='icon'
+          className='text-muted-foreground hover:text-foreground hover:bg-muted h-8 w-8 rounded-md transition-colors'
+          onClick={() => window.history.back()}
+        >
+          <ChevronLeft className='h-4 w-4' />
+        </Button>
+
+        <Button
+          variant='ghost'
+          size='icon'
+          className='text-muted-foreground hover:text-foreground hover:bg-muted h-8 w-8 rounded-md transition-colors'
+          onClick={() => window.history.forward()}
+        >
+          <ChevronRight className='h-4 w-4' />
+        </Button>
+
+        <div className='bg-border mx-0.5 h-4 w-px' />
+
+        <Button
+          variant='ghost'
+          size='icon'
+          className='text-muted-foreground hover:text-foreground hover:bg-muted h-8 w-8 rounded-md transition-colors duration-300 active:rotate-180'
+          onClick={() => window.location.reload()}
+        >
+          <RotateCw className='h-4 w-4' />
+        </Button>
+      </div>
+      
       <BreadcrumbList>
         {items.map((item, index) => (
           <React.Fragment key={index}>

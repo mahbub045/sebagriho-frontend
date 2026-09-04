@@ -1,6 +1,6 @@
 import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
 
-const OrganizationsContainer: React.FC = () => {
+const OrganizationDetailsContainer: React.FC = () => {
   return (
     <div>
       <Breadcrumbs
@@ -13,4 +13,4 @@ const OrganizationsContainer: React.FC = () => {
   );
 };
 
-export default OrganizationsContainer;
+export default OrganizationDetailsContainer;
