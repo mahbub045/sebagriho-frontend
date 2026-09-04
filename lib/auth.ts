@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
           id: profile.id,
           phone: profile.phone,
           is_admin: profile.is_admin,
+          organization_slug: profile.organization_slug,
           accessToken: access,
           refreshToken: refresh,
         };
@@ -106,6 +107,7 @@ export const authOptions: NextAuthOptions = {
               token.id = profile.id;
               token.phone = profile.phone;
               token.is_admin = profile.is_admin;
+              token.organization_slug = profile.organization_slug;
               token.accessToken = access;
               token.refreshToken = refresh;
             }
@@ -124,6 +126,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.phone = user.phone;
         token.is_admin = user.is_admin;
+        token.organization_slug = user.organization_slug;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }
@@ -135,6 +138,7 @@ export const authOptions: NextAuthOptions = {
       session.user.id = token.id;
       session.user.phone = token.phone || '';
       session.user.is_admin = token.is_admin;
+      session.user.organization_slug = token.organization_slug;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       return session;

@@ -10,5 +10,5 @@ export function getDashboardPath(
     return `/${organizationSlug}/dashboard`;
   }
 
-  return '/[organizationslug]/dashboard';
+  return '/auth/access-denied';
 }

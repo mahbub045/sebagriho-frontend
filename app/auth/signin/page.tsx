@@ -7,12 +7,9 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 export default function SigninPage() {
-  const router = useRouter();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -23,20 +20,11 @@ export default function SigninPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    const result = await signIn('credentials', {
+    await signIn('credentials', {
       phone,
       password,
-      redirect: false,
+      callbackUrl: '/',
     });
-
-    setIsLoading(false);
-
-    if (result?.error) {
-      toast.error('Invalid email or password. Please try again.');
-    } else {
-      toast.success('You have successfully logged in.');
-      router.push('/');
-    }
   };
 
   const handleGoogleSignIn = async () => {

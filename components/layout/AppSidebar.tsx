@@ -405,7 +405,6 @@ const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  // Extract organization slug from pathname (e.g., '/acme/dashboard' -> 'acme')
   const organizationSlug = pathname.split('/')[1];
 
   const navItems = buildItems(

@@ -1,8 +1,9 @@
 'use client';
 
+import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
+import { AlertTriangle, Home, LogOut, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -69,6 +70,16 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
               <Home />
               Go to Dashboard
             </Link>
+          </Button>
+          <Button
+            variant='destructive'
+            size='lg'
+            onClick={() => {
+              handleSignOut();
+            }}
+          >
+            <LogOut className='size-4' />
+            Force Sign Out
           </Button>
         </div>
 

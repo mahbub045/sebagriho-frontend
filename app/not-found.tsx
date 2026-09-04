@@ -1,8 +1,9 @@
 'use client';
 
+import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { ArrowLeft, Home, MapPinned } from 'lucide-react';
+import { ArrowLeft, Home, LogOut, MapPinned } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NotFound() {
@@ -63,6 +64,16 @@ export default function NotFound() {
           >
             <ArrowLeft />
             Go Back
+          </Button>
+          <Button
+            variant='destructive'
+            size='lg'
+            onClick={() => {
+              handleSignOut();
+            }}
+          >
+            <LogOut className='size-4' />
+            Force Sign Out
           </Button>
         </div>
 

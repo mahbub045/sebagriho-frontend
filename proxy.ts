@@ -14,19 +14,33 @@ export default withAuth(
     const isAdmin = Boolean(
       (token as { is_admin?: boolean } | undefined)?.is_admin,
     );
-    const organizationSlug = (
-      token as { organization_slug?: string } | undefined
-    )?.organization_slug;
-
     if (path === '/' || path === '') {
       return NextResponse.redirect(
-        new URL(getDashboardPath(isAdmin, organizationSlug), req.url),
+        new URL(
+          getDashboardPath(
+            isAdmin,
+            isAdmin
+              ? undefined
+              : (token as { organization_slug?: string } | undefined)
+                  ?.organization_slug,
+          ),
+          req.url,
+        ),
       );
     }
 
     const isAdminRoute =
       isAdmin && (path === '/super-admin' || path.startsWith('/super-admin/'));
 
+    if (isAdmin) {
+      return isAdminRoute
+        ? NextResponse.next()
+        : NextResponse.redirect(new URL('/super-admin/dashboard', req.url));
+    }
+
+    const organizationSlug = (
+      token as { organization_slug?: string } | undefined
+    )?.organization_slug;
     const isOrganizationRoute =
       Boolean(organizationSlug) &&
       (path === `/${organizationSlug}` ||
@@ -47,5 +61,10 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/', '/client/:path*'],
+  matcher: [
+    '/',
+    '/super-admin/:path*',
+    '/:organization_slug/dashboard',
+    '/:organization_slug/dashboard/:path*',
+  ],
 };

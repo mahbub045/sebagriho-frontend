@@ -10,9 +10,7 @@ export default async function Home() {
     redirect('/auth/signin');
   }
 
-  const organizationSlug =
-    (session.user as { organization_slug?: string } | undefined)
-      ?.organization_slug ?? undefined;
+  const organizationSlug = session.user.organization_slug;
 
   redirect(getDashboardPath(Boolean(session.user.is_admin), organizationSlug));
 }
