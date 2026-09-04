@@ -9,7 +9,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Home } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
 
 interface BreadcrumbItem {
@@ -38,11 +37,12 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
                   {item.label}
                 </BreadcrumbPage>
               ) : (
-                <BreadcrumbLink>
-                  <Link href={item.href} className='flex items-center gap-2'>
-                    {index === 0 && <Home className='h-4 w-4' />}
-                    {item.label}
-                  </Link>
+                <BreadcrumbLink
+                  href={item.href}
+                  className='flex items-center gap-2'
+                >
+                  {index === 0 && <Home className='h-4 w-4' />}
+                  {item.label}
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>
