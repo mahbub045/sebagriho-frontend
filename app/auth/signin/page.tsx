@@ -15,19 +15,38 @@ export default function SigninPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
 
-    await signIn('credentials', {
-      phone,
-      password,
-      callbackUrl: '/',
-    });
+    const callbackUrl = '/';
+
+    try {
+      const result = await signIn('credentials', {
+        phone,
+        password,
+        redirect: false,
+        callbackUrl,
+      });
+
+      if (result?.error) {
+        setError('Invalid phone number or password. Please try again.');
+        setIsLoading(false);
+        return;
+      }
+
+      window.location.href = result?.url ?? callbackUrl;
+    } catch {
+      setError('Something went wrong. Please try again.');
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleSignIn = async () => {
+    setError('');
     setIsGoogleLoading(true);
     await signIn('google', { callbackUrl: '/' });
     setIsGoogleLoading(false);
@@ -97,6 +116,12 @@ export default function SigninPage() {
             </div>
 
             <form className='space-y-5' onSubmit={handleSubmit}>
+              {error && (
+                <div className='rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400'>
+                  {error}
+                </div>
+              )}
+
               <div className='space-y-2'>
                 <label
                   htmlFor='phone'
