@@ -16,7 +16,12 @@ export type AuthRootState = {
 export const TAG_TYPES = [
   // Global Common Tags
   'ProfileInfo',
-  
+
+  // Super Admin Tags
+  'Organizations',
+  'OrganizationDetails',
+  'OrganizationUsers',
+  'OrganizationUserDetails',
 ] as const;
 
 // ─── Mutex ────────────────────────────────────────────────────────────────────
