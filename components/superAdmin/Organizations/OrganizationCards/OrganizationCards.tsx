@@ -43,6 +43,7 @@ const OrganizationCards: React.FC = () => {
 
         return (
           <Card
+            glow
             key={uid}
             className='border-border/60 hover:border-border flex flex-col gap-0 overflow-hidden p-0 transition-colors'
           >
