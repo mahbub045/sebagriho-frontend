@@ -129,8 +129,8 @@ export default function SigninPage() {
                 >
                   Phone Number
                 </label>
-                <div className='border-input flex items-stretch overflow-hidden rounded-lg border dark:border-slate-700'>
-                  <span className='border-input flex items-center gap-1 border-r bg-slate-100 px-3 text-sm font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'>
+                <div className='flex'>
+                  <span className='border-input bg-primary flex shrink-0 items-center gap-1 rounded-lg rounded-r-none border-r px-3 text-sm font-medium whitespace-nowrap text-white'>
                     (+88) BD
                   </span>
                   <Input
@@ -146,7 +146,7 @@ export default function SigninPage() {
                         .slice(0, 11);
                       setPhone(digitsOnly);
                     }}
-                    className='rounded-none border-0 shadow-none focus-visible:ring-0 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500'
+                    className='rounded-l-none!'
                   />
                 </div>
               </div>
