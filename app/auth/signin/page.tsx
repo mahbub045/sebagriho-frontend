@@ -26,7 +26,7 @@ export default function SigninPage() {
 
     try {
       const result = await signIn('credentials', {
-        phone,
+        phone: `+88${phone}`,
         password,
         redirect: false,
         callbackUrl,
@@ -129,14 +129,26 @@ export default function SigninPage() {
                 >
                   Phone Number
                 </label>
-                <Input
-                  id='phone'
-                  type='tel'
-                  placeholder='e.g. +234 812 345 6789'
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className='dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500'
-                />
+                <div className='border-input flex items-stretch overflow-hidden rounded-lg border dark:border-slate-700'>
+                  <span className='border-input flex items-center gap-1 border-r bg-slate-100 px-3 text-sm font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'>
+                    (+88) BD
+                  </span>
+                  <Input
+                    id='phone'
+                    type='tel'
+                    inputMode='numeric'
+                    placeholder='Enter phone number'
+                    value={phone}
+                    onChange={(e) => {
+                      // keep digits only, max 11 (BD local format e.g. 01812345678)
+                      const digitsOnly = e.target.value
+                        .replace(/\D/g, '')
+                        .slice(0, 11);
+                      setPhone(digitsOnly);
+                    }}
+                    className='rounded-none border-0 shadow-none focus-visible:ring-0 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500'
+                  />
+                </div>
               </div>
 
               <div className='space-y-2'>
