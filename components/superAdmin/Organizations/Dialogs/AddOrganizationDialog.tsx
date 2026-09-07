@@ -31,6 +31,7 @@ import { INITIAL_FORM } from '@/data/superAdmin/Organizations/OrganizationsData'
 import { useAddOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
 import { AddOrganizationDialogProps } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useState } from 'react';
 
 type TabKey = 'organization' | 'owner' | 'social';
@@ -42,6 +43,8 @@ type UserErrors = Partial<Record<keyof typeof INITIAL_FORM.user, string>>;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
+
+const TAB_ORDER: TabKey[] = ['organization', 'owner', 'social'];
 
 // Extract field-level messages from a DRF-style error response:
 // { organization: { name: [...] }, user: { email: [...] } } or flat { email: [...] }
@@ -131,7 +134,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
       ...prev,
       organization: { ...prev.organization, [field]: value },
     }));
-    setOrgErrors((prev) => ({ ...prev, [field]: undefined }));
+    setOrgErrors((prev: OrgErrors) => ({ ...prev, [field]: undefined }));
   };
 
   const resetAndClose = () => {
@@ -215,6 +218,14 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     }
   };
 
+  const handleBack = () => {
+    setSubmitError(null);
+    const currentIndex = TAB_ORDER.indexOf(activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TAB_ORDER[currentIndex - 1]);
+    }
+  };
+
   const buildPayload = () => ({
     user: {
       ...form.user,
@@ -233,8 +244,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     const { orgErrors: apiOrgErrors, userErrors: apiUserErrors } =
       extractApiFieldErrors(error);
 
-    setOrgErrors((prev) => ({ ...prev, ...apiOrgErrors }));
-    setUserErrors((prev) => ({ ...prev, ...apiUserErrors }));
+    setOrgErrors((prev: OrgErrors) => ({ ...prev, ...apiOrgErrors }));
+    setUserErrors((prev: UserErrors) => ({ ...prev, ...apiUserErrors }));
 
     if (
       Object.keys(apiOrgErrors).length === 0 &&
@@ -695,26 +706,41 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
           <p className='text-danger text-center text-sm'>{submitError}</p>
         )}
 
-        <DialogFooter className='mt-2'>
+        <DialogFooter className='mt-2 flex-row items-center sm:justify-between'>
           <Button
-            variant='outline'
+            variant='warning'
             onClick={resetAndClose}
             disabled={isLoading}
           >
+            <X className='h-4 w-4' />
             Cancel
           </Button>
 
-          {activeTab !== 'social' ? (
-            <Button onClick={handleNext} disabled={isLoading}>
-              {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Next
-            </Button>
-          ) : (
-            <Button onClick={handleSubmit} disabled={isLoading}>
-              {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              {isLoading ? 'Adding...' : 'Add Organization'}
-            </Button>
-          )}
+          <div className='flex items-center gap-2'>
+            {activeTab !== 'organization' && (
+              <Button
+                type='button'
+                variant='outline'
+                onClick={handleBack}
+                disabled={isLoading}
+              >
+                <ChevronLeft className='h-4 w-4' />
+                Back
+              </Button>
+            )}
+
+            {activeTab !== 'social' ? (
+              <Button onClick={handleNext} disabled={isLoading}>
+                {isLoading && <Loading className='h-4 w-4 text-white!' />}
+                Next <ChevronRight className='h-4 w-4' />
+              </Button>
+            ) : (
+              <Button onClick={handleSubmit} disabled={isLoading}>
+                {isLoading && <Loading className='h-4 w-4 text-white!' />}
+                {isLoading ? 'Adding...' : 'Add Organization'}
+              </Button>
+            )}
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
