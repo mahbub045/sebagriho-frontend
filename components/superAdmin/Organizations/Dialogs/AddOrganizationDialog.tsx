@@ -35,7 +35,9 @@ import { useState } from 'react';
 
 type TabKey = 'organization' | 'owner' | 'social';
 
-type OrgErrors = Partial<Record<keyof typeof INITIAL_FORM.organization, string>>;
+type OrgErrors = Partial<
+  Record<keyof typeof INITIAL_FORM.organization, string>
+>;
 type UserErrors = Partial<Record<keyof typeof INITIAL_FORM.user, string>>;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -195,32 +197,35 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     setActiveTab(tab);
   };
 
- const handleNext = () => {
-  setSubmitError(null);
+  const handleNext = () => {
+    setSubmitError(null);
 
-  if (activeTab === 'organization') {
-    const isValid = validateOrganizationTab();
-    setOrgTabComplete(isValid);
-    if (isValid) setActiveTab('owner');
-    return;
-  }
+    if (activeTab === 'organization') {
+      const isValid = validateOrganizationTab();
+      setOrgTabComplete(isValid);
+      if (isValid) setActiveTab('owner');
+      return;
+    }
 
-  if (activeTab === 'owner') {
-    const isValid = validateOwnerTab();
-    setOwnerTabComplete(isValid);
-    if (isValid) setActiveTab('social');
-    return;
-  }
-};
+    if (activeTab === 'owner') {
+      const isValid = validateOwnerTab();
+      setOwnerTabComplete(isValid);
+      if (isValid) setActiveTab('social');
+      return;
+    }
+  };
 
   const buildPayload = () => ({
     user: {
       ...form.user,
-      phone: form.user.phone ? `+88${form.user.phone}` : '',
+      phone: form.user.phone ? `+88${form.user.phone}` : null,
+      date_of_birth: form.user.date_of_birth ? form.user.date_of_birth : null,
+      nid: form.user.nid ? form.user.nid : null,
+      blood_group: form.user.blood_group ? form.user.blood_group : null,
     },
     organization: {
       ...form.organization,
-      phone: form.organization.phone ? `+88${form.organization.phone}` : '',
+      phone: form.organization.phone ? `+88${form.organization.phone}` : null,
     },
   });
 
@@ -235,7 +240,9 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
       Object.keys(apiOrgErrors).length === 0 &&
       Object.keys(apiUserErrors).length === 0
     ) {
-      setSubmitError('Something went wrong. Please check your input and try again.');
+      setSubmitError(
+        'Something went wrong. Please check your input and try again.',
+      );
     } else if (Object.keys(apiOrgErrors).length > 0) {
       setActiveTab('organization');
       setOrgTabComplete(false);
@@ -287,13 +294,20 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
           className='w-full'
         >
           <TabsList className='grid w-full grid-cols-3'>
-            <TabsTrigger value='organization'>Organization</TabsTrigger>
-            <TabsTrigger value='owner' disabled={!orgTabComplete}>
+            <TabsTrigger value='organization' className='cursor-pointer'>
+              Organization
+            </TabsTrigger>
+            <TabsTrigger
+              value='owner'
+              disabled={!orgTabComplete}
+              className='cursor-pointer'
+            >
               Owner
             </TabsTrigger>
             <TabsTrigger
               value='social'
               disabled={!(orgTabComplete && ownerTabComplete)}
+              className='cursor-pointer'
             >
               Social Links
             </TabsTrigger>
@@ -333,7 +347,15 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                       className='w-full'
                       aria-invalid={!!orgErrors.organization_type}
                     >
-                      <SelectValue placeholder='Select type' />
+                      <SelectValue placeholder='Select type'>
+                        {
+                          ORGANIZATION_TYPE_OPTIONS.find(
+                            (option) =>
+                              option.value ===
+                              form.organization.organization_type,
+                          )?.label
+                        }
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {ORGANIZATION_TYPE_OPTIONS.map((option) => (
@@ -406,7 +428,13 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                     onValueChange={(value) => updateOrg('status', value)}
                   >
                     <SelectTrigger id='org-status' className='w-full'>
-                      <SelectValue placeholder='Select status' />
+                      <SelectValue placeholder='Select status'>
+                        {
+                          USER_STATUS_OPTIONS.find(
+                            (o) => o.value === form.organization.status,
+                          )?.label
+                        }
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {USER_STATUS_OPTIONS.map((option) => (
@@ -511,7 +539,13 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                       className='w-full'
                       aria-invalid={!!userErrors.gender}
                     >
-                      <SelectValue placeholder='Select gender' />
+                      <SelectValue placeholder='Select gender'>
+                        {
+                          GENDER_OPTIONS.find(
+                            (o) => o.value === form.user.gender,
+                          )?.label
+                        }
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {GENDER_OPTIONS.map((option) => (
@@ -531,7 +565,13 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                     onValueChange={(value) => updateUser('blood_group', value)}
                   >
                     <SelectTrigger id='user-blood-group' className='w-full'>
-                      <SelectValue placeholder='Select blood group' />
+                      <SelectValue placeholder='Select blood group'>
+                        {
+                          BLOOD_GROUP_OPTIONS.find(
+                            (o) => o.value === form.user.blood_group,
+                          )?.label
+                        }
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {BLOOD_GROUP_OPTIONS.map((option) => (
@@ -564,7 +604,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='user-dob'
                     type='date'
-                    value={form.user.date_of_birth }
+                    value={form.user.date_of_birth}
                     onChange={(e) =>
                       updateUser('date_of_birth', e.target.value)
                     }
@@ -654,7 +694,11 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
         )}
 
         <DialogFooter className='mt-2'>
-          <Button variant='outline' onClick={resetAndClose} disabled={isLoading}>
+          <Button
+            variant='outline'
+            onClick={resetAndClose}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
 

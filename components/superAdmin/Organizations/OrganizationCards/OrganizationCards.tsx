@@ -136,18 +136,29 @@ const OrganizationCards: React.FC = () => {
               <div className='grid grid-cols-1 gap-2.5 p-4 text-xs'>
                 <div className='text-muted-foreground flex items-center gap-2'>
                   <Mail className='text-primary h-3.5 w-3.5 shrink-0' />
-                  <span className='truncate'>{organization.email}</span>
+                  {organization.email ? (
+                    <span className='truncate'>{organization.email}</span>
+                  ) : (
+                    <span className='truncate'>No email set yet</span>
+                  )}
                 </div>
                 <div className='text-muted-foreground flex items-center gap-2'>
                   <Phone className='text-secondary h-3.5 w-3.5 shrink-0' />
-                  <span className='truncate'>{organization.phone}</span>
+                  {organization.phone ? (
+                    <span className='truncate'>{organization.phone}</span>
+                  ) : (
+                    <span className='truncate'>No phone set yet</span>
+                  )}
                 </div>
-                {organization.website && (
-                  <div className='text-muted-foreground flex items-center gap-2'>
-                    <Globe className='text-success h-3.5 w-3.5 shrink-0' />
+
+                <div className='text-muted-foreground flex items-center gap-2'>
+                  <Globe className='text-success h-3.5 w-3.5 shrink-0' />
+                  {organization.website ? (
                     <span className='truncate'>{organization.website}</span>
-                  </div>
-                )}
+                  ) : (
+                    <span className='truncate'>No website set yet</span>
+                  )}
+                </div>
               </div>
 
               <div className='border-border/60 bg-muted/30 flex items-center justify-between border-t px-4 py-3'>
