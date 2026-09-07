@@ -302,7 +302,7 @@ function MobileBottomNav({
   const [sheetOpen, setSheetOpen] = React.useState(false);
 
   return (
-    <nav className='bg-background/95 supports-backdrop-blur:bg-background/80 fixed inset-x-0 bottom-0 z-50 flex h-14 items-stretch border-t pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden'>
+    <nav className='bg-background/95 supports-backdrop-blur:bg-background/80 fixed inset-x-0 bottom-0 z-50 flex h-14 items-stretch border-t pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden'>
       {tabItems.map((item, index) => {
         const active = isItemActive(item, pathname);
         const href = firstHref(item);
@@ -422,7 +422,7 @@ const AppSidebar: React.FC = () => {
             <Loading />
           </div>
         </Sidebar>
-        <div className='bg-background fixed inset-x-0 bottom-0 z-50 flex h-16 items-center justify-center border-t md:hidden'>
+        <div className='bg-background fixed inset-x-0 bottom-0 z-50 flex h-16 items-center justify-center border-t lg:hidden'>
           <Loading />
         </div>
       </>
