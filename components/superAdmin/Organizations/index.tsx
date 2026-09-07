@@ -1,9 +1,18 @@
+'use client';
 import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import AddOrganizationDialog from './Dialogs/AddOrganizationDialog';
 import OrganizationCards from './OrganizationCards/OrganizationCards';
 
 const OrganizationsContainer: React.FC = () => {
+  const [isAddOrganizationDialogOpen, setIsAddOrganizationDialogOpen] =
+    useState(false);
+
+  const handleAddOrganizationClick = () => {
+    setIsAddOrganizationDialogOpen(true);
+  };
   return (
     <div>
       <Breadcrumbs
@@ -21,7 +30,7 @@ const OrganizationsContainer: React.FC = () => {
           </p>
         </div>
         <div>
-          <Button>
+          <Button onClick={handleAddOrganizationClick}>
             <Plus />
             Add Organization
           </Button>
@@ -29,6 +38,12 @@ const OrganizationsContainer: React.FC = () => {
       </div>
 
       <OrganizationCards />
+
+      {/* Dialog  */}
+      <AddOrganizationDialog
+        isOpen={isAddOrganizationDialogOpen}
+        onClose={() => setIsAddOrganizationDialogOpen(false)}
+      />
     </div>
   );
 };

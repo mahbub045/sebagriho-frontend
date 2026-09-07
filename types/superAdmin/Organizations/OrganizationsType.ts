@@ -16,3 +16,8 @@ export interface OrganizationCardProps {
   joined_at: string;
   uid: string;
 }
+
+export interface AddOrganizationDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
