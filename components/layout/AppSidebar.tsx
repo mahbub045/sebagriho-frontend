@@ -46,7 +46,6 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 import Loading from '../common/CustomLoader/Loading';
 import { handleSignOut } from '../SignOut';
-import { Badge } from '../ui/badge';
 
 function isNavActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -454,12 +453,12 @@ const AppSidebar: React.FC = () => {
             />
           </div>
 
-          <Badge
-            variant='secondary'
+          {/* <Badge
+            variant='success'
             className='group-data-[collapsible=icon]:hidden'
           >
             Premium Plan
-          </Badge>
+          </Badge> */}
         </SidebarHeader>
 
         <SidebarSeparator className='mx-0 h-px!' />
