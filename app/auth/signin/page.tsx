@@ -1,5 +1,6 @@
 'use client';
 
+import AuthPageSidePanel from '@/components/common/AuthPageSidePanel/AuthPageSidePanel';
 import Loading from '@/components/common/CustomLoader/Loading';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -63,50 +64,7 @@ export default function SigninPage() {
         {/* =====================================================
             LEFT PANEL
         ====================================================== */}
-        <div className='relative hidden overflow-hidden p-7 text-white lg:flex lg:flex-col lg:justify-between'>
-          {/* Background Image */}
-          <div className='absolute inset-0 bg-[url("/images/banner.png")] bg-cover bg-center bg-no-repeat' />
-
-          {/* Soft secondary tint */}
-          <div className='bg-secondary/70 absolute inset-0' />
-
-          {/* Soft color gradient */}
-          <div className='from-primary to-secondary/50 absolute inset-0 bg-linear-to-br via-transparent' />
-
-          {/* Content */}
-          <div className='relative z-10'>
-            {/* Logo */}
-            {/* <div className='mb-8 flex items-center'>
-              <Image
-                src='/images/logo-white.png'
-                alt='Sebagriho'
-                width={400}
-                height={150}
-                className='h-12 w-auto object-contain'
-                priority
-              />
-            </div> */}
-
-            {/* Heading */}
-            <div className='space-y-3'>
-              <p className='text-[11px] font-semibold tracking-[0.3em] text-white/90 uppercase'>
-                Welcome back
-              </p>
-
-              <h1 className='max-w-md text-3xl leading-[1.15] font-bold tracking-tight text-white drop-shadow-md'>
-                Manage your operations from one place.
-              </h1>
-            </div>
-          </div>
-
-          {/* Bottom Information */}
-          <div className='bg-secondary/20 relative z-10 rounded-2xl border border-white/25 px-4 py-3 backdrop-blur-sm'>
-            <p className='text-xs leading-relaxed text-white'>
-              Every customer interaction, every order, and every update in one
-              centralized workspace.
-            </p>
-          </div>
-        </div>
+        <AuthPageSidePanel />
 
         {/* =====================================================
             RIGHT PANEL
@@ -118,23 +76,24 @@ export default function SigninPage() {
           </div>
 
           <div className='w-full max-w-90'>
-            {/* Mobile Logo */}
-            <div className='mb-7 lg:hidden'>
-              <div className='flex items-center gap-3'>
-                <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500 text-sm font-bold text-white'>
-                  S
-                </div>
-
-                <div>
-                  <p className='text-base font-semibold text-slate-900 dark:text-slate-100'>
-                    Sebagriho
-                  </p>
-
-                  <p className='text-[11px] text-slate-500 dark:text-slate-400'>
-                    Business Portal
-                  </p>
-                </div>
-              </div>
+            {/* Logo */}
+            <div className='mb-2 flex items-center justify-center'>
+              <Image
+                src='/images/logo-white.png'
+                alt='Sebagriho'
+                width={400}
+                height={150}
+                className='h-12 w-40 rounded-xl dark:hidden'
+                loading='eager'
+              />
+              <Image
+                src='/images/logo-white.png'
+                alt='Sebagriho'
+                width={400}
+                height={150}
+                className='hidden h-12 w-40 rounded-xl dark:block'
+                loading='eager'
+              />
             </div>
 
             {/* Header */}
