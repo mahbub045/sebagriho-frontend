@@ -27,27 +27,53 @@ import {
   ORGANIZATION_STATUS_OPTIONS,
   ORGANIZATION_TYPE_OPTIONS,
 } from '@/data/common/ChoiceFields';
-import { INITIAL_FORM } from '@/data/superAdmin/Organizations/OrganizationsData';
-import { useAddOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
-import { AddOrganizationDialogProps } from '@/types/superAdmin/Organizations/OrganizationsType';
+import { useUpdateOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
+import { UpdateOrganizationDialogProps } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type TabKey = 'organization' | 'owner' | 'social';
 
-type OrgErrors = Partial<
-  Record<keyof typeof INITIAL_FORM.organization, string>
->;
-type UserErrors = Partial<Record<keyof typeof INITIAL_FORM.user, string>>;
+type OrgFormState = {
+  name: string;
+  organization_type: string;
+  description: string;
+  status: string;
+  phone: string;
+  email: string;
+  website: string;
+  address: string;
+  facebook: string;
+  twitter: string;
+  linkedin: string;
+  instagram: string;
+  youtube: string;
+};
+
+type UserFormState = {
+  first_name: string;
+  last_name: string;
+  phone: string;
+  email: string;
+  gender: string;
+  nid: string;
+  blood_group: string;
+  date_of_birth: string;
+};
+
+type OrgErrors = Partial<Record<keyof OrgFormState, string>>;
+type UserErrors = Partial<Record<keyof UserFormState, string>>;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
 
-const TAB_ORDER: TabKey[] = ['organization', 'owner', 'social'];
+// Strip a leading +88 / 88 country code, leaving just the 11-digit local number.
+const stripCountryCode = (phone: string | null) =>
+  (phone ?? '').replace(/^\+?88/, '');
 
-// Extract field-level messages from a DRF-style error response:
-// { organization: { name: [...] }, user: { email: [...] } } or flat { email: [...] }
+const toDateInputValue = (value: string | null) =>
+  value ? value.slice(0, 10) : '';
+
 const extractApiFieldErrors = (error: unknown) => {
   const orgErrors: OrgErrors = {};
   const userErrors: UserErrors = {};
@@ -87,82 +113,107 @@ const extractApiFieldErrors = (error: unknown) => {
     );
   }
 
-  // Fallback: some APIs return flat, non-nested field errors
-  Object.entries(dataObj).forEach(([key, value]) => {
-    if (key === 'organization' || key === 'user') return;
-    const msg = flatten(value);
-    if (!msg) return;
-    if (key in INITIAL_FORM.organization) {
-      orgErrors[key as keyof OrgErrors] = msg;
-    } else if (key in INITIAL_FORM.user) {
-      userErrors[key as keyof UserErrors] = msg;
-    }
-  });
-
   return { orgErrors, userErrors };
 };
 
 const FieldError = ({ message }: { message?: string }) =>
   message ? <p className='text-danger mt-1 text-xs'>{message}</p> : null;
 
-const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
+const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
   isOpen,
   onClose,
+  organizationDetails,
 }) => {
-  const [addOrganization, { isLoading }] = useAddOrganizationMutation();
-  const [form, setForm] = useState(INITIAL_FORM);
+  const [updateOrganization, { isLoading }] = useUpdateOrganizationMutation();
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
-  const [orgTabComplete, setOrgTabComplete] = useState(false);
-  const [ownerTabComplete, setOwnerTabComplete] = useState(false);
+  const [orgForm, setOrgForm] = useState<OrgFormState>({
+    name: '',
+    organization_type: '',
+    description: '',
+    status: '',
+    phone: '',
+    email: '',
+    website: '',
+    address: '',
+    facebook: '',
+    twitter: '',
+    linkedin: '',
+    instagram: '',
+    youtube: '',
+  });
+  const [userForm, setUserForm] = useState<UserFormState>({
+    first_name: '',
+    last_name: '',
+    phone: '',
+    email: '',
+    gender: '',
+    nid: '',
+    blood_group: '',
+    date_of_birth: '',
+  });
   const [orgErrors, setOrgErrors] = useState<OrgErrors>({});
   const [userErrors, setUserErrors] = useState<UserErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const updateUser = (field: keyof typeof form.user, value: string | null) => {
-    setForm((prev) => ({
-      ...prev,
-      user: { ...prev.user, [field]: value ?? '' },
-    }));
-    setUserErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
+  // Re-hydrate the form whenever the dialog is opened for a given organization.
+  useEffect(() => {
+    if (!isOpen || !organizationDetails) return;
 
-  const updateOrg = (
-    field: keyof typeof form.organization,
-    value: string | null,
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      organization: { ...prev.organization, [field]: value },
-    }));
-    setOrgErrors((prev: OrgErrors) => ({ ...prev, [field]: undefined }));
-  };
+    const { organization, user, status } = organizationDetails;
 
-  const resetAndClose = () => {
-    setForm(INITIAL_FORM);
+    setOrgForm({
+      name: organization.name ?? '',
+      organization_type: organization.organization_type ?? '',
+      description: organization.description ?? '',
+      status: status ?? organization.status ?? '',
+      phone: stripCountryCode(organization.phone),
+      email: organization.email ?? '',
+      website: organization.website ?? '',
+      address: organization.address ?? '',
+      facebook: organization.facebook ?? '',
+      twitter: organization.twitter ?? '',
+      linkedin: organization.linkedin ?? '',
+      instagram: organization.instagram ?? '',
+      youtube: organization.youtube ?? '',
+    });
+
+    setUserForm({
+      first_name: user.first_name ?? '',
+      last_name: user.last_name ?? '',
+      phone: stripCountryCode(user.phone),
+      email: user.email ?? '',
+      gender: user.gender ?? '',
+      nid: user.nid ?? '',
+      blood_group: user.blood_group ?? '',
+      date_of_birth: toDateInputValue(user.date_of_birth),
+    });
+
     setActiveTab('organization');
-    setOrgTabComplete(false);
-    setOwnerTabComplete(false);
     setOrgErrors({});
     setUserErrors({});
     setSubmitError(null);
-    onClose();
+  }, [isOpen, organizationDetails]);
+
+  const updateOrg = (field: keyof OrgFormState, value: string) => {
+    setOrgForm((prev) => ({ ...prev, [field]: value }));
+    setOrgErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  const updateUser = (field: keyof UserFormState, value: string) => {
+    setUserForm((prev) => ({ ...prev, [field]: value }));
+    setUserErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   const validateOrganizationTab = () => {
     const errors: OrgErrors = {};
-    if (!form.organization.name.trim()) {
-      errors.name = 'Organization name is required.';
-    }
-    if (!form.organization.organization_type) {
+    if (!orgForm.name.trim()) errors.name = 'Organization name is required.';
+    if (!orgForm.organization_type) {
       errors.organization_type = 'Organization type is required.';
     }
-    if (form.organization.email && !EMAIL_REGEX.test(form.organization.email)) {
+    if (orgForm.email && !EMAIL_REGEX.test(orgForm.email)) {
       errors.email = 'Enter a valid email address.';
     }
-    if (
-      form.organization.phone &&
-      !BD_PHONE_REGEX.test(form.organization.phone)
-    ) {
+    if (orgForm.phone && !BD_PHONE_REGEX.test(orgForm.phone)) {
       errors.phone = 'Enter a valid 11-digit BD phone number.';
     }
     setOrgErrors(errors);
@@ -171,72 +222,35 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
   const validateOwnerTab = () => {
     const errors: UserErrors = {};
-    if (!form.user.first_name.trim()) {
+    if (!userForm.first_name.trim())
       errors.first_name = 'First name is required.';
-    }
-    if (!form.user.last_name.trim()) {
-      errors.last_name = 'Last name is required.';
-    }
-    if (!form.user.email.trim()) {
+    if (!userForm.last_name.trim()) errors.last_name = 'Last name is required.';
+    if (!userForm.email.trim()) {
       errors.email = 'Email is required.';
-    } else if (!EMAIL_REGEX.test(form.user.email)) {
+    } else if (!EMAIL_REGEX.test(userForm.email)) {
       errors.email = 'Enter a valid email address.';
     }
-    if (!form.user.phone.trim()) {
+    if (!userForm.phone.trim()) {
       errors.phone = 'Phone number is required.';
-    } else if (!BD_PHONE_REGEX.test(form.user.phone)) {
+    } else if (!BD_PHONE_REGEX.test(userForm.phone)) {
       errors.phone = 'Enter a valid 11-digit BD phone number.';
     }
-    if (!form.user.gender) {
-      errors.gender = 'Gender is required.';
-    }
+    if (!userForm.gender) errors.gender = 'Gender is required.';
     setUserErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const goToTab = (tab: TabKey) => {
-    if (tab === 'owner' && !orgTabComplete) return;
-    if (tab === 'social' && !(orgTabComplete && ownerTabComplete)) return;
-    setActiveTab(tab);
-  };
-
-  const handleNext = () => {
-    setSubmitError(null);
-
-    if (activeTab === 'organization') {
-      const isValid = validateOrganizationTab();
-      setOrgTabComplete(isValid);
-      if (isValid) setActiveTab('owner');
-      return;
-    }
-
-    if (activeTab === 'owner') {
-      const isValid = validateOwnerTab();
-      setOwnerTabComplete(isValid);
-      if (isValid) setActiveTab('social');
-      return;
-    }
-  };
-
-  const handleBack = () => {
-    setSubmitError(null);
-    const currentIndex = TAB_ORDER.indexOf(activeTab);
-    if (currentIndex > 0) {
-      setActiveTab(TAB_ORDER[currentIndex - 1]);
-    }
-  };
-
   const buildPayload = () => ({
     user: {
-      ...form.user,
-      phone: form.user.phone ? `+88${form.user.phone}` : null,
-      date_of_birth: form.user.date_of_birth ? form.user.date_of_birth : null,
-      nid: form.user.nid ? form.user.nid : null,
-      blood_group: form.user.blood_group ? form.user.blood_group : null,
+      ...userForm,
+      phone: userForm.phone ? `+88${userForm.phone}` : null,
+      date_of_birth: userForm.date_of_birth || null,
+      nid: userForm.nid || null,
+      blood_group: userForm.blood_group || null,
     },
     organization: {
-      ...form.organization,
-      phone: form.organization.phone ? `+88${form.organization.phone}` : null,
+      ...orgForm,
+      phone: orgForm.phone ? `+88${orgForm.phone}` : null,
     },
   });
 
@@ -244,8 +258,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     const { orgErrors: apiOrgErrors, userErrors: apiUserErrors } =
       extractApiFieldErrors(error);
 
-    setOrgErrors((prev: OrgErrors) => ({ ...prev, ...apiOrgErrors }));
-    setUserErrors((prev: UserErrors) => ({ ...prev, ...apiUserErrors }));
+    setOrgErrors((prev) => ({ ...prev, ...apiOrgErrors }));
+    setUserErrors((prev) => ({ ...prev, ...apiUserErrors }));
 
     if (
       Object.keys(apiOrgErrors).length === 0 &&
@@ -256,10 +270,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
       );
     } else if (Object.keys(apiOrgErrors).length > 0) {
       setActiveTab('organization');
-      setOrgTabComplete(false);
     } else {
       setActiveTab('owner');
-      setOwnerTabComplete(false);
     }
   };
 
@@ -268,8 +280,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
     const isOrgValid = validateOrganizationTab();
     const isOwnerValid = validateOwnerTab();
-    setOrgTabComplete(isOrgValid);
-    setOwnerTabComplete(isOwnerValid);
 
     if (!isOrgValid) {
       setActiveTab('organization');
@@ -281,47 +291,44 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     }
 
     try {
-      await addOrganization(buildPayload()).unwrap();
-      resetAndClose();
+      await updateOrganization({
+        organizationUid: organizationDetails.uid,
+        organizationData: buildPayload(),
+      }).unwrap();
+      onClose();
     } catch (error) {
       applyApiErrors(error);
-      console.error('Failed to add organization:', error);
+      console.error('Failed to update organization:', error);
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && resetAndClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className='max-h-[90vh] overflow-hidden p-4 sm:max-w-185'>
         <DialogHeader className='text-lg font-semibold'>
           <DialogTitle className='text-primary -mb-3 text-2xl'>
-            Add Organization
+            Edit Organization
           </DialogTitle>
           <DialogDescription className='text-muted-foreground text-sm'>
-            Add a new organization to the system.
+            Update{' '}
+            {organizationDetails?.organization?.name ?? 'this organization'}
+            &apos;s details.
           </DialogDescription>
         </DialogHeader>
 
         <Tabs
           value={activeTab}
-          onValueChange={(value) => goToTab(value as TabKey)}
+          onValueChange={(value) => setActiveTab(value as TabKey)}
           className='w-full'
         >
           <TabsList className='grid w-full grid-cols-3'>
             <TabsTrigger value='organization' className='cursor-pointer'>
               Organization
             </TabsTrigger>
-            <TabsTrigger
-              value='owner'
-              disabled={!orgTabComplete}
-              className='cursor-pointer'
-            >
+            <TabsTrigger value='owner' className='cursor-pointer'>
               Owner
             </TabsTrigger>
-            <TabsTrigger
-              value='social'
-              disabled={!(orgTabComplete && ownerTabComplete)}
-              className='cursor-pointer'
-            >
+            <TabsTrigger value='social' className='cursor-pointer'>
               Social Links
             </TabsTrigger>
           </TabsList>
@@ -337,8 +344,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-name'
                     type='text'
-                    placeholder='e.g. ABC Chamber of Commerce'
-                    value={form.organization.name}
+                    value={orgForm.name}
                     onChange={(e) => updateOrg('name', e.target.value)}
                     aria-invalid={!!orgErrors.name}
                   />
@@ -350,7 +356,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                     Organization Type <span className='text-danger'>*</span>
                   </Label>
                   <Select
-                    value={form.organization.organization_type}
+                    value={orgForm.organization_type}
                     onValueChange={(value) =>
                       updateOrg('organization_type', value)
                     }
@@ -364,8 +370,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                         {
                           ORGANIZATION_TYPE_OPTIONS.find(
                             (option) =>
-                              option.value ===
-                              form.organization.organization_type,
+                              option.value === orgForm.organization_type,
                           )?.label
                         }
                       </SelectValue>
@@ -386,9 +391,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <Label htmlFor='org-description'>Description</Label>
                 <Textarea
                   id='org-description'
-                  placeholder='Brief description of the organization'
                   className='field-sizing-fixed'
-                  value={form.organization.description}
+                  value={orgForm.description}
                   onChange={(e) => updateOrg('description', e.target.value)}
                   rows={5}
                 />
@@ -401,8 +405,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-email'
                     type='email'
-                    placeholder='info@organization.com'
-                    value={form.organization.email}
+                    value={orgForm.email}
                     onChange={(e) => updateOrg('email', e.target.value)}
                     aria-invalid={!!orgErrors.email}
                   />
@@ -413,7 +416,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Label htmlFor='org-phone'>Phone</Label>
                   <BdPhoneInput
                     id='org-phone'
-                    value={form.organization.phone}
+                    value={orgForm.phone}
                     onChange={(value) => updateOrg('phone', value)}
                   />
                   <FieldError message={orgErrors.phone} />
@@ -426,8 +429,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-website'
                     type='url'
-                    placeholder='https://organization.com'
-                    value={form.organization.website}
+                    value={orgForm.website}
                     onChange={(e) => updateOrg('website', e.target.value)}
                     aria-invalid={!!orgErrors.website}
                   />
@@ -437,14 +439,14 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='space-y-1.5'>
                   <Label htmlFor='org-status'>Status</Label>
                   <Select
-                    value={form.organization.status}
+                    value={orgForm.status}
                     onValueChange={(value) => updateOrg('status', value)}
                   >
                     <SelectTrigger id='org-status' className='w-full'>
                       <SelectValue placeholder='Select status'>
                         {
                           ORGANIZATION_STATUS_OPTIONS.find(
-                            (o) => o.value === form.organization.status,
+                            (o) => o.value === orgForm.status,
                           )?.label
                         }
                       </SelectValue>
@@ -466,8 +468,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <Input
                   id='org-address'
                   type='text'
-                  placeholder='e.g. Dhaka, Bangladesh'
-                  value={form.organization.address}
+                  value={orgForm.address}
                   onChange={(e) => updateOrg('address', e.target.value)}
                   aria-invalid={!!orgErrors.address}
                 />
@@ -475,7 +476,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
               </div>
             </TabsContent>
 
-            {/* owner / User tab */}
+            {/* Owner tab */}
             <TabsContent value='owner' className='mt-4 space-y-4'>
               <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                 <div className='space-y-1.5'>
@@ -485,8 +486,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='user-first-name'
                     type='text'
-                    placeholder='First name'
-                    value={form.user.first_name}
+                    value={userForm.first_name}
                     onChange={(e) => updateUser('first_name', e.target.value)}
                     aria-invalid={!!userErrors.first_name}
                   />
@@ -500,8 +500,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='user-last-name'
                     type='text'
-                    placeholder='Last name'
-                    value={form.user.last_name}
+                    value={userForm.last_name}
                     onChange={(e) => updateUser('last_name', e.target.value)}
                     aria-invalid={!!userErrors.last_name}
                   />
@@ -517,8 +516,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='user-email'
                     type='email'
-                    placeholder='name@example.com'
-                    value={form.user.email}
+                    value={userForm.email}
                     onChange={(e) => updateUser('email', e.target.value)}
                     aria-invalid={!!userErrors.email}
                   />
@@ -531,7 +529,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   </Label>
                   <BdPhoneInput
                     id='user-phone'
-                    value={form.user.phone}
+                    value={userForm.phone}
                     onChange={(value) => updateUser('phone', value)}
                   />
                   <FieldError message={userErrors.phone} />
@@ -544,7 +542,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                     Gender <span className='text-danger'>*</span>
                   </Label>
                   <Select
-                    value={form.user.gender}
+                    value={userForm.gender}
                     onValueChange={(value) => updateUser('gender', value)}
                   >
                     <SelectTrigger
@@ -555,7 +553,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                       <SelectValue placeholder='Select gender'>
                         {
                           GENDER_OPTIONS.find(
-                            (o) => o.value === form.user.gender,
+                            (o) => o.value === userForm.gender,
                           )?.label
                         }
                       </SelectValue>
@@ -574,14 +572,14 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='space-y-1.5'>
                   <Label htmlFor='user-blood-group'>Blood Group</Label>
                   <Select
-                    value={form.user.blood_group}
+                    value={userForm.blood_group}
                     onValueChange={(value) => updateUser('blood_group', value)}
                   >
                     <SelectTrigger id='user-blood-group' className='w-full'>
                       <SelectValue placeholder='Select blood group'>
                         {
                           BLOOD_GROUP_OPTIONS.find(
-                            (o) => o.value === form.user.blood_group,
+                            (o) => o.value === userForm.blood_group,
                           )?.label
                         }
                       </SelectValue>
@@ -604,8 +602,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='user-nid'
                     type='text'
-                    placeholder='National ID number'
-                    value={form.user.nid}
+                    value={userForm.nid}
                     onChange={(e) => updateUser('nid', e.target.value)}
                     aria-invalid={!!userErrors.nid}
                   />
@@ -617,7 +614,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='user-dob'
                     type='date'
-                    value={form.user.date_of_birth}
+                    value={userForm.date_of_birth}
                     onChange={(e) =>
                       updateUser('date_of_birth', e.target.value)
                     }
@@ -636,8 +633,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-facebook'
                     type='url'
-                    placeholder='https://facebook.com/...'
-                    value={form.organization.facebook}
+                    value={orgForm.facebook}
                     onChange={(e) => updateOrg('facebook', e.target.value)}
                     aria-invalid={!!orgErrors.facebook}
                   />
@@ -649,8 +645,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-twitter'
                     type='url'
-                    placeholder='https://twitter.com/...'
-                    value={form.organization.twitter}
+                    value={orgForm.twitter}
                     onChange={(e) => updateOrg('twitter', e.target.value)}
                     aria-invalid={!!orgErrors.twitter}
                   />
@@ -664,8 +659,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-linkedin'
                     type='url'
-                    placeholder='https://linkedin.com/company/...'
-                    value={form.organization.linkedin}
+                    value={orgForm.linkedin}
                     onChange={(e) => updateOrg('linkedin', e.target.value)}
                     aria-invalid={!!orgErrors.linkedin}
                   />
@@ -677,8 +671,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   <Input
                     id='org-instagram'
                     type='url'
-                    placeholder='https://instagram.com/...'
-                    value={form.organization.instagram}
+                    value={orgForm.instagram}
                     onChange={(e) => updateOrg('instagram', e.target.value)}
                     aria-invalid={!!orgErrors.instagram}
                   />
@@ -691,8 +684,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <Input
                   id='org-youtube'
                   type='url'
-                  placeholder='https://youtube.com/@...'
-                  value={form.organization.youtube}
+                  value={orgForm.youtube}
                   onChange={(e) => updateOrg('youtube', e.target.value)}
                   aria-invalid={!!orgErrors.youtube}
                 />
@@ -706,45 +698,18 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
           <p className='text-danger text-center text-sm'>{submitError}</p>
         )}
 
-        <DialogFooter className='mt-2 flex-row items-center sm:justify-between'>
-          <Button
-            variant='warning'
-            onClick={resetAndClose}
-            disabled={isLoading}
-          >
-            <X className='h-4 w-4' />
+        <DialogFooter className='mt-2'>
+          <Button variant='outline' onClick={onClose} disabled={isLoading}>
             Cancel
           </Button>
-
-          <div className='flex items-center gap-2'>
-            {activeTab !== 'organization' && (
-              <Button
-                type='button'
-                variant='outline'
-                onClick={handleBack}
-                disabled={isLoading}
-              >
-                <ChevronLeft className='h-4 w-4' />
-                Back
-              </Button>
-            )}
-
-            {activeTab !== 'social' ? (
-              <Button onClick={handleNext} disabled={isLoading}>
-                {isLoading && <Loading className='h-4 w-4 text-white!' />}
-                Next <ChevronRight className='h-4 w-4' />
-              </Button>
-            ) : (
-              <Button onClick={handleSubmit} disabled={isLoading}>
-                {isLoading && <Loading className='h-4 w-4 text-white!' />}
-                {isLoading ? 'Adding...' : 'Add Organization'}
-              </Button>
-            )}
-          </div>
+          <Button onClick={handleSubmit} disabled={isLoading}>
+            {isLoading && <Loading className='h-4 w-4 text-white!' />}
+            {isLoading ? 'Saving...' : 'Save changes'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddOrganizationDialog;
+export default UpdateOrganizationDialog;

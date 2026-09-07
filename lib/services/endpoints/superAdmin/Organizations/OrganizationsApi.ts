@@ -28,7 +28,7 @@ export const OrganizationsApi = baseApi.injectEndpoints({
     updateOrganization: builder.mutation({
       query: ({ organizationUid, organizationData }) => ({
         url: `/admin/organization-onboard/${organizationUid}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: organizationData,
       }),
       invalidatesTags: ['Organizations'],

@@ -21,7 +21,6 @@ const OrganizationHeroCard: React.FC<Props> = ({
   organization,
   status,
   joinedAt,
-  uid,
 }) => {
   const statusClass = statusStyles[status] ?? statusStyles.INACTIVE;
   const typeLabel =

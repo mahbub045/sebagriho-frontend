@@ -63,3 +63,9 @@ export type OrganizationDetailsResponse = {
   status: string;
   joined_at: string;
 };
+
+export interface UpdateOrganizationDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  organizationDetails: OrganizationDetailsResponse;
+}
