@@ -18,6 +18,7 @@ import { PAGE_LIMIT } from '@/utils/constants';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
 import { Building2, Globe, Mail, Phone, User } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const OrganizationCards: React.FC = () => {
@@ -85,88 +86,90 @@ const OrganizationCards: React.FC = () => {
           const statusClass = statusStyles[status] ?? statusStyles.INACTIVE;
 
           return (
-            <Card
-              glow
-              key={uid}
-              className='border-border/60 hover:border-border flex flex-col gap-0 overflow-hidden p-0 transition-colors'
-            >
-              {/* Identity block */}
-              <div className='flex items-start gap-3 p-4'>
-                <div className='bg-primary/5 text-primary relative h-10 w-20 shrink-0 overflow-hidden rounded-lg shadow-sm'>
-                  {organization.logo ? (
-                    <Image
-                      src={organization.logo}
-                      alt={organization.name}
-                      fill
-                      className='object-cover'
-                    />
-                  ) : (
-                    <div className='flex h-full w-full items-center justify-center text-lg font-semibold'>
-                      {getInitials(organization.name)}
-                    </div>
-                  )}
+            <Link key={uid} href={`/super-admin/organizations/${uid}`}>
+              <Card
+                glow
+                key={uid}
+                className='border-border/60 hover:border-border flex flex-col gap-0 overflow-hidden p-0 transition-colors'
+              >
+                {/* Identity block */}
+                <div className='flex items-start gap-3 p-4'>
+                  <div className='bg-primary/5 text-primary relative h-10 w-20 shrink-0 overflow-hidden rounded-lg shadow-sm'>
+                    {organization.logo ? (
+                      <Image
+                        src={organization.logo}
+                        alt={organization.name}
+                        fill
+                        className='object-cover'
+                      />
+                    ) : (
+                      <div className='flex h-full w-full items-center justify-center text-lg font-semibold'>
+                        {getInitials(organization.name)}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className='min-w-0 flex-1'>
+                    <p className='truncate text-sm leading-tight font-semibold'>
+                      {organization.name}
+                    </p>
+                    <p className='text-muted-foreground mt-0.5 text-xs capitalize'>
+                      {organization.organization_type.toLowerCase()}
+                    </p>
+                  </div>
+
+                  <Badge
+                    variant='outline'
+                    className={`shrink-0 text-[11px] font-medium ${statusClass}`}
+                  >
+                    {status.charAt(0) + status.slice(1).toLowerCase()}
+                  </Badge>
                 </div>
 
-                <div className='min-w-0 flex-1'>
-                  <p className='truncate text-sm leading-tight font-semibold'>
-                    {organization.name}
-                  </p>
-                  <p className='text-muted-foreground mt-0.5 text-xs capitalize'>
-                    {organization.organization_type.toLowerCase()}
-                  </p>
+                <div className='border-border/60 mt-4 border-t' />
+
+                {/* Meta grid */}
+                <div className='grid grid-cols-1 gap-2.5 p-4 text-xs'>
+                  <div className='text-muted-foreground flex items-center gap-2'>
+                    <Mail className='text-primary h-3.5 w-3.5 shrink-0' />
+                    {organization.email ? (
+                      <span className='truncate'>{organization.email}</span>
+                    ) : (
+                      <span className='truncate italic'>Not provided</span>
+                    )}
+                  </div>
+                  <div className='text-muted-foreground flex items-center gap-2'>
+                    <Phone className='text-secondary h-3.5 w-3.5 shrink-0' />
+                    {organization.phone ? (
+                      <span className='truncate'>{organization.phone}</span>
+                    ) : (
+                      <span className='truncate italic'>Not provided</span>
+                    )}
+                  </div>
+
+                  <div className='text-muted-foreground flex items-center gap-2'>
+                    <Globe className='text-success h-3.5 w-3.5 shrink-0' />
+                    {organization.website ? (
+                      <span className='truncate'>{organization.website}</span>
+                    ) : (
+                      <span className='truncate italic'>Not provided</span>
+                    )}
+                  </div>
                 </div>
 
-                <Badge
-                  variant='outline'
-                  className={`shrink-0 text-[11px] font-medium ${statusClass}`}
-                >
-                  {status.charAt(0) + status.slice(1).toLowerCase()}
-                </Badge>
-              </div>
-
-              <div className='border-border/60 mt-4 border-t' />
-
-              {/* Meta grid */}
-              <div className='grid grid-cols-1 gap-2.5 p-4 text-xs'>
-                <div className='text-muted-foreground flex items-center gap-2'>
-                  <Mail className='text-primary h-3.5 w-3.5 shrink-0' />
-                  {organization.email ? (
-                    <span className='truncate'>{organization.email}</span>
-                  ) : (
-                    <span className='truncate'>No email set yet</span>
-                  )}
-                </div>
-                <div className='text-muted-foreground flex items-center gap-2'>
-                  <Phone className='text-secondary h-3.5 w-3.5 shrink-0' />
-                  {organization.phone ? (
-                    <span className='truncate'>{organization.phone}</span>
-                  ) : (
-                    <span className='truncate'>No phone set yet</span>
-                  )}
-                </div>
-
-                <div className='text-muted-foreground flex items-center gap-2'>
-                  <Globe className='text-success h-3.5 w-3.5 shrink-0' />
-                  {organization.website ? (
-                    <span className='truncate'>{organization.website}</span>
-                  ) : (
-                    <span className='truncate'>No website set yet</span>
-                  )}
-                </div>
-              </div>
-
-              <div className='border-border/60 bg-muted/30 flex items-center justify-between border-t px-4 py-3'>
-                <div className='flex items-center gap-2 text-xs'>
-                  <User className='text-info h-3.5 w-3.5' />
-                  <span className='font-medium'>
-                    {user.first_name} {user.last_name}
+                <div className='border-border/60 bg-muted/30 flex items-center justify-between border-t px-4 py-3'>
+                  <div className='flex items-center gap-2 text-xs'>
+                    <User className='text-info h-3.5 w-3.5' />
+                    <span className='font-medium'>
+                      {user.first_name} {user.last_name}
+                    </span>
+                  </div>
+                  <span className='text-muted-foreground text-xs'>
+                    Joined {formatDateAndTime(joined_at)}
                   </span>
                 </div>
-                <span className='text-muted-foreground text-xs'>
-                  Joined {formatDateAndTime(joined_at)}
-                </span>
-              </div>
-            </Card>
+              </Card>
+            </Link>
           );
         })}
       </div>

@@ -27,7 +27,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   }
 
   return (
-    <Breadcrumb className='bg-primary/10 mb-2 flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium'>
+    <Breadcrumb className='bg-primary/10 mb-4 flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium'>
       <BreadcrumbList>
         {items.map((item, index) => (
           <React.Fragment key={index}>

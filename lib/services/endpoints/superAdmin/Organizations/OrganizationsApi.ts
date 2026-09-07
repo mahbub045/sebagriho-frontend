@@ -10,6 +10,13 @@ export const OrganizationsApi = baseApi.injectEndpoints({
       }),
       providesTags: ['Organizations'],
     }),
+    getOrganizationDetails: builder.query({
+      query: (organizationUid) => ({
+        url: `/admin/organization-onboard/${organizationUid}`,
+        method: 'GET',
+      }),
+      providesTags: ['Organizations'],
+    }),
     addOrganization: builder.mutation({
       query: (payload) => ({
         url: '/admin/organization-onboard',
@@ -19,16 +26,16 @@ export const OrganizationsApi = baseApi.injectEndpoints({
       invalidatesTags: ['Organizations'],
     }),
     updateOrganization: builder.mutation({
-      query: ({ organizationId, organizationData }) => ({
-        url: `/admin/organization-onboard/${organizationId}`,
+      query: ({ organizationUid, organizationData }) => ({
+        url: `/admin/organization-onboard/${organizationUid}`,
         method: 'PUT',
         body: organizationData,
       }),
       invalidatesTags: ['Organizations'],
     }),
     deleteOrganization: builder.mutation({
-      query: (organizationId) => ({
-        url: `/admin/organization-onboard/${organizationId}`,
+      query: ({ organizationUid }) => ({
+        url: `/admin/organization-onboard/${organizationUid}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Organizations'],
@@ -38,6 +45,7 @@ export const OrganizationsApi = baseApi.injectEndpoints({
 
 export const {
   useGetOrganizationsQuery,
+  useGetOrganizationDetailsQuery,
   useAddOrganizationMutation,
   useUpdateOrganizationMutation,
   useDeleteOrganizationMutation,
