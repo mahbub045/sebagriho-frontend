@@ -1,3 +1,4 @@
+export type TabKey = 'organization' | 'owner' | 'social';
 export interface OrganizationCardProps {
   organization: {
     name: string;
@@ -21,6 +22,9 @@ export interface AddOrganizationDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
+export type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
 
 export type OrganizationOwner = {
   uid?: string;

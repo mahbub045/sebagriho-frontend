@@ -29,23 +29,19 @@ import {
 } from '@/data/common/ChoiceFields';
 import {
   INITIAL_FORM,
-  TabKey,
+  TAB_ORDER,
 } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useAddOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
-import { AddOrganizationDialogProps } from '@/types/superAdmin/Organizations/OrganizationsType';
+import {
+  AddOrganizationDialogProps,
+  OrgErrors,
+  TabKey,
+  UserErrors,
+} from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
+import { addCountryCode, BD_PHONE_REGEX, EMAIL_REGEX } from '@/utils/constants';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useState } from 'react';
-
-type OrgErrors = Partial<
-  Record<keyof typeof INITIAL_FORM.organization, string>
->;
-type UserErrors = Partial<Record<keyof typeof INITIAL_FORM.user, string>>;
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
-
-const TAB_ORDER: TabKey[] = ['organization', 'owner', 'social'];
 
 // Extract field-level messages from a DRF-style error response:
 // { organization: { name: [...] }, user: { email: [...] } } or flat { email: [...] }
@@ -230,14 +226,14 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
   const buildPayload = () => ({
     user: {
       ...form.user,
-      phone: form.user.phone ? `+88${form.user.phone}` : null,
+      phone: addCountryCode(form.user.phone),
       date_of_birth: form.user.date_of_birth ? form.user.date_of_birth : null,
       nid: form.user.nid ? form.user.nid : null,
       blood_group: form.user.blood_group ? form.user.blood_group : null,
     },
     organization: {
       ...form.organization,
-      phone: form.organization.phone ? `+88${form.organization.phone}` : null,
+      phone: addCountryCode(form.organization.phone),
     },
   });
 

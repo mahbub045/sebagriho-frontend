@@ -27,25 +27,63 @@ import {
   ORGANIZATION_STATUS_OPTIONS,
   ORGANIZATION_TYPE_OPTIONS,
 } from '@/data/common/ChoiceFields';
-import { TabKey } from '@/data/superAdmin/Organizations/OrganizationsData';
+import { INITIAL_FORM } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useUpdateOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
 import {
   OrganizationDetail,
   OrganizationOwner,
+  OrgErrors,
+  TabKey,
   UpdateOrganizationDialogProps,
+  UserErrors,
 } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
-import { useEffect, useState } from 'react';
+import {
+  BD_PHONE_REGEX,
+  EMAIL_REGEX,
+  stripCountryCode,
+} from '@/utils/constants';
+import { useState } from 'react';
 
-type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
-type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
+const buildOrgForm = (
+  organizationDetails: UpdateOrganizationDialogProps['organizationDetails'],
+): OrganizationDetail => {
+  if (!organizationDetails) return INITIAL_FORM.organization;
+  const { organization, status } = organizationDetails;
+  return {
+    name: organization.name ?? '',
+    organization_type: organization.organization_type ?? '',
+    description: organization.description ?? '',
+    status: status ?? organization.status ?? '',
+    phone: stripCountryCode(organization.phone),
+    email: organization.email ?? '',
+    website: organization.website ?? '',
+    address: organization.address ?? '',
+    facebook: organization.facebook ?? '',
+    twitter: organization.twitter ?? '',
+    linkedin: organization.linkedin ?? '',
+    instagram: organization.instagram ?? '',
+    youtube: organization.youtube ?? '',
+  };
+};
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
-
-// Strip a leading +88 / 88 country code, leaving just the 11-digit local number.
-const stripCountryCode = (phone: string | null) =>
-  (phone ?? '').replace(/^\+?88/, '');
+const buildUserForm = (
+  organizationDetails: UpdateOrganizationDialogProps['organizationDetails'],
+): OrganizationOwner => {
+  if (!organizationDetails) return { ...INITIAL_FORM.user };
+  const { user } = organizationDetails;
+  return {
+    uid: user.uid ?? '',
+    first_name: user.first_name ?? '',
+    last_name: user.last_name ?? '',
+    phone: stripCountryCode(user.phone),
+    email: user.email ?? '',
+    gender: user.gender ?? '',
+    nid: user.nid ?? '',
+    blood_group: user.blood_group ?? '',
+    date_of_birth: user.date_of_birth ?? '',
+  };
+};
 
 const extractApiFieldErrors = (error: unknown) => {
   const orgErrors: OrgErrors = {};
@@ -99,76 +137,34 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
 }) => {
   const [updateOrganization, { isLoading }] = useUpdateOrganizationMutation();
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
-  const [orgForm, setOrgForm] = useState<OrganizationDetail>({
-    name: '',
-    organization_type: '',
-    description: '',
-    status: '',
-    phone: '',
-    email: '',
-    website: '',
-    address: '',
-    facebook: '',
-    twitter: '',
-    linkedin: '',
-    instagram: '',
-    youtube: '',
-  });
-  const [userForm, setUserForm] = useState<OrganizationOwner>({
-    uid: '',
-    first_name: '',
-    last_name: '',
-    phone: '',
-    email: '',
-    gender: '',
-    nid: '',
-    blood_group: '',
-    date_of_birth: '',
-  });
+  const [orgForm, setOrgForm] = useState<OrganizationDetail>(
+    INITIAL_FORM.organization,
+  );
+  const [userForm, setUserForm] = useState<OrganizationOwner>(
+    INITIAL_FORM.user,
+  );
   const [orgErrors, setOrgErrors] = useState<OrgErrors>({});
   const [userErrors, setUserErrors] = useState<UserErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Re-hydrate the form whenever the dialog is opened for a given organization.
-  useEffect(() => {
-    if (!isOpen || !organizationDetails) return;
+  // Track whether the dialog was open on the previous render so we can
+  // detect a closed -> open transition and re-hydrate the form. Adjusting
+  // state during render (instead of in a useEffect) avoids the extra
+  // "commit -> effect -> re-render" cycle React warns about.
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
-    const { organization, user, status } = organizationDetails;
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
 
-    // Batch all state updates - React 18+ automatically batches these
-    setOrgForm({
-      name: organization.name ?? '',
-      organization_type: organization.organization_type ?? '',
-      description: organization.description ?? '',
-      status: status ?? organization.status ?? '',
-      phone: stripCountryCode(organization.phone),
-      email: organization.email ?? '',
-      website: organization.website ?? '',
-      address: organization.address ?? '',
-      facebook: organization.facebook ?? '',
-      twitter: organization.twitter ?? '',
-      linkedin: organization.linkedin ?? '',
-      instagram: organization.instagram ?? '',
-      youtube: organization.youtube ?? '',
-    });
-
-    setUserForm({
-      uid: user.uid ?? '',
-      first_name: user.first_name ?? '',
-      last_name: user.last_name ?? '',
-      phone: stripCountryCode(user.phone),
-      email: user.email ?? '',
-      gender: user.gender ?? '',
-      nid: user.nid ?? '',
-      blood_group: user.blood_group ?? '',
-      date_of_birth: user.date_of_birth ?? '',
-    });
-
-    setActiveTab('organization');
-    setOrgErrors({});
-    setUserErrors({});
-    setSubmitError(null);
-  }, [isOpen, organizationDetails]);
+    if (isOpen && organizationDetails) {
+      setOrgForm(buildOrgForm(organizationDetails));
+      setUserForm(buildUserForm(organizationDetails));
+      setActiveTab('organization');
+      setOrgErrors({});
+      setUserErrors({});
+      setSubmitError(null);
+    }
+  }
 
   const updateOrg = (
     field: keyof OrganizationDetail,
