@@ -4,6 +4,8 @@ export const statusStyles: Record<string, string> = {
   SUSPENDED: 'bg-red-500/10 text-red-600 border-red-500/20',
 };
 
+export type TabKey = 'organization' | 'owner' | 'social';
+
 export const INITIAL_FORM = {
   user: {
     first_name: '',

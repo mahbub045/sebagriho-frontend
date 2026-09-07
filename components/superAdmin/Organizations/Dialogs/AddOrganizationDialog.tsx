@@ -27,14 +27,15 @@ import {
   ORGANIZATION_STATUS_OPTIONS,
   ORGANIZATION_TYPE_OPTIONS,
 } from '@/data/common/ChoiceFields';
-import { INITIAL_FORM } from '@/data/superAdmin/Organizations/OrganizationsData';
+import {
+  INITIAL_FORM,
+  TabKey,
+} from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useAddOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
 import { AddOrganizationDialogProps } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useState } from 'react';
-
-type TabKey = 'organization' | 'owner' | 'social';
 
 type OrgErrors = Partial<
   Record<keyof typeof INITIAL_FORM.organization, string>

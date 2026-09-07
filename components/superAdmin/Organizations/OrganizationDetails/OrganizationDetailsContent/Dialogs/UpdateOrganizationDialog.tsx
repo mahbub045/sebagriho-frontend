@@ -27,42 +27,18 @@ import {
   ORGANIZATION_STATUS_OPTIONS,
   ORGANIZATION_TYPE_OPTIONS,
 } from '@/data/common/ChoiceFields';
+import { TabKey } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useUpdateOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
-import { UpdateOrganizationDialogProps } from '@/types/superAdmin/Organizations/OrganizationsType';
+import {
+  OrganizationDetail,
+  OrganizationOwner,
+  UpdateOrganizationDialogProps,
+} from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
 import { useEffect, useState } from 'react';
 
-type TabKey = 'organization' | 'owner' | 'social';
-
-type OrgFormState = {
-  name: string;
-  organization_type: string;
-  description: string;
-  status: string;
-  phone: string;
-  email: string;
-  website: string;
-  address: string;
-  facebook: string;
-  twitter: string;
-  linkedin: string;
-  instagram: string;
-  youtube: string;
-};
-
-type UserFormState = {
-  first_name: string;
-  last_name: string;
-  phone: string;
-  email: string;
-  gender: string;
-  nid: string;
-  blood_group: string;
-  date_of_birth: string;
-};
-
-type OrgErrors = Partial<Record<keyof OrgFormState, string>>;
-type UserErrors = Partial<Record<keyof UserFormState, string>>;
+type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
+type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
@@ -70,9 +46,6 @@ const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
 // Strip a leading +88 / 88 country code, leaving just the 11-digit local number.
 const stripCountryCode = (phone: string | null) =>
   (phone ?? '').replace(/^\+?88/, '');
-
-const toDateInputValue = (value: string | null) =>
-  value ? value.slice(0, 10) : '';
 
 const extractApiFieldErrors = (error: unknown) => {
   const orgErrors: OrgErrors = {};
@@ -126,7 +99,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
 }) => {
   const [updateOrganization, { isLoading }] = useUpdateOrganizationMutation();
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
-  const [orgForm, setOrgForm] = useState<OrgFormState>({
+  const [orgForm, setOrgForm] = useState<OrganizationDetail>({
     name: '',
     organization_type: '',
     description: '',
@@ -141,7 +114,8 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
     instagram: '',
     youtube: '',
   });
-  const [userForm, setUserForm] = useState<UserFormState>({
+  const [userForm, setUserForm] = useState<OrganizationOwner>({
+    uid: '',
     first_name: '',
     last_name: '',
     phone: '',
@@ -161,6 +135,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
 
     const { organization, user, status } = organizationDetails;
 
+    // Batch all state updates - React 18+ automatically batches these
     setOrgForm({
       name: organization.name ?? '',
       organization_type: organization.organization_type ?? '',
@@ -178,6 +153,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
     });
 
     setUserForm({
+      uid: user.uid ?? '',
       first_name: user.first_name ?? '',
       last_name: user.last_name ?? '',
       phone: stripCountryCode(user.phone),
@@ -185,7 +161,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
       gender: user.gender ?? '',
       nid: user.nid ?? '',
       blood_group: user.blood_group ?? '',
-      date_of_birth: toDateInputValue(user.date_of_birth),
+      date_of_birth: user.date_of_birth ?? '',
     });
 
     setActiveTab('organization');
@@ -194,13 +170,19 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
     setSubmitError(null);
   }, [isOpen, organizationDetails]);
 
-  const updateOrg = (field: keyof OrgFormState, value: string) => {
-    setOrgForm((prev) => ({ ...prev, [field]: value }));
+  const updateOrg = (
+    field: keyof OrganizationDetail,
+    value: string | null | undefined,
+  ) => {
+    setOrgForm((prev) => ({ ...prev, [field]: value ?? '' }));
     setOrgErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
-  const updateUser = (field: keyof UserFormState, value: string) => {
-    setUserForm((prev) => ({ ...prev, [field]: value }));
+  const updateUser = (
+    field: keyof OrganizationOwner,
+    value: string | null | undefined,
+  ) => {
+    setUserForm((prev) => ({ ...prev, [field]: value ?? '' }));
     setUserErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
@@ -416,7 +398,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
                   <Label htmlFor='org-phone'>Phone</Label>
                   <BdPhoneInput
                     id='org-phone'
-                    value={orgForm.phone}
+                    value={orgForm.phone || ''}
                     onChange={(value) => updateOrg('phone', value)}
                   />
                   <FieldError message={orgErrors.phone} />
@@ -602,7 +584,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
                   <Input
                     id='user-nid'
                     type='text'
-                    value={userForm.nid}
+                    value={userForm.nid || ''}
                     onChange={(e) => updateUser('nid', e.target.value)}
                     aria-invalid={!!userErrors.nid}
                   />
@@ -614,7 +596,7 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
                   <Input
                     id='user-dob'
                     type='date'
-                    value={userForm.date_of_birth}
+                    value={userForm.date_of_birth || ''}
                     onChange={(e) =>
                       updateUser('date_of_birth', e.target.value)
                     }
