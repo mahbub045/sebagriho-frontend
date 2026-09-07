@@ -32,7 +32,7 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
 
   const handleDelete = async () => {
     try {
-      await deleteOrganization(organizationUid).unwrap();
+      await deleteOrganization({ organizationUid }).unwrap();
       setOpen(false);
       router.push('/super-admin/organizations');
     } catch (error) {

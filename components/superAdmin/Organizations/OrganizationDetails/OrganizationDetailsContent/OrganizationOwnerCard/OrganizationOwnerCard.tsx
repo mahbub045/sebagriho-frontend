@@ -67,7 +67,7 @@ const OrganizationOwnerCard: React.FC<Props> = ({ user }) => {
 
       <div className='border-border/60 mt-4 border-t' />
 
-      <div className='mt-9! space-y-4'>
+      <div className='mt-4 space-y-4'>
         <DetailRow
           icon={<Mail className='h-4 w-4' />}
           iconClassName='text-primary'
