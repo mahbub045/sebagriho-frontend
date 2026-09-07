@@ -437,7 +437,7 @@ const AppSidebar: React.FC = () => {
         <SidebarHeader className='gap-0 px-4 py-4 group-data-[collapsible=icon]:px-2'>
           <div className='flex items-center gap-2 group-data-[collapsible=icon]:hidden'>
             <Image
-              src='/images/logo-black.png'
+              src='/images/logo-white.png'
               alt='Sebagriho'
               width={400}
               height={150}
