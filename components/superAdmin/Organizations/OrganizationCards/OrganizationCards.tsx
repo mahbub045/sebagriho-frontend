@@ -124,12 +124,6 @@ const OrganizationCards: React.FC = () => {
                 </Badge>
               </div>
 
-              {organization.description && (
-                <p className='text-muted-foreground line-clamp-2 px-4 text-xs leading-relaxed'>
-                  {organization.description}
-                </p>
-              )}
-
               <div className='border-border/60 mt-4 border-t' />
 
               {/* Meta grid */}

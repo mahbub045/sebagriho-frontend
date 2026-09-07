@@ -282,8 +282,10 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && resetAndClose()}>
       <DialogContent className='max-h-[90vh] overflow-hidden p-4 sm:max-w-185'>
         <DialogHeader className='text-lg font-semibold'>
-          <DialogTitle>Add Organization</DialogTitle>
-          <DialogDescription className='text-muted-foreground mt-0! text-sm'>
+          <DialogTitle className='text-primary -mb-3 text-2xl'>
+            Add Organization
+          </DialogTitle>
+          <DialogDescription className='text-muted-foreground text-sm'>
             Add a new organization to the system.
           </DialogDescription>
         </DialogHeader>
