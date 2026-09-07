@@ -7,7 +7,10 @@ const OrganizationsContainer: React.FC = () => {
   return (
     <div>
       <Breadcrumbs
-        items={[{ label: 'Organizations', href: `/super-admin/organizations` }]}
+        items={[
+          { label: 'Dashboard', href: `/super-admin/dashboard` },
+          { label: 'Organizations', href: `/super-admin/organizations` },
+        ]}
       />
 
       <div className='mb-4 flex items-center justify-between'>

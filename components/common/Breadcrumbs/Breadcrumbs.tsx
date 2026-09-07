@@ -27,14 +27,14 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   }
 
   return (
-    <Breadcrumb className='mb-2 flex items-center justify-between'>
+    <Breadcrumb className='bg-primary/10 mb-2 flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium'>
       <BreadcrumbList>
         {items.map((item, index) => (
           <React.Fragment key={index}>
             <BreadcrumbItem>
               {index === items.length - 1 || !item.href ? (
                 <BreadcrumbPage className='flex items-center gap-2'>
-                  {index === 0 && <Home className='h-4 w-4' />}
+                  {index === 0 && <Home className='text-primary h-4 w-4' />}
                   {item.label}
                 </BreadcrumbPage>
               ) : (
@@ -42,7 +42,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
                   href={item.href}
                   className='flex items-center gap-2'
                 >
-                  {index === 0 && <Home className='h-4 w-4' />}
+                  {index === 0 && <Home className='text-primary h-4 w-4' />}
                   {item.label}
                 </BreadcrumbLink>
               )}
