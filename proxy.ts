@@ -11,11 +11,16 @@ export default withAuth(
       return NextResponse.redirect(new URL('/auth/signin', req.url));
     }
 
-    const isAdmin = Boolean(
-      (token as { is_admin?: boolean } | undefined)?.is_admin,
-    );
+    const userToken = token as
+      { is_admin?: boolean; organization_type?: string } | undefined;
+    const isAdmin = Boolean(userToken?.is_admin);
     if (path === '/' || path === '') {
-      return NextResponse.redirect(new URL(getDashboardPath(isAdmin), req.url));
+      return NextResponse.redirect(
+        new URL(
+          getDashboardPath(isAdmin, userToken?.organization_type),
+          req.url,
+        ),
+      );
     }
 
     const isAdminRoute =
@@ -33,7 +38,12 @@ export default withAuth(
     if (!isAdmin) {
       return isOrganizationRoute
         ? NextResponse.next()
-        : NextResponse.redirect(new URL('/organization/dashboard', req.url));
+        : NextResponse.redirect(
+            new URL(
+              getDashboardPath(false, userToken?.organization_type),
+              req.url,
+            ),
+          );
     }
 
     if (!isAdminRoute && !isOrganizationRoute) {

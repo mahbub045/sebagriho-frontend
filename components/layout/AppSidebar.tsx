@@ -404,7 +404,10 @@ const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const navItems = buildItems(Boolean(session?.user.is_admin));
+  const navItems = buildItems(
+    Boolean(session?.user.is_admin),
+    session?.user.organization_type,
+  );
 
   const { data: profileData, isLoading } = useGetProfileInfoQuery(undefined);
 

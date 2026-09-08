@@ -13,7 +13,10 @@ export type NavItem = {
   children?: NavItem[];
 };
 
-export const buildItems = (isAdmin = false): NavItem[] => {
+export const buildItems = (
+  isAdmin = false,
+  organizationType?: string,
+): NavItem[] => {
   if (isAdmin) {
     return [
       {
@@ -34,11 +37,25 @@ export const buildItems = (isAdmin = false): NavItem[] => {
     ];
   }
 
-  return [
-    {
-      label: 'Dashboard',
-      href: '/organization/dashboard',
-      icon: LayoutDashboard,
-    },
-  ];
+  if (!isAdmin && organizationType === 'HOMEOPATHY') {
+    return [
+      {
+        label: 'Dashboard',
+        href: '/organization/homeopathy/dashboard',
+        icon: LayoutDashboard,
+      },
+    ];
+  }
+
+  if (!isAdmin && organizationType === 'AYURVEDIC') {
+    return [
+      {
+        label: 'Dashboard',
+        href: '/organization/ayurvedic/dashboard',
+        icon: LayoutDashboard,
+      },
+    ];
+  }
+
+  return [];
 };
