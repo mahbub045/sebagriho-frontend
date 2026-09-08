@@ -448,6 +448,17 @@ const AppSidebar: React.FC = () => {
             />
           </div>
 
+          <div className='hidden items-center group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:text-center'>
+            <Image
+              src='/images/logo-single-icon.png'
+              alt='Sebagriho'
+              width={200}
+              height={150}
+              className='h-5.5 w-6'
+              loading='eager'
+            />
+          </div>
+
           {/* <Badge
             variant='success'
             className='group-data-[collapsible=icon]:hidden'
