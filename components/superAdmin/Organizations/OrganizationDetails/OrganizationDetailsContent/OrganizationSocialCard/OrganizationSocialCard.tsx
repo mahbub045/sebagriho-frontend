@@ -37,7 +37,7 @@ const OrganizationSocialCard: React.FC<Props> = ({ organization }) => {
   const links = SOCIAL_LINKS(organization);
 
   return (
-    <Card className='border-border/60 p-5 shadow-lg'>
+    <Card className='border-border/60 p-5 shadow-sm'>
       <h2 className='text-sm font-semibold'>Social links</h2>
 
       <div className='mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2'>

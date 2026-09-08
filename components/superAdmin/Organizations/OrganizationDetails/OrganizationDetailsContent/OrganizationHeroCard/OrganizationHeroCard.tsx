@@ -32,7 +32,7 @@ const OrganizationHeroCard: React.FC<Props> = ({
       ?.label ?? status;
 
   return (
-    <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-lg'>
+    <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='flex flex-col gap-4 p-5 sm:flex-row sm:items-start'>
         <div className='bg-primary/5 text-primary relative h-16 w-28 shrink-0 overflow-hidden rounded-lg shadow-sm'>
           {organization.logo ? (
