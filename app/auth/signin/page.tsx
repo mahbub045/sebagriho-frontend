@@ -13,6 +13,32 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+/**
+ * Derives the tenant subdomain from the current hostname.
+ * e.g. "acme.yourapp.com" -> "acme"; "acme.localhost" -> "acme"; bare domain -> ''.
+ * Falls back to NEXT_PUBLIC_LOCAL_SUBDOMAIN on localhost so local dev can
+ * simulate a tenant without needing a real subdomain.
+ */
+function getSubdomainFromHost(): string {
+  let subdomain = process.env.NEXT_PUBLIC_LOCAL_SUBDOMAIN || '';
+
+  if (typeof window === 'undefined') return subdomain;
+
+  const hostname = window.location.hostname;
+
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    const parts = hostname.split('.');
+    if (parts.length > 2 || (parts.length === 2 && parts[1] === 'localhost')) {
+      const extractedSubdomain = parts[0];
+      if (extractedSubdomain && extractedSubdomain !== 'www') {
+        subdomain = extractedSubdomain;
+      }
+    }
+  }
+
+  return subdomain;
+}
+
 export default function SigninPage() {
   const router = useRouter();
   const [phone, setPhone] = useState('');
@@ -25,9 +51,12 @@ export default function SigninPage() {
     e.preventDefault();
     setIsLoading(true);
 
+    const subdomain = getSubdomainFromHost();
+
     const result = await signIn('credentials', {
       phone: `+88${phone}`,
       password,
+      subdomain,
       redirect: false,
     });
 
@@ -43,6 +72,17 @@ export default function SigninPage() {
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
+
+    const subdomain = getSubdomainFromHost();
+
+    // NextAuth's OAuth redirect can't carry custom fields on `account`, so we
+    // stash the tenant in a short-lived cookie the `jwt` callback reads once
+    // the user lands back after Google auth.
+    if (subdomain) {
+      document.cookie = `pending-tenant-subdomain=${subdomain}; path=/; max-age=300; samesite=lax`;
+    }
+    // else: no subdomain resolved (bare domain / no local override set), so
+    // no cookie is set and the Google flow proceeds without a tenant.
 
     await signIn('google', { callbackUrl: '/' });
 
