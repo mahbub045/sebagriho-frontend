@@ -9,47 +9,39 @@ import { Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function SigninPage() {
+  const router = useRouter();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    setError('');
     setIsLoading(true);
 
-    const callbackUrl = '/';
+    const result = await signIn('credentials', {
+      phone: `+88${phone}`,
+      password,
+      redirect: false,
+    });
 
-    try {
-      const result = await signIn('credentials', {
-        phone: `+88${phone}`,
-        password,
-        redirect: false,
-        callbackUrl,
-      });
+    setIsLoading(false);
 
-      if (result?.error) {
-        setError('Invalid phone number or password. Please try again.');
-        setIsLoading(false);
-        return;
-      }
-
-      window.location.href = result?.url ?? callbackUrl;
-    } catch {
-      setError('Something went wrong. Please try again.');
-      setIsLoading(false);
+    if (result?.error) {
+      toast.error('Invalid phone or password. Please try again.');
+    } else {
+      toast.success('You have successfully logged in.');
+      router.push('/');
     }
   };
 
   const handleGoogleSignIn = async () => {
-    setError('');
     setIsGoogleLoading(true);
 
     await signIn('google', { callbackUrl: '/' });
@@ -61,14 +53,10 @@ export default function SigninPage() {
     <div className='flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.16),transparent_35%),linear-gradient(135deg,#f8fafc_0%,#eef4ff_50%,#f8fafc_100%)] p-4 dark:bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_35%),linear-gradient(135deg,#020617_0%,#0b1220_50%,#020617_100%)]'>
       {/* Login Card */}
       <div className='grid w-full max-w-242.5 overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.14)] lg:min-h-93.75 lg:grid-cols-[1.1fr_0.9fr] dark:border-slate-800 dark:bg-slate-900 dark:shadow-[0_20px_60px_rgba(0,0,0,0.45)]'>
-        {/* =====================================================
-            LEFT PANEL
-        ====================================================== */}
+        {/* LEFT PANEL */}
         <AuthPageSidePanel />
 
-        {/* =====================================================
-            RIGHT PANEL
-        ====================================================== */}
+        {/* RIGHT PANEL */}
         <div className='relative flex items-center justify-center p-6 sm:p-8 lg:p-9'>
           {/* Theme Toggle */}
           <div className='absolute top-4 right-4'>
@@ -109,13 +97,6 @@ export default function SigninPage() {
 
             {/* Form */}
             <form className='space-y-4' onSubmit={handleSubmit}>
-              {/* Error */}
-              {error && (
-                <div className='rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-600 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-400'>
-                  {error}
-                </div>
-              )}
-
               {/* Phone */}
               <div className='space-y-1.5'>
                 <label

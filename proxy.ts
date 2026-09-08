@@ -15,18 +15,7 @@ export default withAuth(
       (token as { is_admin?: boolean } | undefined)?.is_admin,
     );
     if (path === '/' || path === '') {
-      return NextResponse.redirect(
-        new URL(
-          getDashboardPath(
-            isAdmin,
-            isAdmin
-              ? undefined
-              : (token as { organization_slug?: string } | undefined)
-                  ?.organization_slug,
-          ),
-          req.url,
-        ),
-      );
+      return NextResponse.redirect(new URL(getDashboardPath(isAdmin), req.url));
     }
 
     const isAdminRoute =
@@ -38,14 +27,14 @@ export default withAuth(
         : NextResponse.redirect(new URL('/super-admin/dashboard', req.url));
     }
 
-    const organizationSlug = (
-      token as { organization_slug?: string } | undefined
-    )?.organization_slug;
     const isOrganizationRoute =
-      Boolean(organizationSlug) &&
-      (path === `/${organizationSlug}` ||
-        path === `/${organizationSlug}/` ||
-        path.startsWith(`/${organizationSlug}/`));
+      path === '/organization' || path.startsWith('/organization/');
+
+    if (!isAdmin) {
+      return isOrganizationRoute
+        ? NextResponse.next()
+        : NextResponse.redirect(new URL('/organization/dashboard', req.url));
+    }
 
     if (!isAdminRoute && !isOrganizationRoute) {
       return NextResponse.redirect(new URL('/auth/access-denied', req.url));
@@ -61,10 +50,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: [
-    '/',
-    '/super-admin/:path*',
-    '/:organization_slug/dashboard',
-    '/:organization_slug/dashboard/:path*',
-  ],
+  matcher: ['/', '/super-admin/:path*', '/organization/:path*'],
 };

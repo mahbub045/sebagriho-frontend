@@ -13,10 +13,7 @@ export type NavItem = {
   children?: NavItem[];
 };
 
-export const buildItems = (
-  isAdmin = false,
-  organizationSlug?: string,
-): NavItem[] => {
+export const buildItems = (isAdmin = false): NavItem[] => {
   if (isAdmin) {
     return [
       {
@@ -37,14 +34,10 @@ export const buildItems = (
     ];
   }
 
-  const dashboardHref = organizationSlug
-    ? `/${organizationSlug}/dashboard`
-    : '/dashboard';
-
   return [
     {
       label: 'Dashboard',
-      href: dashboardHref,
+      href: '/organization/dashboard',
       icon: LayoutDashboard,
     },
   ];
