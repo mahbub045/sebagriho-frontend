@@ -90,7 +90,7 @@ const OrganizationCards: React.FC = () => {
               <Card
                 glow
                 key={uid}
-                className='border-border/60 hover:border-border flex flex-col gap-0 overflow-hidden p-0 transition-colors'
+                className='border-border/60 hover:border-border flex flex-col gap-0 overflow-hidden p-0 shadow-lg transition-colors'
               >
                 {/* Identity block */}
                 <div className='flex items-start gap-3 p-4'>

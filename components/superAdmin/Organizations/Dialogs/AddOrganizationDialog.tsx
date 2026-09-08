@@ -109,8 +109,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
   const [addOrganization, { isLoading }] = useAddOrganizationMutation();
   const [form, setForm] = useState(INITIAL_FORM);
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
-  const [orgTabComplete, setOrgTabComplete] = useState(false);
-  const [ownerTabComplete, setOwnerTabComplete] = useState(false);
   const [orgErrors, setOrgErrors] = useState<OrgErrors>({});
   const [userErrors, setUserErrors] = useState<UserErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -137,8 +135,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
   const resetAndClose = () => {
     setForm(INITIAL_FORM);
     setActiveTab('organization');
-    setOrgTabComplete(false);
-    setOwnerTabComplete(false);
     setOrgErrors({});
     setUserErrors({});
     setSubmitError(null);
@@ -192,8 +188,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
   };
 
   const goToTab = (tab: TabKey) => {
-    if (tab === 'owner' && !orgTabComplete) return;
-    if (tab === 'social' && !(orgTabComplete && ownerTabComplete)) return;
     setActiveTab(tab);
   };
 
@@ -202,14 +196,12 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
     if (activeTab === 'organization') {
       const isValid = validateOrganizationTab();
-      setOrgTabComplete(isValid);
       if (isValid) setActiveTab('owner');
       return;
     }
 
     if (activeTab === 'owner') {
       const isValid = validateOwnerTab();
-      setOwnerTabComplete(isValid);
       if (isValid) setActiveTab('social');
       return;
     }
@@ -253,10 +245,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
       );
     } else if (Object.keys(apiOrgErrors).length > 0) {
       setActiveTab('organization');
-      setOrgTabComplete(false);
     } else {
       setActiveTab('owner');
-      setOwnerTabComplete(false);
     }
   };
 
@@ -265,8 +255,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
     const isOrgValid = validateOrganizationTab();
     const isOwnerValid = validateOwnerTab();
-    setOrgTabComplete(isOrgValid);
-    setOwnerTabComplete(isOwnerValid);
 
     if (!isOrgValid) {
       setActiveTab('organization');
@@ -307,18 +295,10 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
             <TabsTrigger value='organization' className='cursor-pointer'>
               Organization
             </TabsTrigger>
-            <TabsTrigger
-              value='owner'
-              disabled={!orgTabComplete}
-              className='cursor-pointer'
-            >
+            <TabsTrigger value='owner' className='cursor-pointer'>
               Owner
             </TabsTrigger>
-            <TabsTrigger
-              value='social'
-              disabled={!(orgTabComplete && ownerTabComplete)}
-              className='cursor-pointer'
-            >
+            <TabsTrigger value='social' className='cursor-pointer'>
               Social Links
             </TabsTrigger>
           </TabsList>
