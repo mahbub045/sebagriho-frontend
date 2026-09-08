@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import AddOrganizationDialog from './Dialogs/AddOrganizationDialog';
-import OrganizationCards from './OrganizationCards/OrganizationCards';
+import OrganizationList from './OrganizationList/OrganizationList';
 
 const OrganizationsContainer: React.FC = () => {
   const [isAddOrganizationDialogOpen, setIsAddOrganizationDialogOpen] =
@@ -37,7 +37,7 @@ const OrganizationsContainer: React.FC = () => {
         </div>
       </div>
 
-      <OrganizationCards />
+      <OrganizationList />
 
       {/* Dialog  */}
       <AddOrganizationDialog

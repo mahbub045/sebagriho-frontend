@@ -21,7 +21,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-const OrganizationCards: React.FC = () => {
+const OrganizationList: React.FC = () => {
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isFetching } = useGetOrganizationsQuery({
@@ -234,4 +234,4 @@ const OrganizationCards: React.FC = () => {
   );
 };
 
-export default OrganizationCards;
+export default OrganizationList;

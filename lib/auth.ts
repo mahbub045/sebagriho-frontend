@@ -82,7 +82,6 @@ export const authOptions: NextAuthOptions = {
           phone: profile.phone,
           is_admin: profile.is_admin,
           organization_type: profile.organization_type,
-          organization_slug: profile.organization_slug,
           subdomain: credentials.subdomain || null,
           accessToken: access,
           refreshToken: refresh,
@@ -146,7 +145,6 @@ export const authOptions: NextAuthOptions = {
               token.phone = profile.phone;
               token.is_admin = profile.is_admin;
               token.organization_type = profile.organization_type;
-              token.organization_slug = profile.organization_slug;
               token.subdomain = subdomain || null;
               token.accessToken = access;
               token.refreshToken = refresh;
@@ -167,7 +165,6 @@ export const authOptions: NextAuthOptions = {
         token.phone = user.phone;
         token.is_admin = user.is_admin;
         token.organization_type = user.organization_type;
-        token.organization_slug = user.organization_slug;
         token.subdomain = user.subdomain ?? null;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -181,7 +178,6 @@ export const authOptions: NextAuthOptions = {
       session.user.phone = token.phone || '';
       session.user.is_admin = token.is_admin;
       session.user.organization_type = token.organization_type;
-      session.user.organization_slug = token.organization_slug;
       session.user.subdomain = token.subdomain ?? null;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;

@@ -7,7 +7,6 @@ declare module 'next-auth' {
     phone: string;
     is_admin: boolean;
     organization_type?: string;
-    organization_slug?: string;
     subdomain?: string | null;
     accessToken: string;
     refreshToken: string;
@@ -19,7 +18,6 @@ declare module 'next-auth' {
       phone: string;
       is_admin: boolean;
       organization_type?: string;
-      organization_slug?: string;
       subdomain?: string | null;
       accessToken: string;
       refreshToken: string;
@@ -33,7 +31,6 @@ declare module 'next-auth/jwt' {
     phone: string;
     is_admin: boolean;
     organization_type?: string;
-    organization_slug?: string;
     subdomain?: string | null;
     accessToken: string;
     refreshToken: string;
