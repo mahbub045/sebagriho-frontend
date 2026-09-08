@@ -1,6 +1,8 @@
 import {
   Building2,
   LayoutDashboard,
+  Pill,
+  Stethoscope,
   Users,
   type LucideIcon,
 } from 'lucide-react';
@@ -43,6 +45,21 @@ export const buildItems = (
         label: 'Dashboard',
         href: '/organization/homeopathy/dashboard',
         icon: LayoutDashboard,
+      },
+      {
+        label: 'Patients',
+        href: '/organization/homeopathy/patients',
+        icon: Users,
+      },
+      {
+        label: 'Appointments',
+        href: '/organization/homeopathy/appointments',
+        icon: Stethoscope,
+      },
+      {
+        label: 'Medicines',
+        href: '/organization/homeopathy/medicines',
+        icon: Pill,
       },
     ];
   }
