@@ -476,7 +476,7 @@ const UpdateOrganizationDialogContent: React.FC<
                     className='rounded-r-none!'
                   />
                   <span className='bg-primary flex h-10 shrink-0 items-center rounded-r-md px-3 text-sm text-white'>
-                    .sebagriho.com
+                    {process.env.NEXT_PUBLIC_COOKIE_DOMAIN}
                   </span>
                 </div>
                 <FieldError message={orgErrors.subdomain} />

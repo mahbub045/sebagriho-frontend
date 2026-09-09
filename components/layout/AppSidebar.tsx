@@ -501,6 +501,9 @@ const AppSidebar: React.FC = () => {
                 <p className='truncate text-sm font-semibold'>
                   {profileData?.name ?? 'User'}
                 </p>
+                <p className='text-muted-foreground truncate text-xs font-normal'>
+                  {profileData?.phone}
+                </p>
               </div>
               <Settings size={16} />
             </DropdownMenuTrigger>
