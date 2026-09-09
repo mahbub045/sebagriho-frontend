@@ -28,53 +28,17 @@ import { GENDER_OPTIONS, MIASM_TYPE_OPTIONS } from '@/data/common/ChoiceFields';
 import { useAddPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 
 import {
+  AddPatientDialogProps,
+  AddPatientFormValues,
+  FieldErrorMap,
+  FieldErrors,
   MiasmType,
   PatientGender,
 } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 
+import { DEFAULT_VALUES } from '@/data/Organization/Homeopathy/PatientsData';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
 import { addCountryCode } from '@/utils/constants';
-
-export interface AddPatientDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-interface AddPatientFormValues {
-  first_name: string;
-  last_name: string;
-  phone: string;
-  email: string;
-  gender: PatientGender | '';
-  date_of_birth: string;
-  old_serial_number: string;
-  relative_phone: string;
-  address: string;
-  age: string;
-  miasm_type: MiasmType | '';
-  case_history: string;
-  habits: string;
-}
-
-type FieldErrors = Partial<Record<keyof AddPatientFormValues, string>>;
-
-type FieldErrorMap = Record<string, string[] | string>;
-
-const DEFAULT_VALUES: AddPatientFormValues = {
-  first_name: '',
-  last_name: '',
-  phone: '',
-  email: '',
-  gender: '',
-  date_of_birth: '',
-  old_serial_number: '',
-  relative_phone: '',
-  address: '',
-  age: '',
-  miasm_type: '',
-  case_history: '',
-  habits: '',
-};
 
 const getFieldError = (
   errors: FieldErrorMap | undefined,

@@ -34,7 +34,7 @@ export const PatientsApi = baseApi.injectEndpoints({
       invalidatesTags: ['HPPatients'],
     }),
     deletePatient: builder.mutation({
-      query: (patientUid) => ({
+      query: ({ patientUid }) => ({
         url: `/homeopathy/patients/${patientUid}`,
         method: 'DELETE',
       }),

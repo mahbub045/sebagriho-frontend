@@ -1,11 +1,15 @@
+import { Button } from '@/components/ui/button';
 import { TriangleAlert } from 'lucide-react';
+import { useState } from 'react';
+import DeletePatientDialog from '../../Dialogs/DeletePatientDialog';
 
 type Props = {
-  patientuid: string;
+  patientUid: string;
   patientName: string;
 };
 
-const DeleteCard: React.FC<Props> = ({ patientuid, patientName }) => {
+const DeleteCard: React.FC<Props> = ({ patientUid, patientName }) => {
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
   return (
     <div className='border-danger/20 bg-danger/5 flex w-full flex-col gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between'>
       <div className='flex items-start gap-3'>
@@ -16,11 +20,17 @@ const DeleteCard: React.FC<Props> = ({ patientuid, patientName }) => {
           all its data. This can&apos;t be undone.
         </p>
       </div>
+      <Button variant='destructive' onClick={() => setIsOpenDeleteDialog(true)}>
+        Delete Patient
+      </Button>
 
-      {/* <DeleteOrganizationDialog
-        organizationUid={organizationUid}
-        organizationName={organizationName}
-      /> */}
+      {/* Dialog for deleting patient */}
+      <DeletePatientDialog
+        isOpen={isOpenDeleteDialog}
+        onClose={() => setIsOpenDeleteDialog(false)}
+        patientUid={patientUid}
+        patientName={patientName}
+      />
     </div>
   );
 };

@@ -57,7 +57,7 @@ const PatientDetailsContents: React.FC = () => {
 
       <PatientCaseHistoryCard patient={patient} />
       <PatientFilesCard patient={patient} />
-      <DeleteCard patientuid={patient.uid} patientName={patient.user.name} />
+      <DeleteCard patientUid={patient.uid} patientName={patient.user.name} />
     </div>
   );
 };
