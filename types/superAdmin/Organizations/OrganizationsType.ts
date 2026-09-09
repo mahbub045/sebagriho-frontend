@@ -1,4 +1,5 @@
 export type TabKey = 'organization' | 'owner' | 'social';
+export type statusType = 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
 export interface OrganizationCardProps {
   uid: string;
   organization: {
@@ -14,7 +15,8 @@ export interface OrganizationCardProps {
     first_name: string;
     last_name: string;
   };
-  status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
+  joined_at: Date;
+  status: statusType;
 }
 
 export interface AddOrganizationDialogProps {
