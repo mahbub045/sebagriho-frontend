@@ -400,6 +400,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                 <Label htmlFor='gender'>Gender</Label>
 
                 <Select
+                  items={GENDER_OPTIONS}
                   value={formValues.gender}
                   onValueChange={(value) =>
                     updateField('gender', value as PatientGender)
