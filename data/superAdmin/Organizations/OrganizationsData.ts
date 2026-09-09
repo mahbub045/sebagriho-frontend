@@ -6,7 +6,7 @@ export const statusStyles: Record<string, string> = {
   SUSPENDED: 'bg-red-500/10 text-red-600 border-red-500/20',
 };
 
-export const TAB_ORDER: TabKey[] = ['organization', 'owner', 'social'];
+export const TAB_ORDER: TabKey[] = ['organization', 'social', 'owner'];
 
 export const INITIAL_FORM = {
   user: {
@@ -28,6 +28,7 @@ export const INITIAL_FORM = {
     phone: '',
     email: '',
     website: '',
+    subdomain: '',
     address: '',
     facebook: '',
     twitter: '',

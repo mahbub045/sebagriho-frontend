@@ -39,7 +39,12 @@ import {
   UserErrors,
 } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
-import { addCountryCode, BD_PHONE_REGEX, EMAIL_REGEX } from '@/utils/constants';
+import {
+  addCountryCode,
+  BD_PHONE_REGEX,
+  EMAIL_REGEX,
+  SUBDOMAIN_REGEX,
+} from '@/utils/constants';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -149,6 +154,12 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     if (!form.organization.organization_type) {
       errors.organization_type = 'Organization type is required.';
     }
+    if (!form.organization.subdomain.trim()) {
+      errors.subdomain = 'Subdomain is required.';
+    } else if (!SUBDOMAIN_REGEX.test(form.organization.subdomain)) {
+      errors.subdomain =
+        'Use lowercase letters, numbers, and hyphens only (no leading/trailing hyphen).';
+    }
     if (form.organization.email && !EMAIL_REGEX.test(form.organization.email)) {
       errors.email = 'Enter a valid email address.';
     }
@@ -191,44 +202,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     setActiveTab(tab);
   };
 
-  const handleNext = () => {
-    setSubmitError(null);
-
-    if (activeTab === 'organization') {
-      const isValid = validateOrganizationTab();
-      if (isValid) setActiveTab('owner');
-      return;
-    }
-
-    if (activeTab === 'owner') {
-      const isValid = validateOwnerTab();
-      if (isValid) setActiveTab('social');
-      return;
-    }
-  };
-
-  const handleBack = () => {
-    setSubmitError(null);
-    const currentIndex = TAB_ORDER.indexOf(activeTab);
-    if (currentIndex > 0) {
-      setActiveTab(TAB_ORDER[currentIndex - 1]);
-    }
-  };
-
-  const buildPayload = () => ({
-    user: {
-      ...form.user,
-      phone: addCountryCode(form.user.phone),
-      date_of_birth: form.user.date_of_birth ? form.user.date_of_birth : null,
-      nid: form.user.nid ? form.user.nid : null,
-      blood_group: form.user.blood_group ? form.user.blood_group : null,
-    },
-    organization: {
-      ...form.organization,
-      phone: addCountryCode(form.organization.phone),
-    },
-  });
-
   const applyApiErrors = (error: unknown) => {
     const { orgErrors: apiOrgErrors, userErrors: apiUserErrors } =
       extractApiFieldErrors(error);
@@ -250,6 +223,69 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
     }
   };
 
+  const buildPayload = () => ({
+    organization: {
+      name: form.organization.name,
+      organization_type: form.organization.organization_type,
+      subdomain: form.organization.subdomain,
+      description: form.organization.description,
+      email: form.organization.email,
+      phone: addCountryCode(form.organization.phone),
+      website: form.organization.website,
+      status: form.organization.status,
+      address: form.organization.address,
+    },
+    user: {
+      first_name: form.user.first_name,
+      last_name: form.user.last_name,
+      email: form.user.email,
+      phone: addCountryCode(form.user.phone),
+      gender: form.user.gender,
+      blood_group: form.user.blood_group,
+      date_of_birth: form.user.date_of_birth ? form.user.date_of_birth : null,
+      nid: form.user.nid ? form.user.nid : null,
+    },
+  });
+
+  const handleNext = async () => {
+    setSubmitError(null);
+
+    if (activeTab === 'organization') {
+      const isValid = validateOrganizationTab();
+      if (!isValid) return;
+
+      try {
+        await addOrganization(buildPayload()).unwrap();
+        setActiveTab('owner');
+      } catch (error) {
+        applyApiErrors(error);
+        console.error('Organization field validation failed:', error);
+      }
+      return;
+    }
+
+    if (activeTab === 'owner') {
+      const isValid = validateOwnerTab();
+      if (!isValid) return;
+      try {
+        await addOrganization(buildPayload()).unwrap();
+        resetAndClose();
+      } catch (error) {
+        applyApiErrors(error);
+        console.error('Owner field validation failed:', error);
+      }
+      return;
+    }
+  };
+
+  const handleBack = () => {
+    setSubmitError(null);
+    const currentIndex = TAB_ORDER.indexOf(activeTab);
+    if (currentIndex > 0) {
+      setActiveTab(TAB_ORDER[currentIndex - 1]);
+    }
+  };
+
   const handleSubmit = async () => {
     setSubmitError(null);
 
@@ -260,6 +296,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
       setActiveTab('organization');
       return;
     }
+
     if (!isOwnerValid) {
       setActiveTab('owner');
       return;
@@ -291,15 +328,12 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
           onValueChange={(value) => goToTab(value as TabKey)}
           className='w-full'
         >
-          <TabsList className='grid w-full grid-cols-3'>
+          <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='organization' className='cursor-pointer'>
               Organization
             </TabsTrigger>
             <TabsTrigger value='owner' className='cursor-pointer'>
               Owner
-            </TabsTrigger>
-            <TabsTrigger value='social' className='cursor-pointer'>
-              Social Links
             </TabsTrigger>
           </TabsList>
 
@@ -357,6 +391,29 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   </Select>
                   <FieldError message={orgErrors.organization_type} />
                 </div>
+              </div>
+
+              <div className='space-y-1.5'>
+                <Label htmlFor='org-subdomain'>
+                  Subdomain <span className='text-danger'>*</span>
+                </Label>
+                <div className='gap-1d flex items-center'>
+                  <Input
+                    id='org-subdomain'
+                    type='text'
+                    placeholder='e.g. abc-chamber'
+                    value={form.organization.subdomain}
+                    onChange={(e) =>
+                      updateOrg('subdomain', e.target.value.toLowerCase())
+                    }
+                    aria-invalid={!!orgErrors.subdomain}
+                    className='rounded-r-none!'
+                  />
+                  <span className='bg-primary flex h-10 shrink-0 items-center rounded-r-md px-3 text-sm text-white'>
+                    .sebagriho.com
+                  </span>
+                </div>
+                <FieldError message={orgErrors.subdomain} />
               </div>
 
               <div className='space-y-1.5'>
@@ -604,78 +661,6 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 </div>
               </div>
             </TabsContent>
-
-            {/* Social Links tab */}
-            <TabsContent value='social' className='mt-4 space-y-4'>
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-facebook'>Facebook</Label>
-                  <Input
-                    id='org-facebook'
-                    type='url'
-                    placeholder='https://facebook.com/...'
-                    value={form.organization.facebook}
-                    onChange={(e) => updateOrg('facebook', e.target.value)}
-                    aria-invalid={!!orgErrors.facebook}
-                  />
-                  <FieldError message={orgErrors.facebook} />
-                </div>
-
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-twitter'>Twitter / X</Label>
-                  <Input
-                    id='org-twitter'
-                    type='url'
-                    placeholder='https://twitter.com/...'
-                    value={form.organization.twitter}
-                    onChange={(e) => updateOrg('twitter', e.target.value)}
-                    aria-invalid={!!orgErrors.twitter}
-                  />
-                  <FieldError message={orgErrors.twitter} />
-                </div>
-              </div>
-
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-linkedin'>LinkedIn</Label>
-                  <Input
-                    id='org-linkedin'
-                    type='url'
-                    placeholder='https://linkedin.com/company/...'
-                    value={form.organization.linkedin}
-                    onChange={(e) => updateOrg('linkedin', e.target.value)}
-                    aria-invalid={!!orgErrors.linkedin}
-                  />
-                  <FieldError message={orgErrors.linkedin} />
-                </div>
-
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-instagram'>Instagram</Label>
-                  <Input
-                    id='org-instagram'
-                    type='url'
-                    placeholder='https://instagram.com/...'
-                    value={form.organization.instagram}
-                    onChange={(e) => updateOrg('instagram', e.target.value)}
-                    aria-invalid={!!orgErrors.instagram}
-                  />
-                  <FieldError message={orgErrors.instagram} />
-                </div>
-              </div>
-
-              <div className='space-y-1.5'>
-                <Label htmlFor='org-youtube'>YouTube</Label>
-                <Input
-                  id='org-youtube'
-                  type='url'
-                  placeholder='https://youtube.com/@...'
-                  value={form.organization.youtube}
-                  onChange={(e) => updateOrg('youtube', e.target.value)}
-                  aria-invalid={!!orgErrors.youtube}
-                />
-                <FieldError message={orgErrors.youtube} />
-              </div>
-            </TabsContent>
           </div>
         </Tabs>
 
@@ -706,10 +691,11 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
               </Button>
             )}
 
-            {activeTab !== 'social' ? (
+            {activeTab !== 'owner' ? (
               <Button onClick={handleNext} disabled={isLoading}>
                 {isLoading && <Loading className='h-4 w-4 text-white!' />}
-                Next <ChevronRight className='h-4 w-4' />
+                {isLoading ? 'Checking...' : 'Next'}{' '}
+                <ChevronRight className='h-4 w-4' />
               </Button>
             ) : (
               <Button onClick={handleSubmit} disabled={isLoading}>

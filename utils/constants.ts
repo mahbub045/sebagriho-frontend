@@ -10,3 +10,6 @@ export const stripCountryCode = (phone: string | null) =>
 // Add the Bangladesh country code to a local number without duplicating it.
 export const addCountryCode = (phone: string | null) =>
   phone ? `+88${stripCountryCode(phone)}` : null;
+
+// Subdomain regex: allows lowercase letters, numbers, and hyphens, but not starting or ending with a hyphen, and no consecutive hyphens.
+export const SUBDOMAIN_REGEX = /^[a-z0-9]+(-[a-z0-9]+)*$/;

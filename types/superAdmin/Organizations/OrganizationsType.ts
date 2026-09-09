@@ -23,9 +23,6 @@ export interface AddOrganizationDialogProps {
   onClose: () => void;
 }
 
-export type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
-export type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
-
 export type OrganizationOwner = {
   uid?: string;
   first_name: string;
@@ -39,12 +36,13 @@ export type OrganizationOwner = {
   avatar?: string | null;
   blood_group: string | null;
   date_of_birth: string | null;
+  subdomain: string;
 };
 
 export type OrganizationDetail = {
   name: string;
   title?: string | null;
-  subdomain?: string | null;
+  subdomain: string;
   logo?: string | null;
   organization_type: string;
   description: string;
@@ -60,12 +58,13 @@ export type OrganizationDetail = {
   youtube: string;
 };
 
+export type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
+export type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
+
 export type OrganizationDetailsResponse = {
   uid: string;
   user: OrganizationOwner;
   organization: OrganizationDetail;
-  status: string;
-  joined_at: string;
 };
 
 export interface UpdateOrganizationDialogProps {
