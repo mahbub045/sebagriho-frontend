@@ -10,7 +10,14 @@ export const PatientsApi = baseApi.injectEndpoints({
       }),
       providesTags: ['HPPatients'],
     }),
+    getpatientDetails: builder.query({
+      query: (patientUid) => ({
+        url: `/homeopathy/patients/${patientUid}`,
+        method: 'GET',
+      }),
+      providesTags: ['HPPatients'],
+    }),
   }),
 });
 
-export const { useGetPatientsQuery } = PatientsApi;
+export const { useGetPatientsQuery, useGetpatientDetailsQuery } = PatientsApi;
