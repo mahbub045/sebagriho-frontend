@@ -65,7 +65,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             Try Again
           </Button>
 
-          <Button variant='outline' size='lg' asChild>
+          <Button variant='outline' size='lg'>
             <Link href='/'>
               <Home />
               Go to Dashboard

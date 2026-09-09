@@ -393,389 +393,392 @@ const UpdateOrganizationDialogContent: React.FC<
             &apos;s details.
           </DialogDescription>
         </DialogHeader>
+        <div className='max-h-[calc(90vh-2rem)] overflow-y-auto'>
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value as TabKey)}
+            className='w-full'
+          >
+            <TabsList className='grid w-full grid-cols-3'>
+              <TabsTrigger value='organization' className='cursor-pointer'>
+                Organization
+              </TabsTrigger>
+              <TabsTrigger value='owner' className='cursor-pointer'>
+                Owner
+              </TabsTrigger>
+              <TabsTrigger value='social' className='cursor-pointer'>
+                Social Links
+              </TabsTrigger>
+            </TabsList>
 
-        <Tabs
-          value={activeTab}
-          onValueChange={(value) => setActiveTab(value as TabKey)}
-          className='w-full'
-        >
-          <TabsList className='grid w-full grid-cols-3'>
-            <TabsTrigger value='organization' className='cursor-pointer'>
-              Organization
-            </TabsTrigger>
-            <TabsTrigger value='owner' className='cursor-pointer'>
-              Owner
-            </TabsTrigger>
-            <TabsTrigger value='social' className='cursor-pointer'>
-              Social Links
-            </TabsTrigger>
-          </TabsList>
+            <div>
+              {/* Organization tab */}
+              <TabsContent value='organization' className='mt-4 space-y-4'>
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-name'>
+                      Organization Name <span className='text-danger'>*</span>
+                    </Label>
+                    <Input
+                      id='org-name'
+                      type='text'
+                      value={orgForm.name}
+                      onChange={(e) => updateOrg('name', e.target.value)}
+                      aria-invalid={!!orgErrors.name}
+                    />
+                    <FieldError message={orgErrors.name} />
+                  </div>
 
-          <div>
-            {/* Organization tab */}
-            <TabsContent value='organization' className='mt-4 space-y-4'>
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-name'>
-                    Organization Name <span className='text-danger'>*</span>
-                  </Label>
-                  <Input
-                    id='org-name'
-                    type='text'
-                    value={orgForm.name}
-                    onChange={(e) => updateOrg('name', e.target.value)}
-                    aria-invalid={!!orgErrors.name}
-                  />
-                  <FieldError message={orgErrors.name} />
-                </div>
-
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-type'>
-                    Organization Type <span className='text-danger'>*</span>
-                  </Label>
-                  <Select
-                    items={ORGANIZATION_TYPE_OPTIONS}
-                    value={orgForm.organization_type}
-                    onValueChange={(value) =>
-                      updateOrg('organization_type', value)
-                    }
-                  >
-                    <SelectTrigger
-                      id='org-type'
-                      className='w-full'
-                      aria-invalid={!!orgErrors.organization_type}
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-type'>
+                      Organization Type <span className='text-danger'>*</span>
+                    </Label>
+                    <Select
+                      items={ORGANIZATION_TYPE_OPTIONS}
+                      value={orgForm.organization_type}
+                      onValueChange={(value) =>
+                        updateOrg('organization_type', value)
+                      }
                     >
-                      <SelectValue placeholder='Select type' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ORGANIZATION_TYPE_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FieldError message={orgErrors.organization_type} />
-                </div>
-              </div>
-
-              <div className='space-y-1.5'>
-                <Label htmlFor='org-subdomain'>
-                  Subdomain <span className='text-danger'>*</span>
-                </Label>
-                <div className='gap-1d flex items-center'>
-                  <Input
-                    id='org-subdomain'
-                    type='text'
-                    placeholder='e.g. abc-chamber'
-                    value={orgForm.subdomain}
-                    onChange={(e) =>
-                      updateOrg('subdomain', e.target.value.toLowerCase())
-                    }
-                    aria-invalid={!!orgErrors.subdomain}
-                    className='rounded-r-none!'
-                  />
-                  <span className='bg-primary flex h-10 shrink-0 items-center rounded-r-md px-3 text-sm text-white'>
-                    {process.env.NEXT_PUBLIC_COOKIE_DOMAIN}
-                  </span>
-                </div>
-                <FieldError message={orgErrors.subdomain} />
-              </div>
-
-              <div className='space-y-1.5'>
-                <Label htmlFor='org-description'>Description</Label>
-                <Textarea
-                  id='org-description'
-                  className='field-sizing-fixed'
-                  value={orgForm.description}
-                  onChange={(e) => updateOrg('description', e.target.value)}
-                  rows={5}
-                />
-                <FieldError message={orgErrors.description} />
-              </div>
-
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-email'>Email</Label>
-                  <Input
-                    id='org-email'
-                    type='email'
-                    value={orgForm.email}
-                    onChange={(e) => updateOrg('email', e.target.value)}
-                    aria-invalid={!!orgErrors.email}
-                  />
-                  <FieldError message={orgErrors.email} />
+                      <SelectTrigger
+                        id='org-type'
+                        className='w-full'
+                        aria-invalid={!!orgErrors.organization_type}
+                      >
+                        <SelectValue placeholder='Select type' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ORGANIZATION_TYPE_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldError message={orgErrors.organization_type} />
+                  </div>
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='org-phone'>Phone</Label>
-                  <BdPhoneInput
-                    id='org-phone'
-                    value={orgForm.phone || ''}
-                    onChange={(value) => updateOrg('phone', value)}
-                  />
-                  <FieldError message={orgErrors.phone} />
-                </div>
-              </div>
-
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-website'>Website</Label>
-                  <Input
-                    id='org-website'
-                    type='url'
-                    value={orgForm.website}
-                    onChange={(e) => updateOrg('website', e.target.value)}
-                    aria-invalid={!!orgErrors.website}
-                  />
-                  <FieldError message={orgErrors.website} />
-                </div>
-
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-status'>Status</Label>
-                  <Select
-                    items={ORGANIZATION_STATUS_OPTIONS}
-                    value={orgForm.status}
-                    onValueChange={(value) => updateOrg('status', value)}
-                  >
-                    <SelectTrigger id='org-status' className='w-full'>
-                      <SelectValue placeholder='Select status' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ORGANIZATION_STATUS_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FieldError message={orgErrors.status} />
-                </div>
-              </div>
-
-              <div className='space-y-1.5'>
-                <Label htmlFor='org-address'>Address</Label>
-                <Input
-                  id='org-address'
-                  type='text'
-                  value={orgForm.address}
-                  onChange={(e) => updateOrg('address', e.target.value)}
-                  aria-invalid={!!orgErrors.address}
-                />
-                <FieldError message={orgErrors.address} />
-              </div>
-            </TabsContent>
-
-            {/* Owner tab */}
-            <TabsContent value='owner' className='mt-4 space-y-4'>
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='user-first-name'>
-                    First Name <span className='text-danger'>*</span>
+                  <Label htmlFor='org-subdomain'>
+                    Subdomain <span className='text-danger'>*</span>
                   </Label>
-                  <Input
-                    id='user-first-name'
-                    type='text'
-                    value={userForm.first_name}
-                    onChange={(e) => updateUser('first_name', e.target.value)}
-                    aria-invalid={!!userErrors.first_name}
-                  />
-                  <FieldError message={userErrors.first_name} />
+                  <div className='gap-1d flex items-center'>
+                    <Input
+                      id='org-subdomain'
+                      type='text'
+                      placeholder='e.g. abc-chamber'
+                      value={orgForm.subdomain}
+                      onChange={(e) =>
+                        updateOrg('subdomain', e.target.value.toLowerCase())
+                      }
+                      aria-invalid={!!orgErrors.subdomain}
+                      className='rounded-r-none!'
+                    />
+                    <span className='bg-primary flex h-10 shrink-0 items-center rounded-r-md px-3 text-sm text-white'>
+                      {process.env.NEXT_PUBLIC_COOKIE_DOMAIN}
+                    </span>
+                  </div>
+                  <FieldError message={orgErrors.subdomain} />
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='user-last-name'>
-                    Last Name <span className='text-danger'>*</span>
-                  </Label>
-                  <Input
-                    id='user-last-name'
-                    type='text'
-                    value={userForm.last_name}
-                    onChange={(e) => updateUser('last_name', e.target.value)}
-                    aria-invalid={!!userErrors.last_name}
+                  <Label htmlFor='org-description'>Description</Label>
+                  <Textarea
+                    id='org-description'
+                    className='field-sizing-fixed'
+                    value={orgForm.description}
+                    onChange={(e) => updateOrg('description', e.target.value)}
+                    rows={5}
                   />
-                  <FieldError message={userErrors.last_name} />
-                </div>
-              </div>
-
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='user-email'>
-                    Email <span className='text-danger'>*</span>
-                  </Label>
-                  <Input
-                    id='user-email'
-                    type='email'
-                    value={userForm.email}
-                    onChange={(e) => updateUser('email', e.target.value)}
-                    aria-invalid={!!userErrors.email}
-                  />
-                  <FieldError message={userErrors.email} />
+                  <FieldError message={orgErrors.description} />
                 </div>
 
-                <div className='space-y-1.5'>
-                  <Label htmlFor='user-phone'>
-                    Phone <span className='text-danger'>*</span>
-                  </Label>
-                  <BdPhoneInput
-                    id='user-phone'
-                    value={userForm.phone}
-                    onChange={(value) => updateUser('phone', value)}
-                  />
-                  <FieldError message={userErrors.phone} />
-                </div>
-              </div>
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-email'>Email</Label>
+                    <Input
+                      id='org-email'
+                      type='email'
+                      value={orgForm.email}
+                      onChange={(e) => updateOrg('email', e.target.value)}
+                      aria-invalid={!!orgErrors.email}
+                    />
+                    <FieldError message={orgErrors.email} />
+                  </div>
 
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='user-gender'>
-                    Gender <span className='text-danger'>*</span>
-                  </Label>
-                  <Select
-                    items={GENDER_OPTIONS}
-                    value={userForm.gender}
-                    onValueChange={(value) => updateUser('gender', value)}
-                  >
-                    <SelectTrigger
-                      id='user-gender'
-                      className='w-full'
-                      aria-invalid={!!userErrors.gender}
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-phone'>Phone</Label>
+                    <BdPhoneInput
+                      id='org-phone'
+                      value={orgForm.phone || ''}
+                      onChange={(value) => updateOrg('phone', value)}
+                    />
+                    <FieldError message={orgErrors.phone} />
+                  </div>
+                </div>
+
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-website'>Website</Label>
+                    <Input
+                      id='org-website'
+                      type='url'
+                      value={orgForm.website}
+                      onChange={(e) => updateOrg('website', e.target.value)}
+                      aria-invalid={!!orgErrors.website}
+                    />
+                    <FieldError message={orgErrors.website} />
+                  </div>
+
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-status'>Status</Label>
+                    <Select
+                      items={ORGANIZATION_STATUS_OPTIONS}
+                      value={orgForm.status}
+                      onValueChange={(value) => updateOrg('status', value)}
                     >
-                      <SelectValue placeholder='Select gender' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GENDER_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FieldError message={userErrors.gender} />
+                      <SelectTrigger id='org-status' className='w-full'>
+                        <SelectValue placeholder='Select status' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ORGANIZATION_STATUS_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldError message={orgErrors.status} />
+                  </div>
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='user-blood-group'>Blood Group</Label>
-                  <Select
-                    items={BLOOD_GROUP_OPTIONS}
-                    value={userForm.blood_group}
-                    onValueChange={(value) => updateUser('blood_group', value)}
-                  >
-                    <SelectTrigger id='user-blood-group' className='w-full'>
-                      <SelectValue placeholder='Select blood group' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {BLOOD_GROUP_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FieldError message={userErrors.blood_group} />
-                </div>
-              </div>
-
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='user-nid'>NID</Label>
+                  <Label htmlFor='org-address'>Address</Label>
                   <Input
-                    id='user-nid'
+                    id='org-address'
                     type='text'
-                    value={userForm.nid || ''}
-                    onChange={(e) => updateUser('nid', e.target.value)}
-                    aria-invalid={!!userErrors.nid}
+                    value={orgForm.address}
+                    onChange={(e) => updateOrg('address', e.target.value)}
+                    aria-invalid={!!orgErrors.address}
                   />
-                  <FieldError message={userErrors.nid} />
+                  <FieldError message={orgErrors.address} />
+                </div>
+              </TabsContent>
+
+              {/* Owner tab */}
+              <TabsContent value='owner' className='mt-4 space-y-4'>
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-first-name'>
+                      First Name <span className='text-danger'>*</span>
+                    </Label>
+                    <Input
+                      id='user-first-name'
+                      type='text'
+                      value={userForm.first_name}
+                      onChange={(e) => updateUser('first_name', e.target.value)}
+                      aria-invalid={!!userErrors.first_name}
+                    />
+                    <FieldError message={userErrors.first_name} />
+                  </div>
+
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-last-name'>
+                      Last Name <span className='text-danger'>*</span>
+                    </Label>
+                    <Input
+                      id='user-last-name'
+                      type='text'
+                      value={userForm.last_name}
+                      onChange={(e) => updateUser('last_name', e.target.value)}
+                      aria-invalid={!!userErrors.last_name}
+                    />
+                    <FieldError message={userErrors.last_name} />
+                  </div>
                 </div>
 
-                <div className='space-y-1.5'>
-                  <Label htmlFor='user-dob'>Date of Birth</Label>
-                  <Input
-                    id='user-dob'
-                    type='date'
-                    value={userForm.date_of_birth || ''}
-                    onChange={(e) =>
-                      updateUser('date_of_birth', e.target.value)
-                    }
-                    aria-invalid={!!userErrors.date_of_birth}
-                  />
-                  <FieldError message={userErrors.date_of_birth} />
-                </div>
-              </div>
-            </TabsContent>
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-email'>
+                      Email <span className='text-danger'>*</span>
+                    </Label>
+                    <Input
+                      id='user-email'
+                      type='email'
+                      value={userForm.email}
+                      onChange={(e) => updateUser('email', e.target.value)}
+                      aria-invalid={!!userErrors.email}
+                    />
+                    <FieldError message={userErrors.email} />
+                  </div>
 
-            {/* Social Links tab */}
-            <TabsContent value='social' className='mt-4 space-y-4'>
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-facebook'>Facebook</Label>
-                  <Input
-                    id='org-facebook'
-                    type='url'
-                    value={orgForm.facebook}
-                    onChange={(e) => updateOrg('facebook', e.target.value)}
-                    aria-invalid={!!orgErrors.facebook}
-                  />
-                  <FieldError message={orgErrors.facebook} />
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-phone'>
+                      Phone <span className='text-danger'>*</span>
+                    </Label>
+                    <BdPhoneInput
+                      id='user-phone'
+                      value={userForm.phone}
+                      onChange={(value) => updateUser('phone', value)}
+                    />
+                    <FieldError message={userErrors.phone} />
+                  </div>
                 </div>
 
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-twitter'>Twitter / X</Label>
-                  <Input
-                    id='org-twitter'
-                    type='url'
-                    value={orgForm.twitter}
-                    onChange={(e) => updateOrg('twitter', e.target.value)}
-                    aria-invalid={!!orgErrors.twitter}
-                  />
-                  <FieldError message={orgErrors.twitter} />
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-gender'>
+                      Gender <span className='text-danger'>*</span>
+                    </Label>
+                    <Select
+                      items={GENDER_OPTIONS}
+                      value={userForm.gender}
+                      onValueChange={(value) => updateUser('gender', value)}
+                    >
+                      <SelectTrigger
+                        id='user-gender'
+                        className='w-full'
+                        aria-invalid={!!userErrors.gender}
+                      >
+                        <SelectValue placeholder='Select gender' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {GENDER_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldError message={userErrors.gender} />
+                  </div>
+
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-blood-group'>Blood Group</Label>
+                    <Select
+                      items={BLOOD_GROUP_OPTIONS}
+                      value={userForm.blood_group}
+                      onValueChange={(value) =>
+                        updateUser('blood_group', value)
+                      }
+                    >
+                      <SelectTrigger id='user-blood-group' className='w-full'>
+                        <SelectValue placeholder='Select blood group' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {BLOOD_GROUP_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldError message={userErrors.blood_group} />
+                  </div>
                 </div>
-              </div>
 
-              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-linkedin'>LinkedIn</Label>
-                  <Input
-                    id='org-linkedin'
-                    type='url'
-                    value={orgForm.linkedin}
-                    onChange={(e) => updateOrg('linkedin', e.target.value)}
-                    aria-invalid={!!orgErrors.linkedin}
-                  />
-                  <FieldError message={orgErrors.linkedin} />
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-nid'>NID</Label>
+                    <Input
+                      id='user-nid'
+                      type='text'
+                      value={userForm.nid || ''}
+                      onChange={(e) => updateUser('nid', e.target.value)}
+                      aria-invalid={!!userErrors.nid}
+                    />
+                    <FieldError message={userErrors.nid} />
+                  </div>
+
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='user-dob'>Date of Birth</Label>
+                    <Input
+                      id='user-dob'
+                      type='date'
+                      value={userForm.date_of_birth || ''}
+                      onChange={(e) =>
+                        updateUser('date_of_birth', e.target.value)
+                      }
+                      aria-invalid={!!userErrors.date_of_birth}
+                    />
+                    <FieldError message={userErrors.date_of_birth} />
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Social Links tab */}
+              <TabsContent value='social' className='mt-4 space-y-4'>
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-facebook'>Facebook</Label>
+                    <Input
+                      id='org-facebook'
+                      type='url'
+                      value={orgForm.facebook}
+                      onChange={(e) => updateOrg('facebook', e.target.value)}
+                      aria-invalid={!!orgErrors.facebook}
+                    />
+                    <FieldError message={orgErrors.facebook} />
+                  </div>
+
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-twitter'>Twitter / X</Label>
+                    <Input
+                      id='org-twitter'
+                      type='url'
+                      value={orgForm.twitter}
+                      onChange={(e) => updateOrg('twitter', e.target.value)}
+                      aria-invalid={!!orgErrors.twitter}
+                    />
+                    <FieldError message={orgErrors.twitter} />
+                  </div>
                 </div>
 
-                <div className='space-y-1.5'>
-                  <Label htmlFor='org-youtube'>YouTube</Label>
-                  <Input
-                    id='org-youtube'
-                    type='url'
-                    value={orgForm.youtube}
-                    onChange={(e) => updateOrg('youtube', e.target.value)}
-                    aria-invalid={!!orgErrors.youtube}
-                  />
-                  <FieldError message={orgErrors.youtube} />
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-linkedin'>LinkedIn</Label>
+                    <Input
+                      id='org-linkedin'
+                      type='url'
+                      value={orgForm.linkedin}
+                      onChange={(e) => updateOrg('linkedin', e.target.value)}
+                      aria-invalid={!!orgErrors.linkedin}
+                    />
+                    <FieldError message={orgErrors.linkedin} />
+                  </div>
+
+                  <div className='space-y-1.5'>
+                    <Label htmlFor='org-youtube'>YouTube</Label>
+                    <Input
+                      id='org-youtube'
+                      type='url'
+                      value={orgForm.youtube}
+                      onChange={(e) => updateOrg('youtube', e.target.value)}
+                      aria-invalid={!!orgErrors.youtube}
+                    />
+                    <FieldError message={orgErrors.youtube} />
+                  </div>
                 </div>
-              </div>
-            </TabsContent>
-          </div>
-        </Tabs>
+              </TabsContent>
+            </div>
+          </Tabs>
 
-        {submitError && (
-          <p className='text-danger text-center text-sm'>{submitError}</p>
-        )}
+          {submitError && (
+            <p className='text-danger text-center text-sm'>{submitError}</p>
+          )}
 
-        <DialogFooter className='mt-2'>
-          <Button variant='outline' onClick={onClose} disabled={isLoading}>
-            Cancel
-          </Button>
+          <DialogFooter className='mt-2'>
+            <Button variant='outline' onClick={onClose} disabled={isLoading}>
+              Cancel
+            </Button>
 
-          <Button onClick={handleSubmit} disabled={isLoading || !hasChanges}>
-            {isLoading && <Loading className='h-4 w-4 text-white!' />}
-            {isLoading ? 'Saving...' : 'Save changes'}
-          </Button>
-        </DialogFooter>
+            <Button onClick={handleSubmit} disabled={isLoading || !hasChanges}>
+              {isLoading && <Loading className='h-4 w-4 text-white!' />}
+              {isLoading ? 'Saving...' : 'Save changes'}
+            </Button>
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
