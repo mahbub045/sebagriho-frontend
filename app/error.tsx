@@ -9,10 +9,9 @@ import { useEffect } from 'react';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
-  reset: () => void;
 }
 
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
+export default function ErrorPage({ error }: ErrorPageProps) {
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -60,12 +59,12 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
         {/* Actions */}
         <div className='mt-10 flex flex-col justify-center gap-4 sm:flex-row'>
-          <Button size='lg' onClick={() => reset()}>
+          <Button size='lg' onClick={() => window.location.reload()}>
             <RefreshCw />
             Try Again
           </Button>
 
-          <Button variant='outline' size='lg'>
+          <Button variant='outline' size='lg' asChild>
             <Link href='/'>
               <Home />
               Go to Dashboard

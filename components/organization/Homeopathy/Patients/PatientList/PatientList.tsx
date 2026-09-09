@@ -34,7 +34,11 @@ import {
   PatientStatus,
 } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { PAGE_LIMIT } from '@/utils/constants';
-import { formatDateAndTime, getInitials } from '@/utils/formatters';
+import {
+  formatChoiceFieldValue,
+  formatDateAndTime,
+  getInitials,
+} from '@/utils/formatters';
 import {
   CalendarDays,
   FileText,
@@ -49,9 +53,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
-const capitalize = (value: string) =>
-  value.charAt(0) + value.slice(1).toLowerCase();
+import AddPatientDialog from './Dialogs/AddPatientDialog';
 
 const PatientList: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -59,6 +61,7 @@ const PatientList: React.FC = () => {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<PatientStatus | 'ALL'>('ALL');
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
+  const [isPatientAdded, setIsPatientAdded] = useState(false);
 
   // Debounce search input
   useEffect(() => {
@@ -123,11 +126,9 @@ const PatientList: React.FC = () => {
           Manage and view all patient records in your organization.
         </p>
       </div>
-      <Button asChild className='w-full gap-1.5 sm:w-auto'>
-        <Link href='/organization/homeopathy/patients/create'>
-          <Plus className='h-4 w-4' />
-          Add Patient
-        </Link>
+      <Button onClick={() => setIsPatientAdded(true)}>
+        <Plus className='h-4 w-4' />
+        Add Patient
       </Button>
     </div>
   );
@@ -245,11 +246,9 @@ const PatientList: React.FC = () => {
               : 'Patients will appear here once they are added to the system.'}
           </p>
           {!hasActiveFilters && (
-            <Button asChild className='mt-4 gap-1.5'>
-              <Link href='/organization/homeopathy/patients/create'>
-                <Plus className='h-4 w-4' />
-                Add Patient
-              </Link>
+            <Button onClick={() => setIsPatientAdded(true)} className='mt-4 gap-1.5'>
+              <Plus className='h-4 w-4' />
+              Add Patient
             </Button>
           )}
         </div>
@@ -310,7 +309,7 @@ const PatientList: React.FC = () => {
                     variant='outline'
                     className={`shrink-0 text-[11px] font-medium ${statusClass}`}
                   >
-                    {capitalize(patient.status)}
+                    {formatChoiceFieldValue(patient.status)}
                   </Badge>
                 </div>
                 <div className='border-border/60 border-t' />
@@ -323,7 +322,7 @@ const PatientList: React.FC = () => {
                       <p className='truncate font-medium'>
                         {patient.age ?? 'N/A'} years •{' '}
                         {patient.user.gender
-                          ? capitalize(patient.user.gender)
+                          ? formatChoiceFieldValue(patient.user.gender)
                           : 'N/A'}
                       </p>
                     </div>
@@ -337,7 +336,7 @@ const PatientList: React.FC = () => {
                         className={`mt-0.5 text-[10px] font-medium ${miasmClass}`}
                       >
                         {patient.miasm_type
-                          ? capitalize(patient.miasm_type)
+                          ? formatChoiceFieldValue(patient.miasm_type)
                           : 'Not specified'}
                       </Badge>
                     </div>
@@ -446,6 +445,11 @@ const PatientList: React.FC = () => {
           </Pagination>
         )}
       </div>
+      {/* Dialog  */}
+      <AddPatientDialog
+        isOpen={isPatientAdded}
+        onClose={() => setIsPatientAdded(false)}
+      />
     </div>
   );
 };

@@ -8,20 +8,20 @@ const shimmer =
   'relative overflow-hidden after:absolute after:inset-0 after:translate-x-[-100%] after:bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.22)_50%,transparent_70%)] hover:after:translate-x-[100%] after:transition-transform after:duration-500 after:ease-in-out';
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center  justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: `${shimmer} bg-primary/95 text-primary-foreground hover:bg-primary cursor-pointer`,
+        default: `${shimmer} bg-primary/95 text-primary-foreground hover:bg-primary cursor-pointer text-white`,
         outline: `${shimmer} border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50 cursor-pointer`,
         secondary: `${shimmer} bg-secondary/95 text-white hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground cursor-pointer`,
         ghost: `hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 cursor-pointer`,
         destructive: `${shimmer} bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40 cursor-pointer`,
-        link: 'text-primary underline-offset-4 hover:underline cursor-pointer',
-        info: `${shimmer} bg-info/95 text-info-foreground shadow-xs hover:bg-info cursor-pointer`,
-        success: `${shimmer} bg-success/95 text-success-foreground shadow-xs hover:bg-success cursor-pointer`,
-        warning: `${shimmer} bg-warning/95 text-warning-foreground shadow-xs hover:bg-warning cursor-pointer`,
-        danger: `${shimmer} bg-danger/95 text-danger-foreground shadow-xs hover:bg-danger cursor-pointer`,
+        link: 'text-primary underline-offset-4 hover:underline cursor-pointer text-white',
+        info: `${shimmer} bg-info/95 text-info-foreground shadow-xs hover:bg-info cursor-pointer text-white`,
+        success: `${shimmer} bg-success/95 text-success-foreground shadow-xs hover:bg-success cursor-pointer text-white`,
+        warning: `${shimmer} bg-warning/95 text-warning-foreground shadow-xs hover:bg-warning cursor-pointer text-white`,
+        danger: `${shimmer} bg-danger/95 text-danger-foreground shadow-xs hover:bg-danger cursor-pointer text-white`,
       },
       size: {
         default:
