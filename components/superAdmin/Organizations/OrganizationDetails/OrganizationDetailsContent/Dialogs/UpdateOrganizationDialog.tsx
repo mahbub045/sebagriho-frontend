@@ -49,12 +49,13 @@ const buildOrgForm = (
   organizationDetails: UpdateOrganizationDialogProps['organizationDetails'],
 ): OrganizationDetail => {
   if (!organizationDetails) return INITIAL_FORM.organization;
-  const { organization, status } = organizationDetails;
+  const { organization } = organizationDetails;
   return {
     name: organization.name ?? '',
     organization_type: organization.organization_type ?? '',
+    subdomain: organization.subdomain ?? '',
     description: organization.description ?? '',
-    status: status ?? organization.status ?? '',
+    status: organization.status ?? organization.status ?? '',
     phone: stripCountryCode(organization.phone),
     email: organization.email ?? '',
     website: organization.website ?? '',
@@ -62,7 +63,6 @@ const buildOrgForm = (
     facebook: organization.facebook ?? '',
     twitter: organization.twitter ?? '',
     linkedin: organization.linkedin ?? '',
-    instagram: organization.instagram ?? '',
     youtube: organization.youtube ?? '',
   };
 };
@@ -366,6 +366,29 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
               </div>
 
               <div className='space-y-1.5'>
+                <Label htmlFor='org-subdomain'>
+                  Subdomain <span className='text-danger'>*</span>
+                </Label>
+                <div className='gap-1d flex items-center'>
+                  <Input
+                    id='org-subdomain'
+                    type='text'
+                    placeholder='e.g. abc-chamber'
+                    value={orgForm.subdomain}
+                    onChange={(e) =>
+                      updateOrg('subdomain', e.target.value.toLowerCase())
+                    }
+                    aria-invalid={!!orgErrors.subdomain}
+                    className='rounded-r-none!'
+                  />
+                  <span className='bg-primary flex h-10 shrink-0 items-center rounded-r-md px-3 text-sm text-white'>
+                    .sebagriho.com
+                  </span>
+                </div>
+                <FieldError message={orgErrors.subdomain} />
+              </div>
+
+              <div className='space-y-1.5'>
                 <Label htmlFor='org-description'>Description</Label>
                 <Textarea
                   id='org-description'
@@ -645,28 +668,16 @@ const UpdateOrganizationDialog: React.FC<UpdateOrganizationDialogProps> = ({
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='org-instagram'>Instagram</Label>
+                  <Label htmlFor='org-youtube'>YouTube</Label>
                   <Input
-                    id='org-instagram'
+                    id='org-youtube'
                     type='url'
-                    value={orgForm.instagram}
-                    onChange={(e) => updateOrg('instagram', e.target.value)}
-                    aria-invalid={!!orgErrors.instagram}
+                    value={orgForm.youtube}
+                    onChange={(e) => updateOrg('youtube', e.target.value)}
+                    aria-invalid={!!orgErrors.youtube}
                   />
-                  <FieldError message={orgErrors.instagram} />
+                  <FieldError message={orgErrors.youtube} />
                 </div>
-              </div>
-
-              <div className='space-y-1.5'>
-                <Label htmlFor='org-youtube'>YouTube</Label>
-                <Input
-                  id='org-youtube'
-                  type='url'
-                  value={orgForm.youtube}
-                  onChange={(e) => updateOrg('youtube', e.target.value)}
-                  aria-invalid={!!orgErrors.youtube}
-                />
-                <FieldError message={orgErrors.youtube} />
               </div>
             </TabsContent>
           </div>

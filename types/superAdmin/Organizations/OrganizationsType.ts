@@ -1,5 +1,6 @@
 export type TabKey = 'organization' | 'owner' | 'social';
 export interface OrganizationCardProps {
+  uid: string;
   organization: {
     name: string;
     logo: string | null;
@@ -14,8 +15,6 @@ export interface OrganizationCardProps {
     last_name: string;
   };
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
-  joined_at: string;
-  uid: string;
 }
 
 export interface AddOrganizationDialogProps {
@@ -36,15 +35,14 @@ export type OrganizationOwner = {
   avatar?: string | null;
   blood_group: string | null;
   date_of_birth: string | null;
-  subdomain: string;
 };
 
 export type OrganizationDetail = {
   name: string;
   title?: string | null;
-  subdomain: string;
-  logo?: string | null;
   organization_type: string;
+  subdomain?: string;
+  logo?: string | null;
   description: string;
   status: string;
   phone: string | null;
@@ -54,7 +52,6 @@ export type OrganizationDetail = {
   facebook: string;
   twitter: string;
   linkedin: string;
-  instagram: string;
   youtube: string;
 };
 
