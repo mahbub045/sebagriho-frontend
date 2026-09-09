@@ -1,5 +1,6 @@
 export type TabKey = 'organization' | 'owner' | 'social';
 export interface OrganizationCardProps {
+  uid: string;
   organization: {
     name: string;
     logo: string | null;
@@ -14,17 +15,12 @@ export interface OrganizationCardProps {
     last_name: string;
   };
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
-  joined_at: string;
-  uid: string;
 }
 
 export interface AddOrganizationDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-export type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
-export type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
 
 export type OrganizationOwner = {
   uid?: string;
@@ -44,9 +40,9 @@ export type OrganizationOwner = {
 export type OrganizationDetail = {
   name: string;
   title?: string | null;
-  subdomain?: string | null;
-  logo?: string | null;
   organization_type: string;
+  subdomain?: string;
+  logo?: string | null;
   description: string;
   status: string;
   phone: string | null;
@@ -56,16 +52,16 @@ export type OrganizationDetail = {
   facebook: string;
   twitter: string;
   linkedin: string;
-  instagram: string;
   youtube: string;
 };
+
+export type OrgErrors = Partial<Record<keyof OrganizationDetail, string>>;
+export type UserErrors = Partial<Record<keyof OrganizationOwner, string>>;
 
 export type OrganizationDetailsResponse = {
   uid: string;
   user: OrganizationOwner;
   organization: OrganizationDetail;
-  status: string;
-  joined_at: string;
 };
 
 export interface UpdateOrganizationDialogProps {

@@ -404,11 +404,9 @@ const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const organizationSlug = pathname.split('/')[1];
-
   const navItems = buildItems(
     Boolean(session?.user.is_admin),
-    organizationSlug,
+    session?.user.organization_type,
   );
 
   const { data: profileData, isLoading } = useGetProfileInfoQuery(undefined);
@@ -449,6 +447,17 @@ const AppSidebar: React.FC = () => {
               width={400}
               height={150}
               className='hidden h-12 w-40 rounded-xl dark:block'
+              loading='eager'
+            />
+          </div>
+
+          <div className='hidden items-center group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:text-center'>
+            <Image
+              src='/images/logo-single-icon.png'
+              alt='Sebagriho'
+              width={200}
+              height={150}
+              className='h-5.5 w-6'
               loading='eager'
             />
           </div>

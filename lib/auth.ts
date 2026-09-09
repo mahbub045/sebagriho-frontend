@@ -3,6 +3,20 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
+  // Support subdomains sharing the same session cookie, e.g. tenant.example.com
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+      },
+    },
+  },
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -19,17 +33,25 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        // email: { label: 'Email', type: 'email' },
         phone: { label: 'Phone', type: 'text' },
         password: { label: 'Password', type: 'password' },
+        subdomain: { label: 'Subdomain', type: 'text' },
       },
       async authorize(credentials) {
+        if (!credentials) return null;
+
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
           {
             method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: credentials.phone,
+              password: credentials.password,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+              'X-ORGANIZATION-SUBDOMAIN': credentials.subdomain || '',
+            },
           },
         );
 
@@ -46,6 +68,7 @@ export const authOptions: NextAuthOptions = {
             headers: {
               Authorization: `Bearer ${access}`,
               'Content-Type': 'application/json',
+              'X-ORGANIZATION-SUBDOMAIN': credentials.subdomain || '',
             },
           },
         );
@@ -58,7 +81,8 @@ export const authOptions: NextAuthOptions = {
           id: profile.id,
           phone: profile.phone,
           is_admin: profile.is_admin,
-          organization_slug: profile.organization_slug,
+          organization_type: profile.organization_type,
+          subdomain: credentials.subdomain || null,
           accessToken: access,
           refreshToken: refresh,
         };
@@ -72,17 +96,29 @@ export const authOptions: NextAuthOptions = {
       if (trigger === 'update' && session?.accessToken) {
         token.accessToken = session.accessToken;
         token.refreshToken = session.refreshToken;
+        if (session.subdomain !== undefined) {
+          token.subdomain = session.subdomain;
+        }
         return token;
       }
 
       // ✅ Google sign-in flow
       if (account?.provider === 'google' && account.access_token) {
+        // Google doesn't carry a tenant subdomain on its own; if you collect
+        // one before redirecting to Google (e.g. via a query param captured
+        // on the sign-in page and passed through `state` or a cookie), read
+        // it here instead of leaving it undefined.
+        const subdomain = (account as { subdomain?: string }).subdomain || '';
+
         try {
           const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/social/google`,
             {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: {
+                'Content-Type': 'application/json',
+                'X-ORGANIZATION-SUBDOMAIN': subdomain,
+              },
               body: JSON.stringify({
                 access_token: account.access_token,
               }),
@@ -98,6 +134,7 @@ export const authOptions: NextAuthOptions = {
                 headers: {
                   Authorization: `Bearer ${access}`,
                   'Content-Type': 'application/json',
+                  'X-ORGANIZATION-SUBDOMAIN': subdomain,
                 },
               },
             );
@@ -107,7 +144,8 @@ export const authOptions: NextAuthOptions = {
               token.id = profile.id;
               token.phone = profile.phone;
               token.is_admin = profile.is_admin;
-              token.organization_slug = profile.organization_slug;
+              token.organization_type = profile.organization_type;
+              token.subdomain = subdomain || null;
               token.accessToken = access;
               token.refreshToken = refresh;
             }
@@ -126,7 +164,8 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.phone = user.phone;
         token.is_admin = user.is_admin;
-        token.organization_slug = user.organization_slug;
+        token.organization_type = user.organization_type;
+        token.subdomain = user.subdomain ?? null;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }
@@ -138,7 +177,8 @@ export const authOptions: NextAuthOptions = {
       session.user.id = token.id;
       session.user.phone = token.phone || '';
       session.user.is_admin = token.is_admin;
-      session.user.organization_slug = token.organization_slug;
+      session.user.organization_type = token.organization_type;
+      session.user.subdomain = token.subdomain ?? null;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       return session;

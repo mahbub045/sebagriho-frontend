@@ -1,6 +1,8 @@
 import {
   Building2,
   LayoutDashboard,
+  Pill,
+  Stethoscope,
   Users,
   type LucideIcon,
 } from 'lucide-react';
@@ -15,7 +17,7 @@ export type NavItem = {
 
 export const buildItems = (
   isAdmin = false,
-  organizationSlug?: string,
+  organizationType?: string,
 ): NavItem[] => {
   if (isAdmin) {
     return [
@@ -37,15 +39,40 @@ export const buildItems = (
     ];
   }
 
-  const dashboardHref = organizationSlug
-    ? `/${organizationSlug}/dashboard`
-    : '/dashboard';
+  if (!isAdmin && organizationType === 'HOMEOPATHY') {
+    return [
+      {
+        label: 'Dashboard',
+        href: '/organization/homeopathy/dashboard',
+        icon: LayoutDashboard,
+      },
+      {
+        label: 'Patients',
+        href: '/organization/homeopathy/patients',
+        icon: Users,
+      },
+      {
+        label: 'Appointments',
+        href: '/organization/homeopathy/appointments',
+        icon: Stethoscope,
+      },
+      {
+        label: 'Medicines',
+        href: '/organization/homeopathy/medicines',
+        icon: Pill,
+      },
+    ];
+  }
 
-  return [
-    {
-      label: 'Dashboard',
-      href: dashboardHref,
-      icon: LayoutDashboard,
-    },
-  ];
+  if (!isAdmin && organizationType === 'AYURVEDIC') {
+    return [
+      {
+        label: 'Dashboard',
+        href: '/organization/ayurvedic/dashboard',
+        icon: LayoutDashboard,
+      },
+    ];
+  }
+
+  return [];
 };

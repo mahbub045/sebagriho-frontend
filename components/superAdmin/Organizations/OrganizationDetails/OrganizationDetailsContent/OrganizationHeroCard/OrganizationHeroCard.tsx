@@ -7,7 +7,7 @@ import {
 import { statusStyles } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { OrganizationDetail } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
-import { Building2 } from 'lucide-react';
+import { Building2, Globe } from 'lucide-react';
 import Image from 'next/image';
 
 type Props = {
@@ -31,8 +31,10 @@ const OrganizationHeroCard: React.FC<Props> = ({
     ORGANIZATION_STATUS_OPTIONS.find((option) => option.value === status)
       ?.label ?? status;
 
+  const url = `https://${organization.subdomain}${process.env.NEXT_PUBLIC_COOKIE_DOMAIN}`;
+
   return (
-    <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0'>
+    <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='flex flex-col gap-4 p-5 sm:flex-row sm:items-start'>
         <div className='bg-primary/5 text-primary relative h-16 w-28 shrink-0 overflow-hidden rounded-lg shadow-sm'>
           {organization.logo ? (
@@ -69,6 +71,17 @@ const OrganizationHeroCard: React.FC<Props> = ({
       <div className='border-border/60 bg-muted/30 flex flex-wrap items-center justify-between gap-2 border-t px-5 py-3 text-xs'>
         <span className='text-muted-foreground'>
           Joined {formatDateAndTime(joinedAt)}
+        </span>
+        <span className='flex items-center'>
+          <Globe className='text-primary h-3.5 w-3.5' />
+          <a
+            href={url}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-primary ml-1 underline'
+          >
+            {url}
+          </a>
         </span>
       </div>
     </Card>

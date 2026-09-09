@@ -10,7 +10,5 @@ export default async function Home() {
     redirect('/auth/signin');
   }
 
-  const organizationSlug = session.user.organization_slug;
-
-  redirect(getDashboardPath(Boolean(session.user.is_admin), organizationSlug));
+  redirect(getDashboardPath(Boolean(session.user.is_admin)));
 }

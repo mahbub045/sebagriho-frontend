@@ -48,7 +48,7 @@ const OrganizationOwnerCard: React.FC<Props> = ({ user }) => {
     : null;
 
   return (
-    <Card className='border-border/60 p-5'>
+    <Card className='border-border/60 p-5 shadow-sm'>
       <div className='flex items-center gap-3'>
         <Avatar className='h-12 w-12'>
           <AvatarImage src={user.avatar ?? undefined} alt={fullName} />

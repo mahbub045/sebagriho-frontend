@@ -28,6 +28,30 @@ export const TAG_TYPES = [
 let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
+// ─── Subdomain helper ─────────────────────────────────────────────────────────
+const getOrganizationSubdomain = (): string => {
+  if (typeof window === 'undefined') return '';
+
+  const hostname = window.location.hostname;
+
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return process.env.NEXT_PUBLIC_LOCAL_SUBDOMAIN || '';
+  }
+
+  const parts = hostname.split('.');
+
+  // e.g. "subdomain.example.com" -> "subdomain"
+  // e.g. "subdomain.localhost" -> "subdomain"
+  if (parts.length > 2 || (parts.length === 2 && parts[1] === 'localhost')) {
+    const subdomain = parts[0];
+    if (subdomain && subdomain !== 'www') {
+      return subdomain;
+    }
+  }
+
+  return '';
+};
+
 // ─── Raw base query ───────────────────────────────────────────────────────────
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -54,6 +78,12 @@ const rawBaseQuery = fetchBaseQuery({
 
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
+    }
+
+    // Attach organization subdomain
+    const subdomain = getOrganizationSubdomain();
+    if (subdomain) {
+      headers.set('X-ORGANIZATION-SUBDOMAIN', subdomain);
     }
 
     return headers;
@@ -90,7 +120,10 @@ const refreshAccessToken = async (): Promise<string | null> => {
         `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ORGANIZATION-SUBDOMAIN': getOrganizationSubdomain(),
+          },
           body: JSON.stringify({ refresh: refreshToken }),
         },
       );

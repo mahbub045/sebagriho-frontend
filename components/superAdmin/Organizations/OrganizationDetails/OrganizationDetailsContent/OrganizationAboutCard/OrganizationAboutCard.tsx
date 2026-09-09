@@ -32,7 +32,7 @@ const InfoRow = ({
 
 const OrganizationAboutCard: React.FC<Props> = ({ organization }) => {
   return (
-    <Card className='border-border/60 p-5'>
+    <Card className='border-border/60 p-5 shadow-sm'>
       <h2 className='text-sm font-semibold'>About</h2>
 
       {organization.description ? (

@@ -18,7 +18,7 @@ const AuthPageSidePanel: React.FC = () => {
             Welcome back
           </p>
 
-          <h1 className='max-w-md text-3xl leading-[1.15] font-bold tracking-tight text-white drop-shadow-md'>
+          <h1 className='max-w-md text-3xl leading-[1.15] font-bold tracking-tight text-white drop-shadow-sm'>
             Manage your operations from one place.
           </h1>
         </div>
