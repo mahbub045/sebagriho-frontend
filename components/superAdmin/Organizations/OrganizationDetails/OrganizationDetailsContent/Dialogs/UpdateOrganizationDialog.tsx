@@ -434,6 +434,7 @@ const UpdateOrganizationDialogContent: React.FC<
                     Organization Type <span className='text-danger'>*</span>
                   </Label>
                   <Select
+                    items={ORGANIZATION_TYPE_OPTIONS}
                     value={orgForm.organization_type}
                     onValueChange={(value) =>
                       updateOrg('organization_type', value)
@@ -444,14 +445,7 @@ const UpdateOrganizationDialogContent: React.FC<
                       className='w-full'
                       aria-invalid={!!orgErrors.organization_type}
                     >
-                      <SelectValue placeholder='Select type'>
-                        {
-                          ORGANIZATION_TYPE_OPTIONS.find(
-                            (option) =>
-                              option.value === orgForm.organization_type,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select type' />
                     </SelectTrigger>
                     <SelectContent>
                       {ORGANIZATION_TYPE_OPTIONS.map((option) => (
@@ -540,17 +534,12 @@ const UpdateOrganizationDialogContent: React.FC<
                 <div className='space-y-1.5'>
                   <Label htmlFor='org-status'>Status</Label>
                   <Select
+                    items={ORGANIZATION_STATUS_OPTIONS}
                     value={orgForm.status}
                     onValueChange={(value) => updateOrg('status', value)}
                   >
                     <SelectTrigger id='org-status' className='w-full'>
-                      <SelectValue placeholder='Select status'>
-                        {
-                          ORGANIZATION_STATUS_OPTIONS.find(
-                            (o) => o.value === orgForm.status,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select status' />
                     </SelectTrigger>
                     <SelectContent>
                       {ORGANIZATION_STATUS_OPTIONS.map((option) => (
@@ -643,6 +632,7 @@ const UpdateOrganizationDialogContent: React.FC<
                     Gender <span className='text-danger'>*</span>
                   </Label>
                   <Select
+                    items={GENDER_OPTIONS}
                     value={userForm.gender}
                     onValueChange={(value) => updateUser('gender', value)}
                   >
@@ -651,13 +641,7 @@ const UpdateOrganizationDialogContent: React.FC<
                       className='w-full'
                       aria-invalid={!!userErrors.gender}
                     >
-                      <SelectValue placeholder='Select gender'>
-                        {
-                          GENDER_OPTIONS.find(
-                            (o) => o.value === userForm.gender,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select gender' />
                     </SelectTrigger>
                     <SelectContent>
                       {GENDER_OPTIONS.map((option) => (
@@ -673,17 +657,12 @@ const UpdateOrganizationDialogContent: React.FC<
                 <div className='space-y-1.5'>
                   <Label htmlFor='user-blood-group'>Blood Group</Label>
                   <Select
+                    items={BLOOD_GROUP_OPTIONS}
                     value={userForm.blood_group}
                     onValueChange={(value) => updateUser('blood_group', value)}
                   >
                     <SelectTrigger id='user-blood-group' className='w-full'>
-                      <SelectValue placeholder='Select blood group'>
-                        {
-                          BLOOD_GROUP_OPTIONS.find(
-                            (o) => o.value === userForm.blood_group,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select blood group' />
                     </SelectTrigger>
                     <SelectContent>
                       {BLOOD_GROUP_OPTIONS.map((option) => (

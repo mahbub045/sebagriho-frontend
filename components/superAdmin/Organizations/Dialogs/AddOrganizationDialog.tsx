@@ -361,6 +361,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                     Organization Type <span className='text-danger'>*</span>
                   </Label>
                   <Select
+                    items={ORGANIZATION_TYPE_OPTIONS}
                     value={form.organization.organization_type}
                     onValueChange={(value) =>
                       updateOrg('organization_type', value)
@@ -371,15 +372,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                       className='w-full'
                       aria-invalid={!!orgErrors.organization_type}
                     >
-                      <SelectValue placeholder='Select type'>
-                        {
-                          ORGANIZATION_TYPE_OPTIONS.find(
-                            (option) =>
-                              option.value ===
-                              form.organization.organization_type,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select type' />
                     </SelectTrigger>
                     <SelectContent>
                       {ORGANIZATION_TYPE_OPTIONS.map((option) => (
@@ -471,17 +464,12 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='space-y-1.5'>
                   <Label htmlFor='org-status'>Status</Label>
                   <Select
+                    items={ORGANIZATION_STATUS_OPTIONS}
                     value={form.organization.status}
                     onValueChange={(value) => updateOrg('status', value)}
                   >
                     <SelectTrigger id='org-status' className='w-full'>
-                      <SelectValue placeholder='Select status'>
-                        {
-                          ORGANIZATION_STATUS_OPTIONS.find(
-                            (o) => o.value === form.organization.status,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select status' />
                     </SelectTrigger>
                     <SelectContent>
                       {ORGANIZATION_STATUS_OPTIONS.map((option) => (
@@ -578,6 +566,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                     Gender <span className='text-danger'>*</span>
                   </Label>
                   <Select
+                    items={GENDER_OPTIONS}
                     value={form.user.gender}
                     onValueChange={(value) => updateUser('gender', value)}
                   >
@@ -586,13 +575,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                       className='w-full'
                       aria-invalid={!!userErrors.gender}
                     >
-                      <SelectValue placeholder='Select gender'>
-                        {
-                          GENDER_OPTIONS.find(
-                            (o) => o.value === form.user.gender,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select gender' />
                     </SelectTrigger>
                     <SelectContent>
                       {GENDER_OPTIONS.map((option) => (
@@ -608,17 +591,12 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='space-y-1.5'>
                   <Label htmlFor='user-blood-group'>Blood Group</Label>
                   <Select
+                    items={BLOOD_GROUP_OPTIONS}
                     value={form.user.blood_group}
                     onValueChange={(value) => updateUser('blood_group', value)}
                   >
                     <SelectTrigger id='user-blood-group' className='w-full'>
-                      <SelectValue placeholder='Select blood group'>
-                        {
-                          BLOOD_GROUP_OPTIONS.find(
-                            (o) => o.value === form.user.blood_group,
-                          )?.label
-                        }
-                      </SelectValue>
+                      <SelectValue placeholder='Select blood group' />
                     </SelectTrigger>
                     <SelectContent>
                       {BLOOD_GROUP_OPTIONS.map((option) => (
