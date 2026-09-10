@@ -5,15 +5,13 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Medicine } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
-
-type Props = {
-  medicine: Medicine;
-};
+import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 
 const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)$/i.test(url);
 
-const MedicineFilesCard: React.FC<Props> = ({ medicine }) => {
+const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
+  medicine,
+}) => {
   const files = medicine.files ?? [];
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const [previewAlt, setPreviewAlt] = useState<string>('');
@@ -49,7 +47,7 @@ const MedicineFilesCard: React.FC<Props> = ({ medicine }) => {
                   onClick={() =>
                     openPreview(file.file, file.name ?? medicine.name)
                   }
-                  className='border-border relative aspect-square overflow-hidden rounded-md border'
+                  className='border-border relative aspect-square cursor-zoom-in overflow-hidden rounded-md border'
                 >
                   <Image
                     src={file.file}

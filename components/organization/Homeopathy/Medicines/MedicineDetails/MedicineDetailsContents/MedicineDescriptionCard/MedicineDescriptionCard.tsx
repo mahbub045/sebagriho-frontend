@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Medicine } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 
-type Props = {
-  medicine: Medicine;
-};
-
-const MedicineDescriptionCard: React.FC<Props> = ({ medicine }) => {
+const MedicineDescriptionCard: React.FC<MedicineDetailsCardProps> = ({
+  medicine,
+}) => {
   return (
     <Card>
       <CardHeader>

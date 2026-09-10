@@ -1,13 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Medicine } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getCurrencySymbol } from '@/utils/constants';
 import { formatDate } from '@/utils/formatters';
 
-type Props = {
-  medicine: Medicine;
-};
-
-const MedicineInventoryCard: React.FC<Props> = ({ medicine }) => {
+const MedicineInventoryCard: React.FC<MedicineDetailsCardProps> = ({
+  medicine,
+}) => {
   return (
     <Card>
       <CardHeader>

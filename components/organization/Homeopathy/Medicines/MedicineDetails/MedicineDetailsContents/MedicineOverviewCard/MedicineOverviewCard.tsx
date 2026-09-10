@@ -1,12 +1,10 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Medicine } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 
-type Props = {
-  medicine: Medicine;
-};
-
-const MedicineOverviewCard: React.FC<Props> = ({ medicine }) => {
+const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
+  medicine,
+}) => {
   const isAvailable = medicine.status === 'AVAILABLE';
 
   return (

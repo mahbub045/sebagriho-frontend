@@ -51,3 +51,7 @@ export interface FormState {
   batch_number: string;
   status: MedicineStatus;
 }
+
+export type MedicineDetailsCardProps = {
+  medicine: Medicine;
+};
