@@ -22,6 +22,10 @@ export const TAG_TYPES = [
   'OrganizationDetails',
   'OrganizationUsers',
   'OrganizationUserDetails',
+
+  //Homeopathy Tags
+  'HPPatients',
+  'HPMedicines',
 ] as const;
 
 // ─── Mutex ────────────────────────────────────────────────────────────────────

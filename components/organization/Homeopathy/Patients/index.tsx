@@ -6,8 +6,8 @@ const HomeopathyPatientsContainer: React.FC = () => {
     <div>
       <Breadcrumbs
         items={[
-          { label: 'Dashboard', href: `/homeopathy/dashboard` },
-          { label: 'Patients', href: `/homeopathy/patients` },
+          { label: 'Dashboard', href: `/organization/homeopathy/dashboard` },
+          { label: 'Patients', href: `/organization/homeopathy/patients` },
         ]}
       />
       <PatientList />

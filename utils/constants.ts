@@ -13,3 +13,8 @@ export const addCountryCode = (phone: string | null) =>
 
 // Subdomain regex: allows lowercase letters, numbers, and hyphens, but not starting or ending with a hyphen, and no consecutive hyphens.
 export const SUBDOMAIN_REGEX = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+// Currency symbol
+export function getCurrencySymbol(): string {
+  return '৳';
+}

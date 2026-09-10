@@ -1,8 +1,8 @@
 export type Option = { value: string; label: string };
 
 export const GENDER_OPTIONS: Option[] = [
-  { value: 'FEMALE', label: 'Female' },
   { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
   { value: 'OTHER', label: 'Other' },
 ];
 
@@ -52,4 +52,39 @@ export const USER_STATUS_OPTIONS: Option[] = [
   { value: 'PAUSED', label: 'Paused' },
   { value: 'REMOVED', label: 'Removed' },
   { value: 'DELETED', label: 'Deleted' },
+];
+
+/* =========================
+ * Homeopathic Options
+ * ========================= */
+
+export const HOMEOPATHIC_PATIENT_STATUS_OPTIONS: Option[] = [
+  { value: 'ACTIVE', label: 'Active' },
+  { value: 'INACTIVE', label: 'Inactive' },
+  { value: 'REMOVED', label: 'Removed' },
+  { value: 'DELETED', label: 'Deleted' },
+];
+
+export const MIASM_TYPE_OPTIONS: Option[] = [
+  { value: 'ACUTE', label: 'Acute' },
+  { value: 'TYPHOID', label: 'Typhoid' },
+  { value: 'MALARIAL', label: 'Malarial' },
+  { value: 'RINGWORM', label: 'Ringworm' },
+  { value: 'PSORIC', label: 'Psoric' },
+  { value: 'SYCOTIC', label: 'Sycotic' },
+  { value: 'CANCER', label: 'Cancer' },
+  { value: 'TUBERCULAR', label: 'Tubercular' },
+  { value: 'LEPROSY', label: 'Leprosy' },
+  { value: 'SYPHILITIC', label: 'Syphilitic' },
+  { value: 'AIDS', label: 'AIDS' },
+];
+
+export const HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS: Option[] = [
+  { value: 'ACTIVE', label: 'Active' },
+  { value: 'DELETED', label: 'Deleted' },
+];
+
+export const HOMEOPATHIC_MEDICINE_STATUS_OPTIONS: Option[] = [
+  { value: 'AVAILABLE', label: 'Available' },
+  { value: 'UNAVAILABLE', label: 'Unavailable' },
 ];
