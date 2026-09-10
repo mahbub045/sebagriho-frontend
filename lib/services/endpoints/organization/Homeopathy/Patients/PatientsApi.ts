@@ -25,10 +25,10 @@ export const PatientsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['HPPatients'],
     }),
-    updatePatient: builder.mutation({
+    editPatient: builder.mutation({
       query: ({ patientUid, payload }) => ({
         url: `/homeopathy/patients/${patientUid}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: payload,
       }),
       invalidatesTags: ['HPPatients'],
@@ -47,6 +47,6 @@ export const {
   useGetPatientsQuery,
   useGetpatientDetailsQuery,
   useAddPatientMutation,
-  useUpdatePatientMutation,
+  useEditPatientMutation,
   useDeletePatientMutation,
 } = PatientsApi;

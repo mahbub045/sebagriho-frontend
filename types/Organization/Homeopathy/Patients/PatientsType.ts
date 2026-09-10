@@ -70,3 +70,9 @@ export interface DeletePatientDialogProps {
   patientUid: string;
   patientName: string;
 }
+
+export interface EditPatientIdentityDailogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  patientInfo: Patient;
+}

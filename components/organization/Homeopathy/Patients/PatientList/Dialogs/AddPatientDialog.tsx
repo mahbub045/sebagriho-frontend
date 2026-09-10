@@ -193,13 +193,6 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
       const flattened: FieldErrorMap = {};
 
-      /*
-       * Handle normal top-level errors
-       *
-       * {
-       *   phone: ['Phone already exists.']
-       * }
-       */
       Object.entries(responseData).forEach(([key, value]) => {
         if (
           typeof value === 'string' ||
@@ -210,15 +203,6 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
         }
       });
 
-      /*
-       * Handle nested user errors
-       *
-       * {
-       *   user: {
-       *     email: ['User with this email already exists.']
-       *   }
-       * }
-       */
       if (
         responseData.user &&
         typeof responseData.user === 'object' &&

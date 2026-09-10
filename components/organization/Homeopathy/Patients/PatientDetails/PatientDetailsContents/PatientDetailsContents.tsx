@@ -22,11 +22,11 @@ const PatientDetailsContents: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+      <div className='grid grid-rows-1 gap-4'>
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className='bg-background h-48 animate-pulse rounded-xl'
+            className='bg-background h-40 animate-pulse rounded-xl'
           />
         ))}
       </div>
