@@ -141,7 +141,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
 
         <div className='flex flex-col gap-4 py-2'>
           {/* Name + Power */}
-          <div className='grid grid-cols-2 gap-3'>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
             <div className='flex flex-col gap-1.5'>
               <Label htmlFor='name'>Name</Label>
               <Input
@@ -166,7 +166,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
           </div>
 
           {/* Manufacturer + Batch number */}
-          <div className='grid grid-cols-2 gap-3'>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
             <div className='flex flex-col gap-1.5'>
               <Label htmlFor='manufacturer'>Manufacturer</Label>
               <Input
@@ -191,7 +191,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
           </div>
 
           {/* Quantity + Unit price */}
-          <div className='grid grid-cols-2 gap-3'>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
             <div className='flex flex-col gap-1.5'>
               <Label htmlFor='total_quantity'>Total Quantity</Label>
               <Input
@@ -219,7 +219,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
           </div>
 
           {/* Expiration + Status */}
-          <div className='grid grid-cols-2 gap-3'>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
             <div className='flex flex-col gap-1.5'>
               <Label htmlFor='expiration_date'>Expiration Date</Label>
               <Input
@@ -282,8 +282,24 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
           </div>
 
           {/* Files */}
+          {/* Files */}
           <div className='flex flex-col gap-1.5'>
-            <Label>Files</Label>
+            <div className='flex items-center justify-between'>
+              <Label>Files</Label>
+
+              {files.length > 0 && (
+                <button
+                  type='button'
+                  onClick={() => {
+                    files.forEach((f) => URL.revokeObjectURL(f.url));
+                    setFiles([]);
+                  }}
+                  className='text-muted-foreground hover:text-danger text-xs font-medium underline-offset-2 hover:underline'
+                >
+                  Clear all
+                </button>
+              )}
+            </div>
 
             <label
               htmlFor='files'
@@ -308,7 +324,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                 {files.map((preview, index) => (
                   <div
                     key={preview.url}
-                    className='group border-border relative aspect-square overflow-hidden rounded-md border'
+                    className='border-border relative aspect-square overflow-hidden rounded-md border'
                   >
                     <Image
                       src={preview.url}
@@ -321,9 +337,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                     <button
                       type='button'
                       onClick={() => removeFile(index)}
-                      className='absolute top-1 right-1 rounded-full bg-black/60 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100'
+                      className='absolute top-1 right-1 cursor-pointer rounded-full bg-black/70 p-1 text-white shadow-sm transition-colors hover:bg-black/90'
                     >
-                      <X className='h-3 w-3' />
+                      <X className='text-danger h-3 w-3' />
                     </button>
                   </div>
                 ))}
