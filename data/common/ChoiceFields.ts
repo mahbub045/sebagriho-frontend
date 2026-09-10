@@ -1,8 +1,8 @@
 export type Option = { value: string; label: string };
 
 export const GENDER_OPTIONS: Option[] = [
-  { value: 'FEMALE', label: 'Female' },
   { value: 'MALE', label: 'Male' },
+  { value: 'FEMALE', label: 'Female' },
   { value: 'OTHER', label: 'Other' },
 ];
 

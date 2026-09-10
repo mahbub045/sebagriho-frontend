@@ -76,3 +76,15 @@ export interface EditPatientIdentityDailogProps {
   onClose: () => void;
   patientInfo: Patient;
 }
+export interface EditPatientPersonalInfoDailogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  patientInfo: {
+    uid: string;
+    age: number | null;
+    user: {
+      gender: PatientGender | null;
+      date_of_birth: string | null;
+    };
+  };
+}
