@@ -26,43 +26,15 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
 import { HOMEOPATHIC_MEDICINE_STATUS_OPTIONS } from '@/data/common/ChoiceFields';
+import { HP_MEDICINE_INITIAL_STATE } from '@/data/Organization/Medicines/MedicinesData';
 import { useAddMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   AddMedicineDialogProps,
+  FilePreview,
+  FormState,
   MedicineStatus,
 } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getCurrencySymbol } from '@/utils/constants';
-
-type FormState = {
-  name: string;
-  power: string;
-  expiration_date: string;
-  is_available: boolean;
-  manufacturer: string;
-  total_quantity: string;
-  unit_price: string;
-  description: string;
-  batch_number: string;
-  status: MedicineStatus;
-};
-
-const INITIAL_STATE: FormState = {
-  name: '',
-  power: '',
-  expiration_date: '',
-  is_available: true,
-  manufacturer: '',
-  total_quantity: '',
-  unit_price: '',
-  description: '',
-  batch_number: '',
-  status: 'AVAILABLE',
-};
-
-type FilePreview = {
-  file: File;
-  url: string;
-};
 
 const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
   isOpen,
@@ -70,7 +42,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
 }) => {
   const [addMedicine, { isLoading, error }] = useAddMedicineMutation();
 
-  const [form, setForm] = useState<FormState>(INITIAL_STATE);
+  const [form, setForm] = useState<FormState>(HP_MEDICINE_INITIAL_STATE);
   const [files, setFiles] = useState<FilePreview[]>([]);
 
   const updateField = <K extends keyof FormState>(
@@ -98,7 +70,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
 
   const resetAndClose = () => {
     files.forEach((f) => URL.revokeObjectURL(f.url));
-    setForm(INITIAL_STATE);
+    setForm(HP_MEDICINE_INITIAL_STATE);
     setFiles([]);
     onClose();
   };

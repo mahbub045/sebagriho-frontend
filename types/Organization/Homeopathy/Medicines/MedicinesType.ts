@@ -33,3 +33,21 @@ export interface AddMedicineDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export type FilePreview = {
+  file: File;
+  url: string;
+};
+
+export interface FormState {
+  name: string;
+  power: string;
+  expiration_date: string;
+  is_available: boolean;
+  manufacturer: string;
+  total_quantity: string;
+  unit_price: string;
+  description: string;
+  batch_number: string;
+  status: MedicineStatus;
+}
