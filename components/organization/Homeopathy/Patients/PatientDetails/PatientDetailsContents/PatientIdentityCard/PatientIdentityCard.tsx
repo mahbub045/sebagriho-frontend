@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { STATUS_STYLES } from '@/data/Organization/Homeopathy/PatientsData';
-import { Patient } from '@/types/Organization/Homeopathy/Patients/PatientsType';
+import { PatientDetailsCardProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import {
   formatChoiceFieldValue,
   formatDateAndTime,
@@ -13,11 +13,9 @@ import { CalendarDays, Edit } from 'lucide-react';
 import { useState } from 'react';
 import UpdatePatientIdentityDailog from '../../Dialogs/EditPatientIdentityDailog';
 
-interface Props {
-  patient: Patient;
-}
-
-const PatientIdentityCard: React.FC<Props> = ({ patient }) => {
+const PatientIdentityCard: React.FC<PatientDetailsCardProps> = ({
+  patient,
+}) => {
   const statusClass = STATUS_STYLES[patient.status] ?? STATUS_STYLES.INACTIVE;
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
 
@@ -49,7 +47,7 @@ const PatientIdentityCard: React.FC<Props> = ({ patient }) => {
             </div>
 
             <Button
-              variant='outline'
+              variant='default'
               size='sm'
               onClick={() => setIsOpenEditPatientDialog(true)}
             >

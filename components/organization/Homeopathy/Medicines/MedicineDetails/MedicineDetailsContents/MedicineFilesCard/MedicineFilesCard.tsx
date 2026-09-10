@@ -1,9 +1,10 @@
 'use client';
 
-import { File as FileIcon, X } from 'lucide-react';
+import { Edit, File as FileIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 
@@ -28,10 +29,14 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className='flex items-center justify-between'>
         <CardTitle className='text-base font-semibold'>
           Medicine Images
         </CardTitle>
+        <Button variant='default' size='sm'>
+          <Edit />
+          Edit
+        </Button>
       </CardHeader>
 
       <CardContent>

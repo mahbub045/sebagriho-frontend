@@ -1,16 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Patient } from '@/types/Organization/Homeopathy/Patients/PatientsType';
+import { PatientDetailsCardProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { formatChoiceFieldValue, formatDate } from '@/utils/formatters';
 import { Edit, User } from 'lucide-react';
 import { useState } from 'react';
 import EditPatientPersonalInfoDialog from '../../Dialogs/EditPatientPersonalInfoDialog';
 
-interface Props {
-  patient: Patient;
-}
-
-const PatientPersonalInfoCard: React.FC<Props> = ({ patient }) => {
+const PatientPersonalInfoCard: React.FC<PatientDetailsCardProps> = ({
+  patient,
+}) => {
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
   return (
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
@@ -21,7 +19,7 @@ const PatientPersonalInfoCard: React.FC<Props> = ({ patient }) => {
         </div>
         <Button
           size='sm'
-          variant='outline'
+          variant='default'
           onClick={() => setIsOpenEditPatientDialog(true)}
         >
           <Edit />

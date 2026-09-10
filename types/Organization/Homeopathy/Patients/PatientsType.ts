@@ -103,6 +103,10 @@ export interface EditPatientContactDetailsDailogProps {
   };
 }
 
+export interface PatientDetailsCardProps {
+  patient: Patient;
+}
+
 export interface EditPatientMedicalInfoDailogProps {
   isOpen: boolean;
   onClose: () => void;

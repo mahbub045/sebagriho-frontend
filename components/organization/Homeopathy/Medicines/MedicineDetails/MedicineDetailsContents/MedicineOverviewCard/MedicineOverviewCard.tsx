@@ -1,6 +1,8 @@
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { Edit } from 'lucide-react';
 
 const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
   medicine,
@@ -11,17 +13,21 @@ const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
     <Card>
       <CardHeader className='flex flex-row items-start justify-between gap-3'>
         <div>
-          <CardTitle className='text-primary text-xl font-semibold'>
-            {medicine.name}
+          <CardTitle className='text-primary flex items-center gap-2 text-xl font-semibold'>
+            <span>{medicine.name}</span>
+            <Badge variant={isAvailable ? 'success' : 'danger'}>
+              {isAvailable ? 'Available' : 'Unavailable'}
+            </Badge>
           </CardTitle>
           <p className='text-muted-foreground text-sm'>
             Power: {medicine.power ?? '—'}
           </p>
         </div>
 
-        <Badge variant={isAvailable ? 'default' : 'danger'}>
-          {isAvailable ? 'Available' : 'Unavailable'}
-        </Badge>
+        <Button variant='default' size='sm'>
+          <Edit />
+          Edit
+        </Button>
       </CardHeader>
 
       <CardContent className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
