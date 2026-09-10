@@ -335,13 +335,13 @@ const MedicineList: React.FC = () => {
 
                           <div className='mt-1 flex items-center gap-2'>
                             <span className='text-muted-foreground text-xs'>
-                              Power {medicine.power}
+                              Power {medicine.power || '-'}
                             </span>
 
                             <span className='text-muted-foreground/50'>•</span>
 
                             <span className='text-muted-foreground text-xs'>
-                              {medicine.manufacturer}
+                              {medicine.manufacturer || '-'}
                             </span>
                           </div>
                         </div>
@@ -350,7 +350,9 @@ const MedicineList: React.FC = () => {
                           variant='outline'
                           className={`shrink-0 text-[11px] font-medium ${statusClass}`}
                         >
-                          {formatChoiceFieldValue(medicine.status)}
+                          {medicine.status
+                            ? formatChoiceFieldValue(medicine.status)
+                            : '-'}
                         </Badge>
                       </div>
 
@@ -365,7 +367,7 @@ const MedicineList: React.FC = () => {
                             <p className='text-muted-foreground'>Quantity</p>
 
                             <p className='truncate font-medium'>
-                              {medicine.total_quantity} units
+                              {medicine.total_quantity || '0'} units
                             </p>
                           </div>
                         </div>
@@ -378,7 +380,8 @@ const MedicineList: React.FC = () => {
                             <p className='text-muted-foreground'>Unit Price</p>
 
                             <p className='truncate font-medium'>
-                              {getCurrencySymbol()} {medicine.unit_price}
+                              {getCurrencySymbol()}{' '}
+                              {medicine.unit_price || '0.00'}
                             </p>
                           </div>
                         </div>
@@ -393,7 +396,7 @@ const MedicineList: React.FC = () => {
                             </p>
 
                             <p className='truncate font-medium'>
-                              {medicine.batch_number}
+                              {medicine.batch_number || '-'}
                             </p>
                           </div>
                         </div>
@@ -408,7 +411,7 @@ const MedicineList: React.FC = () => {
                             </p>
 
                             <p className='truncate font-medium'>
-                              {formatDate(medicine.expiration_date)}
+                              {formatDate(medicine.expiration_date) || '-'}
                             </p>
                           </div>
                         </div>
@@ -425,7 +428,7 @@ const MedicineList: React.FC = () => {
                         </div>
 
                         <span className='text-muted-foreground text-xs'>
-                          {formatDateAndTime(medicine.created_at)}
+                          {formatDateAndTime(medicine.created_at) || '-'}
                         </span>
                       </div>
                     </Card>
