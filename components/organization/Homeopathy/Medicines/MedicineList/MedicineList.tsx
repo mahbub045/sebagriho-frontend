@@ -2,10 +2,18 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { format } from 'date-fns';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 
 import {
   Pagination,
@@ -46,6 +54,9 @@ import {
   X,
 } from 'lucide-react';
 
+const toApiDate = (date?: Date) =>
+  date ? format(date, 'yyyy-MM-dd') : undefined;
+
 const MedicineList: React.FC = () => {
   const [page, setPage] = useState(1);
 
@@ -53,6 +64,8 @@ const MedicineList: React.FC = () => {
   const [search, setSearch] = useState('');
 
   const [status, setStatus] = useState<MedicineStatus | 'ALL'>('ALL');
+
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -62,6 +75,9 @@ const MedicineList: React.FC = () => {
 
     return () => clearTimeout(timeout);
   }, [searchInput]);
+
+  const expirationGte = toApiDate(dateRange?.from);
+  const expirationLte = toApiDate(dateRange?.to);
 
   const {
     data: medicines,
@@ -73,6 +89,8 @@ const MedicineList: React.FC = () => {
     page_size: PAGE_LIMIT,
     ...(search ? { search } : {}),
     ...(status !== 'ALL' ? { status } : {}),
+    ...(expirationGte ? { expiration_date__gte: expirationGte } : {}),
+    ...(expirationLte ? { expiration_date__lte: expirationLte } : {}),
   });
 
   const totalPages = Math.max(
@@ -100,14 +118,22 @@ const MedicineList: React.FC = () => {
     return pages;
   };
 
-  const hasActiveFilters = search !== '' || status !== 'ALL';
+  const hasActiveFilters =
+    search !== '' || status !== 'ALL' || !!dateRange?.from || !!dateRange?.to;
 
   const clearFilters = () => {
     setSearchInput('');
     setSearch('');
     setStatus('ALL');
+    setDateRange(undefined);
     setPage(1);
   };
+
+  const dateRangeLabel = dateRange?.from
+    ? dateRange.to
+      ? `${format(dateRange.from, 'MMM d, yyyy')} - ${format(dateRange.to, 'MMM d, yyyy')}`
+      : format(dateRange.from, 'MMM d, yyyy')
+    : 'Expiration date';
 
   return (
     <div className='flex flex-col gap-4'>
@@ -172,9 +198,41 @@ const MedicineList: React.FC = () => {
           </SelectContent>
         </Select>
 
+        {/* Expiration date range */}
+        <Popover>
+          <PopoverTrigger
+            render={
+              <Button
+                variant='outline'
+                className='h-10! w-full justify-start text-left font-normal sm:w-56'
+              >
+                <CalendarClock className='h-4 w-4' />
+                <span className='truncate'>{dateRangeLabel}</span>
+              </Button>
+            }
+          />
+
+          <PopoverContent className='w-auto p-0' align='start'>
+            <Calendar
+              mode='range'
+              selected={dateRange}
+              onSelect={(range) => {
+                setDateRange(range);
+                setPage(1);
+              }}
+              numberOfMonths={2}
+            />
+          </PopoverContent>
+        </Popover>
+
         {/* Clear filters */}
         {hasActiveFilters && (
-          <Button size='lg' variant='destructive' onClick={clearFilters}>
+          <Button
+            size='lg'
+            variant='destructive'
+            className='h-10!'
+            onClick={clearFilters}
+          >
             <X className='h-3.5 w-3.5' />
             Clear filters
           </Button>
