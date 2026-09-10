@@ -22,12 +22,18 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
   onClose,
   patient,
 }) => {
-  const [editPatient, { isLoading, error }] = useEditPatientMutation();
+  const [uploadFiles, { isLoading: isUploading, error: uploadError }] =
+    useEditPatientMutation();
+  const [deleteFile] = useEditPatientMutation();
+
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [deletingFileUid, setDeletingFileUid] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const isAnyDeleting = deletingFileUid !== null;
+
   const fieldErrors: FieldErrorMap =
-    (error as { data?: FieldErrorMap })?.data ?? {};
+    (uploadError as { data?: FieldErrorMap })?.data ?? {};
 
   const getFieldError = (field: string) => {
     const value = fieldErrors[field];
@@ -39,12 +45,30 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
     const files = e.target.files;
     if (!files) return;
     setSelectedFiles((prev) => [...prev, ...Array.from(files)]);
-    // reset input so selecting the same file again still fires onChange
     e.target.value = '';
   };
 
-  const handleRemoveFile = (index: number) => {
+  const handleRemoveSelectedFile = (index: number) => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteExistingFile = async (fileUid: string) => {
+    setDeletingFileUid(fileUid);
+
+    const payload = new FormData();
+    payload.append('remove_files', fileUid);
+
+    try {
+      await deleteFile({
+        patientUid: patient.uid,
+        payload,
+      }).unwrap();
+      toast.success('File removed');
+    } catch {
+      toast.error('Failed to remove file. Please try again.');
+    } finally {
+      setDeletingFileUid(null);
+    }
   };
 
   const handleClose = () => {
@@ -66,7 +90,7 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
     });
 
     try {
-      await editPatient({
+      await uploadFiles({
         patientUid: patient.uid,
         payload,
       }).unwrap();
@@ -81,9 +105,11 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Edit Patient Files</DialogTitle>
+          <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
+            Edit Patient Files
+          </DialogTitle>
           <DialogDescription>
-            Upload additional files for this patient.
+            Manage and upload files for this patient.
           </DialogDescription>
         </DialogHeader>
         <form
@@ -95,15 +121,32 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
             <div className='flex flex-col gap-1.5'>
               <Label>Existing Files</Label>
               <div className='flex flex-col gap-2'>
-                {patient.files.map((file) => (
-                  <div
-                    key={file.uid}
-                    className='border-border/60 flex items-center gap-2 rounded-lg border p-2 text-xs'
-                  >
-                    <FileText className='text-muted-foreground h-4 w-4 shrink-0' />
-                    <span className='truncate'>{file.name}</span>
-                  </div>
-                ))}
+                {patient.files.map((file) => {
+                  const isDeletingThis = deletingFileUid === file.uid;
+                  return (
+                    <div
+                      key={file.uid}
+                      className='border-border/60 flex items-center justify-between gap-2 rounded-lg border p-2 text-xs'
+                    >
+                      <div className='flex min-w-0 items-center gap-2'>
+                        <FileText className='text-primary h-4 w-4 shrink-0' />
+                        <span className='truncate'>{file.name}</span>
+                      </div>
+                      <button
+                        type='button'
+                        onClick={() => handleDeleteExistingFile(file.uid)}
+                        disabled={isAnyDeleting || isUploading}
+                        className='text-muted-foreground hover:text-destructive shrink-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
+                      >
+                        {isDeletingThis ? (
+                          <Loading className='h-3.5 w-3.5' />
+                        ) : (
+                          <X className='text-danger h-3.5 w-3.5' />
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -122,6 +165,7 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
               type='button'
               variant='outline'
               onClick={() => fileInputRef.current?.click()}
+              disabled={isAnyDeleting || isUploading}
               className='justify-center'
             >
               <Upload className='h-4 w-4' />
@@ -149,10 +193,11 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
                     </div>
                     <button
                       type='button'
-                      onClick={() => handleRemoveFile(index)}
-                      className='text-muted-foreground hover:text-destructive shrink-0'
+                      onClick={() => handleRemoveSelectedFile(index)}
+                      disabled={isAnyDeleting || isUploading}
+                      className='text-muted-foreground hover:text-destructive shrink-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
                     >
-                      <X className='h-3.5 w-3.5' />
+                      <X className='text-danger h-3.5 w-3.5' />
                     </button>
                   </div>
                 ))}
@@ -165,12 +210,12 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
               type='button'
               variant='outline'
               onClick={handleClose}
-              disabled={isLoading}
+              disabled={isUploading || isAnyDeleting}
             >
               Cancel
             </Button>
-            <Button type='submit' disabled={isLoading}>
-              {isLoading && <Loading className='h-4 w-4 text-white!' />}
+            <Button type='submit' disabled={isUploading || isAnyDeleting}>
+              {isUploading && <Loading className='h-4 w-4 text-white!' />}
               Upload
             </Button>
           </div>
