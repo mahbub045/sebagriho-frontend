@@ -53,6 +53,7 @@ import {
   Tag,
   X,
 } from 'lucide-react';
+import Image from 'next/image';
 
 const toApiDate = (date?: Date) =>
   date ? format(date, 'yyyy-MM-dd') : undefined;
@@ -309,8 +310,18 @@ const MedicineList: React.FC = () => {
                       className='border-border/60 hover:border-primary/40 flex h-full flex-col gap-0 overflow-hidden p-0 shadow-sm transition-all hover:shadow-md'
                     >
                       <div className='flex items-start gap-3 p-4'>
-                        <div className='bg-primary/5 text-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold'>
-                          <Pill className='h-5 w-5' />
+                        <div className='bg-primary/5 text-primary relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-semibold'>
+                          {medicine.files?.[0]?.file ? (
+                            <Image
+                              src={medicine.files[0].file}
+                              alt={medicine.name}
+                              fill
+                              sizes='44px'
+                              className='object-cover'
+                            />
+                          ) : (
+                            <Pill className='h-5 w-5' />
+                          )}
                         </div>
 
                         <div className='min-w-0 flex-1'>
