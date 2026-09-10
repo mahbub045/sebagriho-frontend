@@ -55,3 +55,10 @@ export interface FormState {
 export type MedicineDetailsCardProps = {
   medicine: Medicine;
 };
+
+export interface DeleteMedicineDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  medicineUid: string;
+  medicineName?: string;
+}

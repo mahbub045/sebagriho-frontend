@@ -416,7 +416,7 @@ const MedicineList: React.FC = () => {
 
                       <div className='border-border/60 bg-muted/30 mt-auto flex items-center justify-between border-t px-4 py-3'>
                         <div className='flex items-center gap-2 text-xs'>
-                          <FileText className='text-warning h-3.5 w-3.5' />
+                          <FileText className='text-success h-3.5 w-3.5' />
 
                           <span className='font-medium'>
                             {medicine.files?.length ?? 0}{' '}
