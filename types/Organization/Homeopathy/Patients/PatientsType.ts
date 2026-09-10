@@ -118,3 +118,9 @@ export interface EditMedicalHistoryDialogProps {
   onClose: () => void;
   patientInfo: Patient;
 }
+
+export interface EditPatientFilesDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  patient: Patient;
+}
