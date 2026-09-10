@@ -102,3 +102,19 @@ export interface EditPatientContactDetailsDailogProps {
     };
   };
 }
+
+export interface EditPatientMedicalInfoDailogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  patientInfo: {
+    uid: string;
+    miasm_type: MiasmType | null;
+    habits: string | null;
+  };
+}
+
+export interface EditMedicalHistoryDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  patientInfo: Patient;
+}
