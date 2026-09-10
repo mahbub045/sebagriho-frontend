@@ -45,6 +45,7 @@ export const MedicinesApi = baseApi.injectEndpoints({
 
 export const {
   useGetMedicinesQuery,
+  useGetMedicineDetailsQuery,
   useAddMedicineMutation,
   useUpdateMedicineMutation,
   useDeleteMedicineMutation,

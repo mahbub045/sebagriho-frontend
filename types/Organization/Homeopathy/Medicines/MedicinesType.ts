@@ -28,3 +28,8 @@ export interface MedicinesListResponse {
   previous: string | null;
   results: Medicine[];
 }
+
+export interface AddMedicineDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+}

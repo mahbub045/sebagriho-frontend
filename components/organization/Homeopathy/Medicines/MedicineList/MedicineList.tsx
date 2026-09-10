@@ -37,8 +37,12 @@ import {
   Medicine,
   MedicineStatus,
 } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
-import { PAGE_LIMIT } from '@/utils/constants';
-import { formatChoiceFieldValue, formatDateAndTime } from '@/utils/formatters';
+import { getCurrencySymbol, PAGE_LIMIT } from '@/utils/constants';
+import {
+  formatChoiceFieldValue,
+  formatDate,
+  formatDateAndTime,
+} from '@/utils/formatters';
 
 import { MEDICINE_STATUS_STYLES } from '@/data/Organization/Medicines/MedicinesData';
 import {
@@ -54,19 +58,19 @@ import {
   X,
 } from 'lucide-react';
 import Image from 'next/image';
+import AddMedicineDialog from './Dialogs/AddMedicineDialog';
 
 const toApiDate = (date?: Date) =>
   date ? format(date, 'yyyy-MM-dd') : undefined;
 
 const MedicineList: React.FC = () => {
   const [page, setPage] = useState(1);
-
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-
   const [status, setStatus] = useState<MedicineStatus | 'ALL'>('ALL');
-
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const [isOpenAddingMedicineDialog, setIsOpenAddingMedicineDialog] =
+    useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -149,7 +153,7 @@ const MedicineList: React.FC = () => {
           </p>
         </div>
 
-        <Button>
+        <Button onClick={() => setIsOpenAddingMedicineDialog(true)}>
           <Plus className='h-4 w-4' />
           Add Medicine
         </Button>
@@ -374,7 +378,7 @@ const MedicineList: React.FC = () => {
                             <p className='text-muted-foreground'>Unit Price</p>
 
                             <p className='truncate font-medium'>
-                              ${medicine.unit_price}
+                              {getCurrencySymbol()} {medicine.unit_price}
                             </p>
                           </div>
                         </div>
@@ -404,7 +408,7 @@ const MedicineList: React.FC = () => {
                             </p>
 
                             <p className='truncate font-medium'>
-                              {medicine.expiration_date}
+                              {formatDate(medicine.expiration_date)}
                             </p>
                           </div>
                         </div>
@@ -494,6 +498,10 @@ const MedicineList: React.FC = () => {
             </div>
           </>
         )}
+      <AddMedicineDialog
+        isOpen={isOpenAddingMedicineDialog}
+        onClose={() => setIsOpenAddingMedicineDialog(false)}
+      />
     </div>
   );
 };
