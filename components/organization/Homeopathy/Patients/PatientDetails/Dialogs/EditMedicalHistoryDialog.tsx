@@ -73,7 +73,9 @@ const EditMedicalHistoryDialog: React.FC<EditMedicalHistoryDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Edit Medical History</DialogTitle>
+          <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
+            Edit Medical History
+          </DialogTitle>
           <DialogDescription>
             Update the patient&apos;s case history.
           </DialogDescription>

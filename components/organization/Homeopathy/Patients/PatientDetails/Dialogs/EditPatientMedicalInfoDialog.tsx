@@ -102,7 +102,9 @@ const EditPatientMedicalInfoDialog: React.FC<
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
-          <DialogTitle>Edit Patient Medical Info</DialogTitle>
+          <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
+            Edit Patient Medical Info
+          </DialogTitle>
           <DialogDescription>
             Update the patient&apos;s miasm type and habits.
           </DialogDescription>
