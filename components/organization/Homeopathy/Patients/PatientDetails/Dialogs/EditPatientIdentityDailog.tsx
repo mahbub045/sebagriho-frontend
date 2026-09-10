@@ -24,8 +24,7 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
   onClose,
   patientInfo,
 }) => {
-  const [updatePatient, { isLoading, isError, error }] =
-    useEditPatientMutation();
+  const [editPatient, { isLoading, isError, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState({
     first_name: patientInfo.user.first_name,
@@ -71,14 +70,14 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
     }
 
     try {
-      await updatePatient({
+      await editPatient({
         patientUid: patientInfo.uid,
         payload,
       }).unwrap();
       onClose();
-      toast.success('Patient updated successfully');
+      toast.success('Patient editd successfully');
     } catch {
-      toast.error('Failed to update patient. Please check the form.');
+      toast.error('Failed to edit patient. Please check the form.');
     }
   };
 
