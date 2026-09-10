@@ -52,6 +52,13 @@ export interface FormState {
   status: MedicineStatus;
 }
 
+export interface ApiValidationError {
+  data?: Record<string, string[] | string> & {
+    detail?: string;
+    message?: string;
+  };
+}
+
 export type MedicineDetailsCardProps = {
   medicine: Medicine;
 };

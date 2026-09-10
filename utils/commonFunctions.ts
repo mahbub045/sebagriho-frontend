@@ -1,5 +1,3 @@
-import { ApiValidationError } from '@/types/common/CommonTypes';
-
 export const getChangedFields = <T extends Record<string, unknown>>(
   original: T,
   current: T,
@@ -13,20 +11,4 @@ export const getChangedFields = <T extends Record<string, unknown>>(
   });
 
   return changed;
-};
-
-export const getFieldErrors = (error: unknown): Record<string, string> => {
-  const err = error as ApiValidationError;
-  const data = err?.data;
-  if (!data || typeof data !== 'object') return {};
-
-  return Object.entries(data).reduce<Record<string, string>>(
-    (acc, [field, value]) => {
-      // skip non-field keys some APIs mix in
-      if (field === 'detail' || field === 'message') return acc;
-      acc[field] = Array.isArray(value) ? value[0] : String(value);
-      return acc;
-    },
-    {},
-  );
 };
