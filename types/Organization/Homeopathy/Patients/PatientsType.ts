@@ -88,3 +88,17 @@ export interface EditPatientPersonalInfoDailogProps {
     };
   };
 }
+
+export interface EditPatientContactDetailsDailogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  patientInfo: {
+    uid: string;
+    relative_phone: string | null;
+    address: string | null;
+    user: {
+      phone: string | null;
+      email: string | null;
+    };
+  };
+}

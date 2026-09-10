@@ -94,7 +94,6 @@ const EditPatientPersonalInfoDialog: React.FC<
                 name='age'
                 value={formData.age}
                 onChange={handleChange}
-                required
               />
               {getFieldError('age') && (
                 <p className='text-destructive text-xs'>
