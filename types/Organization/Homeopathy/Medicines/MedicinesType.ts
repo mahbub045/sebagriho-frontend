@@ -63,6 +63,12 @@ export type MedicineDetailsCardProps = {
   medicine: Medicine;
 };
 
+export interface EditMedicineOverviewDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  medicine: Medicine;
+}
+
 export interface DeleteMedicineDialogProps {
   isOpen: boolean;
   onClose: () => void;

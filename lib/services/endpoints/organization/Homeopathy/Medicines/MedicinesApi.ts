@@ -25,7 +25,7 @@ export const MedicinesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['HPMedicines'],
     }),
-    updateMedicine: builder.mutation({
+    editMedicine: builder.mutation({
       query: ({ medicineUid, payload }) => ({
         url: `/homeopathy/medicines/${medicineUid}`,
         method: 'PATCH',
@@ -47,6 +47,6 @@ export const {
   useGetMedicinesQuery,
   useGetMedicineDetailsQuery,
   useAddMedicineMutation,
-  useUpdateMedicineMutation,
+  useEditMedicineMutation,
   useDeleteMedicineMutation,
 } = MedicinesApi;
