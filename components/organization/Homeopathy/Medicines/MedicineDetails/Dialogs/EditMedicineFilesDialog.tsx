@@ -17,6 +17,7 @@ import {
   MedicineFilesFormData,
 } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { FileText, Upload, X } from 'lucide-react';
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -201,35 +202,44 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
             <div className='flex min-w-0 flex-col gap-1.5'>
               <Label>Existing Files</Label>
 
-              <div className='flex min-w-0 flex-col gap-2'>
+              <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
                 {medicine.files.map((file) => {
                   const isDeletingThis = deletingFileUid === file.uid;
 
                   return (
                     <div
                       key={file.uid}
-                      className='border-border/60 flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border p-2 text-xs'
+                      className='group relative overflow-hidden rounded-lg border'
                     >
-                      <FileText className='text-primary h-4 w-4 shrink-0' />
-
-                      <span
-                        className='min-w-0 flex-1 truncate'
-                        title={file.name}
+                      <a
+                        href={file.file}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='block'
                       >
-                        {file.name || 'Unnamed file'}
-                      </span>
+                        <div className='relative h-20 w-full'>
+                          <Image
+                            src={file.file}
+                            alt={file.name || 'Medicine file'}
+                            fill
+                            sizes='(max-width: 540px) 50vw, 120px'
+                            className='object-cover transition-opacity group-hover:opacity-80'
+                          />
+                        </div>
+                      </a>
 
+                      {/* Remove */}
                       <button
                         type='button'
                         onClick={() => handleDeleteExistingFile(file.uid)}
                         disabled={isRemoving}
-                        className='text-muted-foreground hover:text-destructive shrink-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
+                        className='bg-danger/80 hover:bg-danger absolute top-1 right-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full text-white shadow-sm disabled:cursor-not-allowed disabled:opacity-50'
                         aria-label={`Remove ${file.name || 'file'}`}
                       >
                         {isDeletingThis && isRemoving ? (
                           <Loading className='h-3.5 w-3.5' />
                         ) : (
-                          <X className='text-danger h-3.5 w-3.5' />
+                          <X className='h-3.5 w-3.5' />
                         )}
                       </button>
                     </div>
@@ -251,8 +261,9 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
 
             <input
               ref={fileInputRef}
-              id='medicine-upload-files'
+              id='upload_files'
               type='file'
+              accept='image/*'
               multiple
               className='hidden'
               onChange={handleFileChange}
