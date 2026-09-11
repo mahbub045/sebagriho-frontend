@@ -17,7 +17,7 @@ const MedicineDetailsContents: React.FC = () => {
     data: medicine,
     isLoading,
     isError,
-  } = useGetMedicineDetailsQuery(medicineuid as string);
+  } = useGetMedicineDetailsQuery(medicineuid);
 
   if (isLoading) {
     return <MedicineDetailsSkeleton />;

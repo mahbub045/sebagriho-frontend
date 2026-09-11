@@ -11,7 +11,7 @@ export const MedicinesApi = baseApi.injectEndpoints({
       providesTags: ['HPMedicines'],
     }),
     getMedicineDetails: builder.query({
-      query: (medicineUid: string) => ({
+      query: (medicineUid) => ({
         url: `/homeopathy/medicines/${medicineUid}`,
         method: 'GET',
       }),
