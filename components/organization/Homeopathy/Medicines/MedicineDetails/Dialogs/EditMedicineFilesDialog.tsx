@@ -25,7 +25,13 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
   onClose,
   medicine,
 }) => {
-  const [editMedicine, { isLoading, error }] = useEditMedicineMutation();
+  // Upload mutation
+  const [uploadMedicine, { isLoading: isUploading, error: uploadError }] =
+    useEditMedicineMutation();
+
+  // Remove mutation
+  const [removeMedicine, { isLoading: isRemoving, error: removeError }] =
+    useEditMedicineMutation();
 
   const [formData, setFormData] = useState<MedicineFilesFormData>({
     files: [],
@@ -35,12 +41,12 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const isAnyDeleting = deletingFileUid !== null;
+  const uploadApiError = uploadError as ApiValidationError | undefined;
 
-  const apiError = error as ApiValidationError | undefined;
+  const removeApiError = removeError as ApiValidationError | undefined;
 
-  const getFieldError = (field: string) => {
-    const value = apiError?.data?.[field];
+  const getUploadFieldError = (field: string) => {
+    const value = uploadApiError?.data?.[field];
 
     if (!value) {
       return undefined;
@@ -48,6 +54,20 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
 
     return Array.isArray(value) ? value[0] : value;
   };
+
+  const getRemoveFieldError = (field: string) => {
+    const value = removeApiError?.data?.[field];
+
+    if (!value) {
+      return undefined;
+    }
+
+    return Array.isArray(value) ? value[0] : value;
+  };
+
+  // -----------------------------
+  // Select files
+  // -----------------------------
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -65,12 +85,20 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
     event.target.value = '';
   };
 
+  // -----------------------------
+  // Remove selected file
+  // -----------------------------
+
   const handleRemoveSelectedFile = (index: number) => {
     setFormData((prev) => ({
       ...prev,
       files: prev.files.filter((_, fileIndex) => fileIndex !== index),
     }));
   };
+
+  // -----------------------------
+  // Remove existing file
+  // -----------------------------
 
   const handleDeleteExistingFile = async (fileUid: string) => {
     if (!medicine.uid) {
@@ -80,10 +108,11 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
     setDeletingFileUid(fileUid);
 
     const payload = new FormData();
+
     payload.append('remove_files', fileUid);
 
     try {
-      await editMedicine({
+      await removeMedicine({
         medicineUid: medicine.uid,
         payload,
       }).unwrap();
@@ -98,13 +127,23 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
     }
   };
 
+  // -----------------------------
+  // Close dialog
+  // -----------------------------
+
   const handleClose = () => {
     setFormData({
       files: [],
     });
 
+    setDeletingFileUid(null);
+
     onClose();
   };
+
+  // -----------------------------
+  // Upload files
+  // -----------------------------
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -114,7 +153,6 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
     }
 
     if (formData.files.length === 0) {
-      handleClose();
       return;
     }
 
@@ -125,7 +163,7 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
     });
 
     try {
-      await editMedicine({
+      await uploadMedicine({
         medicineUid: medicine.uid,
         payload,
       }).unwrap();
@@ -142,7 +180,7 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
+      <DialogContent className='w-[calc(100%-2rem)] max-w-md overflow-x-hidden overflow-y-auto p-4'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
             Edit Medicine Files
@@ -156,37 +194,39 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
         <form
           key={medicine.uid}
           onSubmit={handleSubmit}
-          className='flex flex-col gap-5 p-1'
+          className='flex min-w-0 flex-col gap-5 p-1'
         >
           {/* Existing Files */}
           {medicine.files && medicine.files.length > 0 && (
-            <div className='flex flex-col gap-1.5'>
+            <div className='flex min-w-0 flex-col gap-1.5'>
               <Label>Existing Files</Label>
 
-              <div className='flex flex-col gap-2'>
+              <div className='flex min-w-0 flex-col gap-2'>
                 {medicine.files.map((file) => {
                   const isDeletingThis = deletingFileUid === file.uid;
 
                   return (
                     <div
                       key={file.uid}
-                      className='border-border/60 flex items-center justify-between gap-2 rounded-lg border p-2 text-xs'
+                      className='border-border/60 flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border p-2 text-xs'
                     >
-                      <div className='flex min-w-0 items-center gap-2'>
-                        <FileText className='text-primary h-4 w-4 shrink-0' />
-                        <span className='max-w-55 truncate' title={file.name}>
-                          {file.name || 'Unnamed file'}
-                        </span>
-                      </div>
+                      <FileText className='text-primary h-4 w-4 shrink-0' />
+
+                      <span
+                        className='min-w-0 flex-1 truncate'
+                        title={file.name}
+                      >
+                        {file.name || 'Unnamed file'}
+                      </span>
 
                       <button
                         type='button'
                         onClick={() => handleDeleteExistingFile(file.uid)}
-                        disabled={isAnyDeleting || isLoading}
+                        disabled={isRemoving}
                         className='text-muted-foreground hover:text-destructive shrink-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
                         aria-label={`Remove ${file.name || 'file'}`}
                       >
-                        {isDeletingThis ? (
+                        {isDeletingThis && isRemoving ? (
                           <Loading className='h-3.5 w-3.5' />
                         ) : (
                           <X className='text-danger h-3.5 w-3.5' />
@@ -196,11 +236,17 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
                   );
                 })}
               </div>
+
+              {getRemoveFieldError('remove_files') && (
+                <p className='text-destructive text-xs'>
+                  {getRemoveFieldError('remove_files')}
+                </p>
+              )}
             </div>
           )}
 
           {/* Upload Files */}
-          <div className='flex flex-col gap-1.5'>
+          <div className='flex min-w-0 flex-col gap-1.5'>
             <Label htmlFor='medicine-upload-files'>Upload Files</Label>
 
             <input
@@ -216,43 +262,41 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
               type='button'
               variant='outline'
               onClick={() => fileInputRef.current?.click()}
-              disabled={isAnyDeleting || isLoading}
-              className='justify-center'
+              disabled={isUploading}
+              className='w-full justify-center'
             >
               <Upload className='h-4 w-4' />
               Choose Files
             </Button>
 
-            {getFieldError('upload_files') && (
+            {getUploadFieldError('upload_files') && (
               <p className='text-destructive text-xs'>
-                {getFieldError('upload_files')}
+                {getUploadFieldError('upload_files')}
               </p>
             )}
           </div>
 
           {/* Selected Files */}
           {formData.files.length > 0 && (
-            <div className='flex flex-col gap-1.5'>
+            <div className='flex min-w-0 flex-col gap-1.5'>
               <Label>Selected Files ({formData.files.length})</Label>
 
-              <div className='flex flex-col gap-2'>
+              <div className='flex min-w-0 flex-col gap-2'>
                 {formData.files.map((file, index) => (
                   <div
                     key={`${file.name}-${file.lastModified}-${index}`}
-                    className='border-border/60 flex items-center justify-between gap-2 rounded-lg border p-2 text-xs'
+                    className='border-border/60 flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border p-2 text-xs'
                   >
-                    <div className='flex min-w-0 items-center gap-2'>
-                      <FileText className='text-muted-foreground h-4 w-4 shrink-0' />
+                    <FileText className='text-muted-foreground h-4 w-4 shrink-0' />
 
-                      <span className='truncate' title={file.name}>
-                        {file.name}
-                      </span>
-                    </div>
+                    <span className='min-w-0 flex-1 truncate' title={file.name}>
+                      {file.name}
+                    </span>
 
                     <button
                       type='button'
                       onClick={() => handleRemoveSelectedFile(index)}
-                      disabled={isAnyDeleting || isLoading}
+                      disabled={isUploading}
                       className='text-muted-foreground hover:text-destructive shrink-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40'
                       aria-label={`Remove ${file.name}`}
                     >
@@ -270,18 +314,16 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
               type='button'
               variant='outline'
               onClick={handleClose}
-              disabled={isLoading || isAnyDeleting}
+              disabled={isUploading || isRemoving}
             >
               Cancel
             </Button>
 
             <Button
               type='submit'
-              disabled={
-                isLoading || isAnyDeleting || formData.files.length === 0
-              }
+              disabled={isUploading || formData.files.length === 0}
             >
-              {isLoading && <Loading className='h-4 w-4 text-white!' />}
+              {isUploading && <Loading className='h-4 w-4 text-white!' />}
               Upload
             </Button>
           </div>
