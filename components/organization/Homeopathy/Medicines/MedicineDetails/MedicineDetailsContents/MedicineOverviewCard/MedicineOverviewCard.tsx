@@ -12,6 +12,7 @@ const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
   const isAvailable = medicine.status === 'AVAILABLE';
   const [isOpenMedicineEditDialog, setIsOpenMedicineEditDialog] =
     useState(false);
+    
   return (
     <Card>
       <CardHeader className='flex flex-row items-start justify-between gap-3'>

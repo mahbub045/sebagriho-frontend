@@ -9,11 +9,10 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { useEditMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   EditMedicineOverviewDialogProps,
-  MedicineFormData,
+  MedicineInventoryFormData,
 } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getChangedFields } from '@/utils/commonFunctions';
 import { useState } from 'react';
@@ -21,7 +20,7 @@ import { toast } from 'sonner';
 
 const getFieldError = (
   error: unknown,
-  field: keyof MedicineFormData,
+  field: keyof MedicineInventoryFormData,
 ): string | undefined => {
   if (!error || typeof error !== 'object') return undefined;
 
@@ -48,37 +47,30 @@ const getGeneralError = (error: unknown): string | undefined => {
     const dataObj = data as Record<string, unknown>;
     if (typeof dataObj.message === 'string') return dataObj.message;
   }
-  return 'Something went wrong while updating the medicine.';
+  return 'Something went wrong while updating the inventory.';
 };
 
-const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
-  isOpen,
-  onClose,
-  medicine,
-}) => {
+const EditMedicineInventoryDialog: React.FC<
+  EditMedicineOverviewDialogProps
+> = ({ isOpen, onClose, medicine }) => {
   const [editMedicine, { isLoading, error }] = useEditMedicineMutation();
 
-  const getInitialData = (): MedicineFormData => ({
-    name: medicine?.name ?? '',
-    power: medicine?.power?.toString() ?? '',
-    manufacturer: medicine?.manufacturer ?? '',
-    batch_number: medicine?.batch_number ?? '',
-    status: medicine?.status ?? 'AVAILABLE',
+  const getInitialData = (): MedicineInventoryFormData => ({
+    total_quantity: medicine?.total_quantity?.toString() ?? '',
+    unit_price: medicine?.unit_price?.toString() ?? '',
+    expiration_date: medicine?.expiration_date ?? '',
   });
 
-  const [formData, setFormData] = useState<MedicineFormData>(getInitialData());
+  const [formData, setFormData] =
+    useState<MedicineInventoryFormData>(getInitialData());
   const [initialData, setInitialData] =
-    useState<MedicineFormData>(getInitialData());
+    useState<MedicineInventoryFormData>(getInitialData());
 
-  const handleChange = (field: keyof MedicineFormData, value: string) => {
+  const handleChange = (
+    field: keyof MedicineInventoryFormData,
+    value: string,
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleStatusToggle = (checked: boolean) => {
-    setFormData((prev) => ({
-      ...prev,
-      status: checked ? 'AVAILABLE' : 'UNAVAILABLE',
-    }));
   };
 
   const isUnchanged = JSON.stringify(formData) === JSON.stringify(initialData);
@@ -94,12 +86,12 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
         medicineUid: medicine.uid,
         payload: changedFields,
       }).unwrap();
-      toast.success('Medicine updated successfully');
+      toast.success('Inventory updated successfully');
       onClose();
     } catch (err) {
-      console.error('Failed to update medicine:', err);
+      console.error('Failed to update inventory:', err);
       toast.error(
-        getGeneralError(err) ?? 'Failed to update medicine. Please try again.',
+        getGeneralError(err) ?? 'Failed to update inventory. Please try again.',
       );
     }
   };
@@ -109,93 +101,63 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Medicine
+            Edit Inventory
           </DialogTitle>
           <DialogDescription>
-            Update the details of the medicine.
+            Update the inventory details of the medicine.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='name'>Name</Label>
-            <Input
-              type='text'
-              id='name'
-              value={formData.name}
-              onChange={(e) => handleChange('name', e.target.value)}
-              required
-              aria-invalid={!!getFieldError(error, 'name')}
-            />
-            {getFieldError(error, 'name') && (
-              <p className='text-sm text-red-500'>
-                {getFieldError(error, 'name')}
-              </p>
-            )}
-          </div>
-
-          <div className='space-y-2'>
-            <Label htmlFor='power'>Power</Label>
+            <Label htmlFor='total_quantity'>Total Quantity</Label>
             <Input
               type='number'
-              id='power'
-              value={formData.power}
-              onChange={(e) => handleChange('power', e.target.value)}
-              aria-invalid={!!getFieldError(error, 'power')}
+              id='total_quantity'
+              value={formData.total_quantity}
+              onChange={(e) => handleChange('total_quantity', e.target.value)}
+              min={0}
+              aria-invalid={!!getFieldError(error, 'total_quantity')}
             />
-            {getFieldError(error, 'power') && (
+            {getFieldError(error, 'total_quantity') && (
               <p className='text-sm text-red-500'>
-                {getFieldError(error, 'power')}
+                {getFieldError(error, 'total_quantity')}
               </p>
             )}
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='manufacturer'>Manufacturer</Label>
+            <Label htmlFor='unit_price'>Unit Price</Label>
             <Input
-              type='text'
-              id='manufacturer'
-              value={formData.manufacturer}
-              onChange={(e) => handleChange('manufacturer', e.target.value)}
-              aria-invalid={!!getFieldError(error, 'manufacturer')}
+              type='number'
+              id='unit_price'
+              value={formData.unit_price}
+              onChange={(e) => handleChange('unit_price', e.target.value)}
+              min={0}
+              step='0.01'
+              aria-invalid={!!getFieldError(error, 'unit_price')}
             />
-            {getFieldError(error, 'manufacturer') && (
+            {getFieldError(error, 'unit_price') && (
               <p className='text-sm text-red-500'>
-                {getFieldError(error, 'manufacturer')}
+                {getFieldError(error, 'unit_price')}
               </p>
             )}
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='batch_number'>Batch Number</Label>
+            <Label htmlFor='expiration_date'>Expiration Date</Label>
             <Input
-              type='text'
-              id='batch_number'
-              value={formData.batch_number}
-              onChange={(e) => handleChange('batch_number', e.target.value)}
-              aria-invalid={!!getFieldError(error, 'batch_number')}
+              type='date'
+              id='expiration_date'
+              value={formData.expiration_date}
+              onChange={(e) => handleChange('expiration_date', e.target.value)}
+              aria-invalid={!!getFieldError(error, 'expiration_date')}
             />
-            {getFieldError(error, 'batch_number') && (
+            {getFieldError(error, 'expiration_date') && (
               <p className='text-sm text-red-500'>
-                {getFieldError(error, 'batch_number')}
+                {getFieldError(error, 'expiration_date')}
               </p>
             )}
-          </div>
-
-          <div className='flex items-center justify-between space-y-2'>
-            <div>
-              <Label htmlFor='status'>Status</Label>
-              <p className='text-muted-foreground text-sm'>
-                {formData.status === 'AVAILABLE' ? 'Available' : 'Unavailable'}
-              </p>
-            </div>
-            <Switch
-              id='status'
-              checked={formData.status === 'AVAILABLE'}
-              onCheckedChange={handleStatusToggle}
-              aria-invalid={!!getFieldError(error, 'status')}
-              className='cursor-pointer'
-            />
           </div>
 
           <DialogFooter>
@@ -212,4 +174,4 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
   );
 };
 
-export default EditMedicineOverviewDialog;
+export default EditMedicineInventoryDialog;

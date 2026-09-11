@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import EditMedicineFilesDialog from '../../Dialogs/EditMedicineFilesDialog';
 
 const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)$/i.test(url);
 
@@ -16,6 +17,8 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
   const files = medicine.files ?? [];
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const [previewAlt, setPreviewAlt] = useState<string>('');
+  const [isOpenMedicineEditDialog, setIsOpenMedicineEditDialog] =
+    useState(false);
 
   const openPreview = (src: string, alt: string) => {
     setPreviewSrc(src);
@@ -33,7 +36,11 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
         <CardTitle className='text-base font-semibold'>
           Medicine Images
         </CardTitle>
-        <Button variant='default' size='sm'>
+        <Button
+          variant='default'
+          size='sm'
+          onClick={() => setIsOpenMedicineEditDialog(true)}
+        >
           <Edit />
           Edit
         </Button>
@@ -110,6 +117,12 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
           </div>
         </div>
       )}
+      {/* dialog  */}
+      <EditMedicineFilesDialog
+        isOpen={isOpenMedicineEditDialog}
+        onClose={() => setIsOpenMedicineEditDialog(false)}
+        medicine={medicine}
+      />
     </Card>
   );
 };
