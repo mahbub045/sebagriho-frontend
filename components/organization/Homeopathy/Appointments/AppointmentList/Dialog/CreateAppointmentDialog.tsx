@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/common/CustomLoader/Loading';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -160,7 +161,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
     );
   };
 
-  const isFormValid = Boolean(selectedPatient) && symptoms.trim().length > 0;
+  const isFormValid = Boolean(selectedPatient);
 
   const handleSubmit = async () => {
     if (!selectedPatient) return;
@@ -200,7 +201,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
         <div className='flex flex-col gap-5 py-2'>
           {/* PATIENT SEARCH & SELECT */}
           <div className='flex flex-col gap-1.5'>
-            <Label>Patient</Label>
+            <Label>
+              Patient <span className='text-red-500'>*</span>
+            </Label>
 
             <Popover
               open={patientPopoverOpen}
@@ -499,7 +502,8 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
           </Button>
 
           <Button onClick={handleSubmit} disabled={!isFormValid || isCreating}>
-            {isCreating ? 'Creating...' : 'Create Appointment'}
+            {isCreating ? <Loading className='text-white!' /> : ''}
+            Create Appointment
           </Button>
         </DialogFooter>
       </DialogContent>
