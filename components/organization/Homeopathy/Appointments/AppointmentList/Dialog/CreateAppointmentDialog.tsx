@@ -188,7 +188,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className='max-h-[90vh] max-w-2xl overflow-y-auto'>
+      <DialogContent className='max-h-[90vh] max-w-3xl overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Create Appointment</DialogTitle>
 
@@ -233,18 +233,16 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                 </Button>
               </PopoverTrigger>
 
-              <PopoverContent
-                className='w-[--radix-popover-trigger-width] p-0'
-                align='start'
-              >
+              <PopoverContent className='w-full p-0' align='start'>
                 <Command shouldFilter={false}>
                   <CommandInput
                     placeholder='Search patients...'
                     value={patientSearchInput}
                     onValueChange={setPatientSearchInput}
+                    className='m-1! h-6! focus:ring-0!'
                   />
 
-                  <CommandList>
+                  <CommandList className='max-h-70 overflow-y-auto'>
                     {isLoading && (
                       <div className='text-muted-foreground p-4 text-center text-sm'>
                         Searching...
@@ -335,9 +333,10 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                     placeholder='Search medicines...'
                     value={medicineSearchInput}
                     onValueChange={setMedicineSearchInput}
+                    className='m-1! h-6! focus:ring-0!'
                   />
 
-                  <CommandList>
+                  <CommandList className='max-h-70 overflow-y-auto'>
                     {isLoadingMedicines && (
                       <div className='text-muted-foreground p-4 text-center text-sm'>
                         Searching...
@@ -394,11 +393,11 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
             {/* Selected medicines list with per-item prescription fields */}
             {selectedMedicines.length > 0 && (
-              <div className='mt-1 flex flex-col gap-2'>
+              <div className='mt-1 flex max-h-80 flex-col gap-2 overflow-y-auto pr-1'>
                 {selectedMedicines.map((medicine) => (
                   <div
                     key={medicine.uid}
-                    className='border-border/60 flex flex-col gap-2 rounded-lg border p-3'
+                    className='border-primary/60 flex flex-col gap-2 rounded-lg border p-3'
                   >
                     <div className='flex items-center justify-between gap-2'>
                       <Badge variant='outline' className='font-medium'>
