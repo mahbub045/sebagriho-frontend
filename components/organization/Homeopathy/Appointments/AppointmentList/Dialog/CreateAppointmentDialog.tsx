@@ -191,7 +191,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className='max-h-[90vh] max-w-3xl overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle>Create Appointment</DialogTitle>
+          <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
+            Create Appointment
+          </DialogTitle>
 
           <DialogDescription>
             Select a patient, add medicines, and record the visit details.
@@ -209,31 +211,33 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
               open={patientPopoverOpen}
               onOpenChange={setPatientPopoverOpen}
             >
-              <PopoverTrigger>
-                <Button
-                  variant='outline'
-                  role='combobox'
-                  aria-expanded={patientPopoverOpen}
-                  className='w-full justify-between font-normal'
-                >
-                  {selectedPatient ? (
-                    <span className='flex items-center gap-2'>
-                      <Avatar className='h-5 w-5'>
-                        <AvatarFallback className='bg-primary/5 text-primary text-[10px] font-semibold'>
-                          {getInitials(selectedPatient.user?.name)}
-                        </AvatarFallback>
-                      </Avatar>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant='outline'
+                    role='combobox'
+                    aria-expanded={patientPopoverOpen}
+                    className='w-full justify-between font-normal'
+                  />
+                }
+              >
+                {selectedPatient ? (
+                  <span className='flex items-center gap-2'>
+                    <Avatar className='h-5 w-5'>
+                      <AvatarFallback className='bg-primary/5 text-primary text-[10px] font-semibold'>
+                        {getInitials(selectedPatient.user?.name)}
+                      </AvatarFallback>
+                    </Avatar>
 
-                      {selectedPatient.user?.name}
-                    </span>
-                  ) : (
-                    <span className='text-muted-foreground'>
-                      Search patient by name, serial number...
-                    </span>
-                  )}
+                    {selectedPatient.user?.name}
+                  </span>
+                ) : (
+                  <span className='text-muted-foreground'>
+                    Search patient by name, serial number...
+                  </span>
+                )}
 
-                  <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                </Button>
+                <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
               </PopoverTrigger>
 
               <PopoverContent className='w-full p-0' align='start'>
@@ -307,24 +311,26 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
               open={medicinePopoverOpen}
               onOpenChange={setMedicinePopoverOpen}
             >
-              <PopoverTrigger>
-                <Button
-                  variant='outline'
-                  role='combobox'
-                  aria-expanded={medicinePopoverOpen}
-                  className='w-full justify-between font-normal'
-                >
-                  <span className='text-muted-foreground flex items-center gap-2'>
-                    <Pill className='h-4 w-4' />
-                    {selectedMedicines.length > 0
-                      ? `${selectedMedicines.length} medicine${
-                          selectedMedicines.length > 1 ? 's' : ''
-                        } selected`
-                      : 'Search and add medicines...'}
-                  </span>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant='outline'
+                    role='combobox'
+                    aria-expanded={medicinePopoverOpen}
+                    className='w-full justify-between font-normal'
+                  />
+                }
+              >
+                <span className='text-muted-foreground flex items-center gap-2'>
+                  <Pill className='h-4 w-4' />
+                  {selectedMedicines.length > 0
+                    ? `${selectedMedicines.length} medicine${
+                        selectedMedicines.length > 1 ? 's' : ''
+                      } selected`
+                    : 'Search and add medicines...'}
+                </span>
 
-                  <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                </Button>
+                <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
               </PopoverTrigger>
 
               <PopoverContent
