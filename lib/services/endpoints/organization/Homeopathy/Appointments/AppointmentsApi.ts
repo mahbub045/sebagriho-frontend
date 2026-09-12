@@ -10,7 +10,7 @@ export const AppointmentsApi = baseApi.injectEndpoints({
       providesTags: ['HPAppointments'],
     }),
     getAppointmentDetails: builder.query({
-      query: (appointmentUid) => ({
+      query: ({ appointmentUid }) => ({
         url: `/homeopathy/appointments/${appointmentUid}`,
         method: 'GET',
       }),

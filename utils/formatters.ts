@@ -8,16 +8,14 @@ export const formatChoiceFieldValue = (
     .join(' ');
 };
 
-export const getInitials = (value?: string | null): string => {
-  if (!value) return 'U';
+export const getInitials = (
+  firstName?: string | null,
+  lastName?: string | null,
+): string => {
+  const first = firstName?.trim()?.[0] ?? '';
+  const last = lastName?.trim()?.[0] ?? '';
 
-  const initials = value
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((chunk) => chunk[0]?.toUpperCase() ?? '')
-    .join('');
+  const initials = `${first}${last}`.toUpperCase();
 
   return initials || 'U';
 };
@@ -44,3 +42,23 @@ export function formatDate(isoDate: Date | string | null | undefined): string {
   const day = String(date.getDate()).padStart(2, '0');
   return `${day}-${month}-${year}`;
 }
+
+export const calculateAge = (dateOfBirth: string | null) => {
+  if (!dateOfBirth) return null;
+
+  const dob = new Date(dateOfBirth);
+
+  if (Number.isNaN(dob.getTime())) return null;
+
+  const today = new Date();
+
+  let age = today.getFullYear() - dob.getFullYear();
+
+  const hasHadBirthdayThisYear =
+    today.getMonth() > dob.getMonth() ||
+    (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+
+  if (!hasHadBirthdayThisYear) age -= 1;
+
+  return age;
+};
