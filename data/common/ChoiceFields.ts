@@ -88,3 +88,9 @@ export const HOMEOPATHIC_MEDICINE_STATUS_OPTIONS: Option[] = [
   { value: 'AVAILABLE', label: 'Available' },
   { value: 'UNAVAILABLE', label: 'Unavailable' },
 ];
+
+export const APPOINTMENT_STATUS_OPTIONS = [
+  { value: 'ACTIVE', label: 'Active' },
+  { value: 'COMPLETED', label: 'Completed' },
+  { value: 'CANCELLED', label: 'Cancelled' },
+];
