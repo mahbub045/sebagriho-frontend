@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -40,6 +39,7 @@ import {
 import { Patient } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { getInitials } from '@/utils/formatters';
 import { Check, ChevronsUpDown, Pill, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
@@ -419,6 +419,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
                     <div className='grid grid-cols-2 gap-2'>
                       <Input
+                        type='text'
                         placeholder='Dosage'
                         value={medicine.dosage}
                         onChange={(event) =>
@@ -431,6 +432,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                       />
 
                       <Input
+                        type='text'
                         placeholder='Frequency'
                         value={medicine.frequency}
                         onChange={(event) =>
@@ -444,6 +446,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                     </div>
 
                     <Input
+                      type='text'
                       placeholder='Duration (e.g. 7 days)'
                       value={medicine.duration}
                       onChange={(event) =>
