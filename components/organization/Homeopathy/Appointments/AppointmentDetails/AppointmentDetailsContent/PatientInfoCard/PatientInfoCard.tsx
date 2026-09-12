@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { AppointmentPatient } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
+import { PatientInfoCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import {
   calculateAge,
   formatChoiceFieldValue,
@@ -10,10 +10,6 @@ import {
 } from '@/utils/formatters';
 import { Calendar, Droplet, Mail, Phone, User } from 'lucide-react';
 import Link from 'next/link';
-
-interface PatientInfoCardProps {
-  patient: AppointmentPatient;
-}
 
 const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
   const fullName = `${patient.first_name} ${patient.last_name}`.trim();

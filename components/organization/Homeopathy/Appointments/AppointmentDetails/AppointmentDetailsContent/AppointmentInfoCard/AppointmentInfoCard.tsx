@@ -1,29 +1,14 @@
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-
-import {
-  Appointment,
-  AppointmentStatus,
-} from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
-
+import { STATUS_STYLES } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
+import { AppointmentInfoCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { formatChoiceFieldValue, formatDateAndTime } from '@/utils/formatters';
-
 import {
   CalendarDays,
   ClipboardList,
   RefreshCcw,
   Stethoscope,
 } from 'lucide-react';
-
-const STATUS_STYLES: Record<AppointmentStatus, string> = {
-  ACTIVE: 'border-success/40 bg-success/10 text-success',
-  COMPLETED: 'border-info/40 bg-info/10 text-info',
-  CANCELLED: 'border-danger/40 bg-danger/10 text-danger',
-};
-
-interface AppointmentInfoCardProps {
-  appointment: Appointment;
-}
 
 const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
   appointment,
@@ -35,10 +20,6 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
       <div className='border-border/60 flex items-center justify-between border-b p-4'>
         <div>
           <p className='text-sm font-semibold'>Appointment Overview</p>
-
-          <p className='text-muted-foreground mt-0.5 text-xs'>
-            #{appointment.slug}
-          </p>
         </div>
 
         <Badge
@@ -58,7 +39,13 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
             <p className='text-muted-foreground text-xs'>Symptoms</p>
 
             <p className='font-medium'>
-              {appointment.symptoms || 'Not recorded'}
+              {appointment.symptoms ? (
+                appointment.symptoms
+              ) : (
+                <small className='text-muted-foreground truncate italic'>
+                  Not recorded
+                </small>
+              )}
             </p>
           </div>
         </div>
@@ -73,7 +60,13 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
             </p>
 
             <p className='font-medium'>
-              {appointment.treatment_effectiveness || 'Not recorded'}
+              {appointment.treatment_effectiveness ? (
+                appointment.treatment_effectiveness
+              ) : (
+                <small className='text-muted-foreground truncate italic'>
+                  Not recorded
+                </small>
+              )}
             </p>
           </div>
         </div>

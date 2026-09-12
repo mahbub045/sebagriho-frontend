@@ -20,6 +20,24 @@ export interface AppointmentPatient {
   is_owner: boolean;
 }
 
+export interface AppointmentInfoCardProps {
+  appointment: Appointment;
+}
+
+export interface PatientInfoCardProps {
+  patient: AppointmentPatient;
+}
+
+export interface MedicinesCardProps {
+  medicines: AppointmentMedicine[];
+}
+export interface FilesCardProps {
+  files: AppointmentFile[];
+}
+export interface DeleteCardProps {
+  appointment: Appointment;
+}
+
 export interface AppointmentMedicine {
   uid: string;
   name: string;
@@ -55,4 +73,11 @@ export interface AppointmentListResponse {
   next: string | null;
   previous: string | null;
   results: Appointment[];
+}
+
+export interface DeleteAppointmentDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  appointmentUid: string;
+  appointmentSlug: string;
 }

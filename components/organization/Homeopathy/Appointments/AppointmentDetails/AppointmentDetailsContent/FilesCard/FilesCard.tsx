@@ -1,14 +1,7 @@
 import { Card } from '@/components/ui/card';
-
-import { AppointmentFile } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
-
+import { FilesCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { formatDateAndTime } from '@/utils/formatters';
-
 import { FileText } from 'lucide-react';
-
-interface FilesCardProps {
-  files: AppointmentFile[];
-}
 
 const FilesCard: React.FC<FilesCardProps> = ({ files }) => {
   return (

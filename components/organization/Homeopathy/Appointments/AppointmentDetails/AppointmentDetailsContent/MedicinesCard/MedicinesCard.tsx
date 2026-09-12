@@ -1,12 +1,6 @@
 import { Card } from '@/components/ui/card';
-
-import { AppointmentMedicine } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
-
+import { MedicinesCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { Pill } from 'lucide-react';
-
-interface MedicinesCardProps {
-  medicines: AppointmentMedicine[];
-}
 
 const MedicinesCard: React.FC<MedicinesCardProps> = ({ medicines }) => {
   return (
