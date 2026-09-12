@@ -28,7 +28,9 @@ const DeleteCard: React.FC<DeleteCardProps> = ({ appointment }) => {
         isOpen={isOpenDeleteDialog}
         onClose={() => setIsOpenDeleteDialog(false)}
         appointmentUid={appointment.uid}
-        appointmentSlug={appointment.slug}
+        appointmentPatientName={
+          appointment.patient.first_name + ' ' + appointment.patient.last_name
+        }
       />
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -36,6 +37,7 @@ import {
   CalendarDays,
   ClipboardList,
   FileText,
+  Plus,
   Search,
   SlidersHorizontal,
   Stethoscope,
@@ -44,6 +46,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import CreateAppointmentDialog from './Dialog/CreateAppointmentDialog';
 
 const AppointmentList: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -51,6 +54,7 @@ const AppointmentList: React.FC = () => {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<AppointmentStatus | 'ALL'>('ALL');
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
+  const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -124,6 +128,10 @@ const AppointmentList: React.FC = () => {
             View and manage all patient appointments in your organization.
           </p>
         </div>
+        <Button variant='default' onClick={() => setIsOpenCreateDialog(true)}>
+          <Plus />
+          Create Appointment
+        </Button>
       </div>
 
       {/* FILTER BAR */}
@@ -430,6 +438,11 @@ const AppointmentList: React.FC = () => {
             </div>
           </>
         )}
+      {/* dialog  */}
+      <CreateAppointmentDialog
+        isOpen={isOpenCreateDialog}
+        onClose={() => setIsOpenCreateDialog(false)}
+      />
     </div>
   );
 };

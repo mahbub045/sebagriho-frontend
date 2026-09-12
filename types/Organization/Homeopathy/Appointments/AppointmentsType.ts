@@ -20,27 +20,11 @@ export interface AppointmentPatient {
   is_owner: boolean;
 }
 
-export interface AppointmentInfoCardProps {
-  appointment: Appointment;
-}
-
-export interface PatientInfoCardProps {
-  patient: AppointmentPatient;
-}
-
-export interface MedicinesCardProps {
-  medicines: AppointmentMedicine[];
-}
-export interface FilesCardProps {
-  files: AppointmentFile[];
-}
-export interface DeleteCardProps {
-  appointment: Appointment;
-}
-
 export interface AppointmentMedicine {
   uid: string;
   name: string;
+  power?: string | null;
+  manufacturer?: string | null;
   dosage?: string | null;
   frequency?: string | null;
   duration?: string | null;
@@ -68,6 +52,24 @@ export interface Appointment {
   patient: AppointmentPatient;
 }
 
+export interface AppointmentInfoCardProps {
+  appointment: Appointment;
+}
+
+export interface PatientInfoCardProps {
+  patient: AppointmentPatient;
+}
+
+export interface MedicinesCardProps {
+  medicines: AppointmentMedicine[];
+}
+export interface FilesCardProps {
+  files: AppointmentFile[];
+}
+export interface DeleteCardProps {
+  appointment: Appointment;
+}
+
 export interface AppointmentListResponse {
   count: number;
   next: string | null;
@@ -75,9 +77,48 @@ export interface AppointmentListResponse {
   results: Appointment[];
 }
 
+// Add these to AppointmentsType.ts (alongside the existing Appointment types)
+
+export interface CreateAppointmentDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+/** Minimal medicine shape used for search/select — adjust to match MedicinesApi's real response */
+export interface MedicineOption {
+  uid: string;
+  name: string;
+  power?: string | null;
+  manufacturer?: string | null;
+}
+
+/** A medicine chosen for this appointment, with its per-appointment prescription details */
+export interface SelectedMedicineDraft {
+  uid: string;
+  name: string;
+  power?: string | null;
+  manufacturer?: string | null;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  notes: string;
+}
+
+export interface CreateAppointmentPayload {
+  patient: string; // patient uid
+  symptoms: string;
+  treatment_effectiveness: string;
+  medicines: {
+    medicine: string; // medicine uid
+    dosage?: string;
+    frequency?: string;
+    duration?: string;
+    notes?: string;
+  }[];
+}
 export interface DeleteAppointmentDialogProps {
   isOpen: boolean;
   onClose: () => void;
   appointmentUid: string;
-  appointmentSlug: string;
+  appointmentPatientName: string;
 }

@@ -29,10 +29,24 @@ const MedicinesCard: React.FC<MedicinesCardProps> = ({ medicines }) => {
               className='flex items-center justify-between gap-3 p-4 text-sm'
             >
               <div className='min-w-0'>
-                <p className='truncate font-medium'>{medicine.name}</p>
+                <div className='flex items-center gap-1.5'>
+                  <p className='truncate font-medium'>{medicine.name}</p>
+
+                  {medicine.power && (
+                    <span className='text-muted-foreground shrink-0 text-xs'>
+                      {medicine.power}
+                    </span>
+                  )}
+                </div>
+
+                {medicine.manufacturer && (
+                  <p className='text-muted-foreground mt-0.5 truncate text-xs'>
+                    {medicine.manufacturer}
+                  </p>
+                )}
 
                 {medicine.notes && (
-                  <p className='text-muted-foreground mt-0.5 truncate text-xs'>
+                  <p className='text-muted-foreground mt-0.5 truncate text-xs italic'>
                     {medicine.notes}
                   </p>
                 )}

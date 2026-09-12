@@ -16,7 +16,7 @@ export const AppointmentsApi = baseApi.injectEndpoints({
       }),
       providesTags: ['HPAppointments'],
     }),
-    addAppointment: builder.mutation({
+    createAppointment: builder.mutation({
       query: (appointmentData) => ({
         url: '/homeopathy/appointments',
         method: 'POST',
@@ -45,7 +45,7 @@ export const AppointmentsApi = baseApi.injectEndpoints({
 export const {
   useGetAppointmentsQuery,
   useGetAppointmentDetailsQuery,
-  useAddAppointmentMutation,
+  useCreateAppointmentMutation,
   useEditAppointmentMutation,
   useDeleteAppointmentMutation,
 } = AppointmentsApi;
