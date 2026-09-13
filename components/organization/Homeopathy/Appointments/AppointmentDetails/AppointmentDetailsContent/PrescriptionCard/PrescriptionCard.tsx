@@ -15,11 +15,13 @@ import {
   Droplets,
   Pencil,
   Pill,
+  Plus,
   StickyNoteCheck,
   Trash2,
 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import AddNewMedicineDialog from '../../Dialogs/AddNewMedicineDialog';
 import EditPrescriptionDialog from '../../Dialogs/EditPrescriptionDialog';
 
 const PrescriptionCard: React.FC<MedicinesCardProps> = ({
@@ -28,6 +30,7 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
 }) => {
   const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
     useState(false);
+  const [isOpenAddDialog, setIsOpenAddDialog] = useState(false);
   const [editingPrescription, setEditingPrescription] =
     useState<AppointmentPrescription | null>(null);
   const [deletingUid, setDeletingUid] = useState<string | null>(null);
@@ -72,6 +75,16 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
               `(${appointment_prescription.length})`}
           </p>
         </div>
+
+        <Button
+          type='button'
+          variant='default'
+          size='sm'
+          onClick={() => setIsOpenAddDialog(true)}
+        >
+          <Plus className='h-3.5 w-3.5' />
+          Add new medicine
+        </Button>
       </div>
 
       {appointment_prescription.length === 0 ? (
@@ -195,7 +208,7 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
           })}
         </div>
       )}
-      {/* dialog  */}
+      {/* dialogs  */}
       <EditPrescriptionDialog
         isOpen={isOpenAppointmentEditDialog}
         onClose={() => {
@@ -205,6 +218,11 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
         prescription={
           editingPrescription ? [editingPrescription] : appointment_prescription
         }
+        appointmentUid={appointmentUid}
+      />
+      <AddNewMedicineDialog
+        isOpen={isOpenAddDialog}
+        onClose={() => setIsOpenAddDialog(false)}
         appointmentUid={appointmentUid}
       />
     </Card>
