@@ -36,7 +36,7 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
           </p>
         </div>
       ) : (
-        <div className='divide-border/60 [&::-webkit-scrollbar-thumb]:bg-border max-h-105 divide-y overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'>
+        <div className='divide-border/60 [&::-webkit-scrollbar-thumb]:bg-border max-h-60 divide-y overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'>
           {appointment_prescription.map((prescription) => {
             return (
               <div
@@ -77,9 +77,14 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
                         <Clock3 className='h-3 w-3' />
                       </p>
                     )}
-                    {prescription.duration && (
+                    {prescription.duration ? (
                       <p className='flex items-center justify-end gap-1'>
-                        {prescription.duration}
+                        {prescription.duration} days
+                        <CalendarDays className='h-3 w-3' />
+                      </p>
+                    ) : (
+                      <p className='flex items-center justify-end gap-1'>
+                        0 days
                         <CalendarDays className='h-3 w-3' />
                       </p>
                     )}

@@ -113,7 +113,8 @@ export interface SelectedMedicineDraft {
   dosage: string;
   frequency: string;
   duration: string;
-  notes: string;
+  meal_timing: string;
+  instructions: string;
 }
 
 export interface CreateAppointmentPayload {

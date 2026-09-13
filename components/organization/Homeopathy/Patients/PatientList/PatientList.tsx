@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import {
   Pagination,
@@ -64,6 +64,7 @@ import {
   X,
 } from 'lucide-react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import AddPatientDialog from './Dialogs/AddPatientDialog';
 
 const PatientList: React.FC = () => {
@@ -308,9 +309,19 @@ const PatientList: React.FC = () => {
                     >
                       <div className='flex items-start gap-3 p-4'>
                         {/* Avatar */}
-                        <div className='bg-primary/5 text-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold'>
-                          {getInitials(patient.user.name)}
-                        </div>
+                        <Avatar className='border-border/60 h-10 w-10 border'>
+                          <AvatarImage
+                            src={patient.user.avatar ?? undefined}
+                            alt={`Avatar of ${patient.user.name}`}
+                          />
+
+                          <AvatarFallback className='bg-primary/5 text-primary text-sm font-semibold'>
+                            {getInitials(
+                              patient.user.first_name,
+                              patient.user.last_name,
+                            )}
+                          </AvatarFallback>
+                        </Avatar>
 
                         {/* Name */}
                         <div className='min-w-0 flex-1'>

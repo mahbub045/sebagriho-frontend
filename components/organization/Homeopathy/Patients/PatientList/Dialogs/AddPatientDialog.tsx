@@ -253,7 +253,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
     >
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-185'>
         <DialogHeader className='text-lg font-semibold'>
-          <DialogTitle className='text-primary text-2xl'>
+          <DialogTitle className='text-primary -mb-3 text-2xl'>
             Add Patient
           </DialogTitle>
 
@@ -473,6 +473,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                 <Label htmlFor='miasm_type'>Miasm Type</Label>
 
                 <Select
+                  items={MIASM_TYPE_OPTIONS}
                   value={formValues.miasm_type}
                   onValueChange={(value) =>
                     updateField('miasm_type', value as MiasmType)

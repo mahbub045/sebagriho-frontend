@@ -27,12 +27,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { MEAL_TIMING_OPTIONS } from '@/data/common/ChoiceFields';
 import { useCreateAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import { useGetPatientsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import {
-  AppointmentStatus,
   CreateAppointmentDialogProps,
   MedicineOption,
   SelectedMedicineDraft,
@@ -64,7 +71,6 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
   // Form fields
   const [symptoms, setSymptoms] = useState('');
   const [treatmentEffectiveness, setTreatmentEffectiveness] = useState('');
-  const [status, setStatus] = useState<AppointmentStatus>('ACTIVE');
 
   // Debounce patient search
   useEffect(() => {
@@ -106,7 +112,6 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
     setSearchMedicine('');
     setSymptoms('');
     setTreatmentEffectiveness('');
-    setStatus('ACTIVE');
   };
 
   const handleClose = () => {
@@ -137,7 +142,8 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
           dosage: '',
           frequency: '',
           duration: '',
-          notes: '',
+          meal_timing: '',
+          instructions: '',
         },
       ];
     });
@@ -151,7 +157,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
   const updateMedicineField = (
     uid: string,
-    field: 'dosage' | 'frequency' | 'duration' | 'notes',
+    field: 'dosage' | 'frequency' | 'duration' | 'meal_timing' | 'instructions',
     value: string,
   ) => {
     setSelectedMedicines((current) =>
@@ -171,12 +177,13 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
         patient: selectedPatient.uid,
         symptoms: symptoms.trim(),
         treatment_effectiveness: treatmentEffectiveness.trim(),
-        medicines: selectedMedicines.map((medicine) => ({
+        appointment_prescription: selectedMedicines.map((medicine) => ({
           medicine: medicine.uid,
           dosage: medicine.dosage || undefined,
           frequency: medicine.frequency || undefined,
-          duration: medicine.duration || undefined,
-          notes: medicine.notes || undefined,
+          duration: medicine.duration ? Number(medicine.duration) : undefined,
+          meal_timing: medicine.meal_timing || undefined,
+          instructions: medicine.instructions || undefined,
         })),
       }).unwrap();
       toast.success('Appointment created successfully!');
@@ -402,7 +409,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
             {/* Selected medicines list with per-item prescription fields */}
             {selectedMedicines.length > 0 && (
-              <div className='mt-1 flex max-h-80 flex-col gap-2 overflow-y-auto pr-1'>
+              <div className='mt-1 flex max-h-96 flex-col gap-2 overflow-y-auto pr-1'>
                 {selectedMedicines.map((medicine) => (
                   <div
                     key={medicine.uid}
@@ -453,14 +460,54 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                       />
                     </div>
 
+                    <div className='grid grid-cols-2 gap-2'>
+                      <Input
+                        type='number'
+                        min={0}
+                        placeholder='Duration (days)'
+                        value={medicine.duration}
+                        onChange={(event) =>
+                          updateMedicineField(
+                            medicine.uid,
+                            'duration',
+                            event.target.value,
+                          )
+                        }
+                      />
+
+                      <Select
+                        items={MEAL_TIMING_OPTIONS}
+                        value={medicine.meal_timing || undefined}
+                        onValueChange={(value) =>
+                          updateMedicineField(
+                            medicine.uid,
+                            'meal_timing',
+                            value || '',
+                          )
+                        }
+                      >
+                        <SelectTrigger className='w-full'>
+                          <SelectValue placeholder='Meal timing' />
+                        </SelectTrigger>
+
+                        <SelectContent>
+                          {MEAL_TIMING_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     <Input
                       type='text'
-                      placeholder='Duration (e.g. 7 days)'
-                      value={medicine.duration}
+                      placeholder='Instructions (e.g. Take with water)'
+                      value={medicine.instructions}
                       onChange={(event) =>
                         updateMedicineField(
                           medicine.uid,
-                          'duration',
+                          'instructions',
                           event.target.value,
                         )
                       }

@@ -21,15 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  APPOINTMENT_STATUS_OPTIONS,
-  MIASM_TYPE_OPTIONS,
-} from '@/data/common/ChoiceFields';
+import { MIASM_TYPE_OPTIONS } from '@/data/common/ChoiceFields';
 import { useGetAppointmentsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
-import {
-  Appointment,
-  AppointmentStatus,
-} from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
+import { Appointment } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { MiasmType } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { PAGE_LIMIT } from '@/utils/constants';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
@@ -51,7 +45,6 @@ const AppointmentList: React.FC = () => {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-  const [status, setStatus] = useState<AppointmentStatus | 'ALL'>('ALL');
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
 
@@ -73,7 +66,6 @@ const AppointmentList: React.FC = () => {
     page,
     page_size: PAGE_LIMIT,
     ...(search ? { search } : {}),
-    ...(status !== 'ALL' ? { status } : {}),
     ...(miasmType !== 'ALL'
       ? { homeopathic_patient__miasm_type: miasmType }
       : {}),
@@ -104,13 +96,12 @@ const AppointmentList: React.FC = () => {
     return pages;
   };
 
-  const hasActiveFilters =
-    search !== '' || status !== 'ALL' || miasmType !== 'ALL';
+  const hasActiveFilters = search !== '' || miasmType !== 'ALL';
 
   const clearFilters = () => {
     setSearchInput('');
     setSearch('');
-    setStatus('ALL');
+
     setMiasmType('ALL');
     setPage(1);
   };
@@ -152,30 +143,6 @@ const AppointmentList: React.FC = () => {
             className='pl-9!'
           />
         </div>
-
-        {/* Status */}
-        <Select
-          items={APPOINTMENT_STATUS_OPTIONS}
-          value={status}
-          onValueChange={(value) => {
-            setStatus(value as AppointmentStatus | 'ALL');
-            setPage(1);
-          }}
-        >
-          <SelectTrigger className='w-full cursor-pointer sm:w-40'>
-            <SelectValue placeholder='Status' />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectItem value='ALL'>All Status</SelectItem>
-
-            {APPOINTMENT_STATUS_OPTIONS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
 
         {/* Miasm (filters via patient relation) */}
         <Select
