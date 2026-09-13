@@ -110,6 +110,7 @@ export interface SelectedMedicineDraft {
   name: string;
   power?: string | null;
   manufacturer?: string | null;
+  batch_number?: string | null;
   dosage: string;
   frequency: string;
   duration: string;
@@ -128,6 +129,11 @@ export interface CreateAppointmentPayload {
     duration?: string;
     notes?: string;
   }[];
+}
+export interface EditAppointmentInfoDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  appointment: Appointment;
 }
 export interface DeleteAppointmentDialogProps {
   isOpen: boolean;

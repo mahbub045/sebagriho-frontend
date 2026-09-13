@@ -477,7 +477,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
                       <Select
                         items={MEAL_TIMING_OPTIONS}
-                        value={medicine.meal_timing || undefined}
+                        value={medicine.meal_timing}
                         onValueChange={(value) =>
                           updateMedicineField(
                             medicine.uid,
