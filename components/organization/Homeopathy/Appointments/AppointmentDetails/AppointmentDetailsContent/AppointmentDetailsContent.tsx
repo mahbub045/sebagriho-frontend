@@ -170,7 +170,7 @@ const AppointmentDetailsContent: React.FC = () => {
         </div>
       </div>
       <div>
-        <FilesCard files={appointment.files} />
+        <FilesCard appointment={appointment} />
         <DeleteCard appointment={appointment} />
       </div>
     </div>

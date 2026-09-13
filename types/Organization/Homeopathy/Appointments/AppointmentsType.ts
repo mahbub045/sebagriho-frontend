@@ -74,9 +74,10 @@ export interface PatientInfoCardProps {
 
 export interface MedicinesCardProps {
   appointment_prescription: AppointmentPrescription[];
+  appointmentUid: string;
 }
 export interface FilesCardProps {
-  files: AppointmentFile[];
+  appointment: Pick<Appointment, 'uid' | 'files'>;
 }
 export interface DeleteCardProps {
   appointment: Appointment;
@@ -147,6 +148,13 @@ export interface EditPrescriptionDialogProps {
   prescription: AppointmentPrescription[];
   appointmentUid: string;
 }
+
+export interface EditAppointmentFilesDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  appointment: Pick<Appointment, 'uid' | 'files'>;
+}
+
 export interface DeleteAppointmentDialogProps {
   isOpen: boolean;
   onClose: () => void;
