@@ -24,7 +24,7 @@ import { toast } from 'sonner';
 import AddNewMedicineDialog from '../../Dialogs/AddNewMedicineDialog';
 import EditPrescriptionDialog from '../../Dialogs/EditPrescriptionDialog';
 
-const PrescriptionCard: React.FC<MedicinesCardProps> = ({
+const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
   appointment_prescription,
   appointmentUid,
 }) => {
@@ -229,4 +229,4 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
   );
 };
 
-export default PrescriptionCard;
+export default AppointmentPrescriptionCard;

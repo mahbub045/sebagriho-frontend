@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import EditAppointmentFilesDialog from '../../Dialogs/EditAppointmentFilesDialog';
 
-const FilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
+const AppointmentFilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
   const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
   const [deletingUid, setDeletingUid] = useState<string | null>(null);
 
@@ -90,19 +90,17 @@ const FilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
 
                   <Button
                     type='button'
-                    variant='ghost'
+                    variant='default'
                     size='icon'
-                    className='h-6 w-6'
                     onClick={() => handleOpenFile(file)}
                   >
-                    <Download className='text-primary h-3.5 w-3.5' />
+                    <Download className='h-3.5 w-3.5' />
                   </Button>
 
                   <Button
                     type='button'
                     variant='destructive'
                     size='icon'
-                    className='text-muted-foreground hover:text-destructive h-6 w-6'
                     onClick={(event) => handleDelete(event, file)}
                     disabled={isDeleting}
                   >
@@ -132,4 +130,4 @@ const FilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
   );
 };
 
-export default FilesCard;
+export default AppointmentFilesCard;

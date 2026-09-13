@@ -5,11 +5,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGetAppointmentDetailsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { AlertTriangle } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import AppointmentDeleteCard from './AppointmentDeleteCard/AppointmentDeleteCard';
+import AppointmentFilesCard from './AppointmentFilesCard/AppointmentFilesCard';
 import AppointmentInfoCard from './AppointmentInfoCard/AppointmentInfoCard';
-import DeleteCard from './DeleteCard/DeleteCard';
-import FilesCard from './FilesCard/FilesCard';
-import PatientInfoCard from './PatientInfoCard/PatientInfoCard';
-import PrescriptionCard from './PrescriptionCard/PrescriptionCard';
+import AppointmentPatientInfoCard from './AppointmentPatientInfoCard/AppointmentPatientInfoCard';
+import AppointmentPrescriptionCard from './AppointmentPrescriptionCard/AppointmentPrescriptionCard';
 
 const AppointmentDetailsContent: React.FC = () => {
   const { appointmentuid } = useParams<{ appointmentuid: string }>();
@@ -157,21 +157,21 @@ const AppointmentDetailsContent: React.FC = () => {
       <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
         {/* Left column — patient */}
         <div className='lg:col-span-1'>
-          <PatientInfoCard patient={appointment.patient} />
+          <AppointmentPatientInfoCard patient={appointment.patient} />
         </div>
 
         {/* Right column — appointment, medicines, files */}
         <div className='flex flex-col gap-4 lg:col-span-2'>
           <AppointmentInfoCard appointment={appointment} />
-          <PrescriptionCard
+          <AppointmentPrescriptionCard
             appointment_prescription={appointment.appointment_prescription}
             appointmentUid={appointment.uid}
           />
         </div>
       </div>
       <div>
-        <FilesCard appointment={appointment} />
-        <DeleteCard appointment={appointment} />
+        <AppointmentFilesCard appointment={appointment} />
+        <AppointmentDeleteCard appointment={appointment} />
       </div>
     </div>
   );

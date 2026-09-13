@@ -19,7 +19,9 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
+const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
+  patient,
+}) => {
   const fullName =
     `${patient?.user?.first_name} ${patient?.user?.last_name}`.trim();
 
@@ -194,4 +196,4 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
   );
 };
 
-export default PatientInfoCard;
+export default AppointmentPatientInfoCard;

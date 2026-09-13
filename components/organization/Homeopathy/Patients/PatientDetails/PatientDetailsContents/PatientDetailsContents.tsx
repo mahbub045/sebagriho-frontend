@@ -2,9 +2,9 @@
 import { useGetpatientDetailsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import { Stethoscope } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import DeleteCard from './DeleteCard/DeleteCard';
 import PatientCaseHistoryCard from './PatientCaseHistoryCard/PatientCaseHistoryCard';
 import PatientContactCard from './PatientContactCard/PatientContactCard';
+import PatientDeleteCard from './PatientDeleteCard/PatientDeleteCard';
 import PatientFilesCard from './PatientFilesCard/PatientFilesCard';
 import PatientIdentityCard from './PatientIdentityCard/PatientIdentityCard';
 import PatientMedicalInfoCard from './PatientMedicalInfoCard/PatientMedicalInfoCard';
@@ -57,7 +57,10 @@ const PatientDetailsContents: React.FC = () => {
 
       <PatientCaseHistoryCard patient={patient} />
       <PatientFilesCard patient={patient} />
-      <DeleteCard patientUid={patient.uid} patientName={patient.user.name} />
+      <PatientDeleteCard
+        patientUid={patient.uid}
+        patientName={patient.user.name}
+      />
     </div>
   );
 };

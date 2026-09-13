@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 
 import { useGetMedicineDetailsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
-import DeleteCard from './DeleteCard/DeleteCard';
+import MedicineDeleteCard from './MedicineDeleteCard/MedicineDeleteCard';
 import MedicineDescriptionCard from './MedicineDescriptionCard/MedicineDescriptionCard';
 import MedicineDetailsSkeleton from './MedicineDetailsSkeleton/MedicineDetailsSkeleton';
 import MedicineFilesCard from './MedicineFilesCard/MedicineFilesCard';
@@ -43,7 +43,7 @@ const MedicineDetailsContents: React.FC = () => {
       </div>
 
       <MedicineDescriptionCard medicine={medicine} />
-      <DeleteCard medicine={medicine} />
+      <MedicineDeleteCard medicine={medicine} />
     </div>
   );
 };

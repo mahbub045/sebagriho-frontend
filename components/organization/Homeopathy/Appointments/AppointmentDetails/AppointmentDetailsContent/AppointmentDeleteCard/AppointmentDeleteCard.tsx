@@ -4,7 +4,7 @@ import { TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
 import DeleteAppointmentDialog from '../../Dialogs/DeleteAppointmentDialog';
 
-const DeleteCard: React.FC<DeleteCardProps> = ({ appointment }) => {
+const AppointmentDeleteCard: React.FC<DeleteCardProps> = ({ appointment }) => {
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
   return (
     <div className='border-danger/20 bg-danger/5 mt-4 flex w-full flex-col gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between'>
@@ -13,7 +13,8 @@ const DeleteCard: React.FC<DeleteCardProps> = ({ appointment }) => {
         <p className='text-muted-foreground text-sm leading-relaxed'>
           This permanently removes{' '}
           <span className='text-foreground font-medium'>
-            {appointment.patient.first_name} {appointment.patient.last_name}
+            {appointment.patient.user.first_name}{' '}
+            {appointment.patient.user.last_name}
             &#39;s appointment
           </span>{' '}
           and all its data. This can&apos;t be undone.
@@ -29,11 +30,13 @@ const DeleteCard: React.FC<DeleteCardProps> = ({ appointment }) => {
         onClose={() => setIsOpenDeleteDialog(false)}
         appointmentUid={appointment.uid}
         appointmentPatientName={
-          appointment.patient.first_name + ' ' + appointment.patient.last_name
+          appointment.patient.user.first_name +
+          ' ' +
+          appointment.patient.user.last_name
         }
       />
     </div>
   );
 };
 
-export default DeleteCard;
+export default AppointmentDeleteCard;
