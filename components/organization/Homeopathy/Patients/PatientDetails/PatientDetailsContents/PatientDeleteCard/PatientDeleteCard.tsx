@@ -1,10 +1,14 @@
 import { Button } from '@/components/ui/button';
-import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
-import DeleteMedicineDialog from '../../Dialogs/DeleteMedicineDialog';
+import DeletePatientDialog from '../../Dialogs/DeletePatientDialog';
 
-const DeleteCard: React.FC<MedicineDetailsCardProps> = ({ medicine }) => {
+type Props = {
+  patientUid: string;
+  patientName: string;
+};
+
+const PatientDeleteCard: React.FC<Props> = ({ patientUid, patientName }) => {
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
   return (
     <div className='border-danger/20 bg-danger/5 flex w-full flex-col gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between'>
@@ -12,23 +16,23 @@ const DeleteCard: React.FC<MedicineDetailsCardProps> = ({ medicine }) => {
         <TriangleAlert className='text-danger mt-0.5 h-4 w-4 shrink-0' />
         <p className='text-muted-foreground text-sm leading-relaxed'>
           This permanently removes{' '}
-          <span className='text-foreground font-medium'>{medicine.name}</span>{' '}
-          and all its data. This can&apos;t be undone.
+          <span className='text-foreground font-medium'>{patientName}</span> and
+          all its data. This can&apos;t be undone.
         </p>
       </div>
       <Button variant='destructive' onClick={() => setIsOpenDeleteDialog(true)}>
-        Delete Medicine
+        Delete Patient
       </Button>
 
-      {/* Dialog for deleting medicine */}
-      <DeleteMedicineDialog
+      {/* Dialog for deleting patient */}
+      <DeletePatientDialog
         isOpen={isOpenDeleteDialog}
         onClose={() => setIsOpenDeleteDialog(false)}
-        medicineUid={medicine.uid}
-        medicineName={medicine.name}
+        patientUid={patientUid}
+        patientName={patientName}
       />
     </div>
   );
 };
 
-export default DeleteCard;
+export default PatientDeleteCard;

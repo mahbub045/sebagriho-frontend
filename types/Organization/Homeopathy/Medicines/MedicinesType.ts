@@ -52,9 +52,44 @@ export interface FormState {
   status: MedicineStatus;
 }
 
+export interface ApiValidationError {
+  data?: Record<string, string[] | string> & {
+    detail?: string;
+    message?: string;
+  };
+}
+
 export type MedicineDetailsCardProps = {
   medicine: Medicine;
 };
+
+export interface EditMedicineOverviewDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  medicine: Medicine;
+}
+
+export interface MedicineFormData {
+  name: string;
+  power: string;
+  manufacturer: string;
+  batch_number: string;
+  status: MedicineStatus;
+}
+
+export interface MedicineInventoryFormData {
+  total_quantity: string;
+  unit_price: string;
+  expiration_date: string;
+}
+
+export interface MedicineFilesFormData {
+  files: File[];
+}
+
+export interface MedicineDescriptionFormData {
+  description: string;
+}
 
 export interface DeleteMedicineDialogProps {
   isOpen: boolean;

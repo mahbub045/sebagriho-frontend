@@ -1,14 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
-import DeletePatientDialog from '../../Dialogs/DeletePatientDialog';
+import DeleteMedicineDialog from '../../Dialogs/DeleteMedicineDialog';
 
-type Props = {
-  patientUid: string;
-  patientName: string;
-};
-
-const DeleteCard: React.FC<Props> = ({ patientUid, patientName }) => {
+const MedicineDeleteCard: React.FC<MedicineDetailsCardProps> = ({ medicine }) => {
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false);
   return (
     <div className='border-danger/20 bg-danger/5 flex w-full flex-col gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between'>
@@ -16,23 +12,23 @@ const DeleteCard: React.FC<Props> = ({ patientUid, patientName }) => {
         <TriangleAlert className='text-danger mt-0.5 h-4 w-4 shrink-0' />
         <p className='text-muted-foreground text-sm leading-relaxed'>
           This permanently removes{' '}
-          <span className='text-foreground font-medium'>{patientName}</span> and
-          all its data. This can&apos;t be undone.
+          <span className='text-foreground font-medium'>{medicine.name}</span>{' '}
+          and all its data. This can&apos;t be undone.
         </p>
       </div>
       <Button variant='destructive' onClick={() => setIsOpenDeleteDialog(true)}>
-        Delete Patient
+        Delete Medicine
       </Button>
 
-      {/* Dialog for deleting patient */}
-      <DeletePatientDialog
+      {/* Dialog for deleting medicine */}
+      <DeleteMedicineDialog
         isOpen={isOpenDeleteDialog}
         onClose={() => setIsOpenDeleteDialog(false)}
-        patientUid={patientUid}
-        patientName={patientName}
+        medicineUid={medicine.uid}
+        medicineName={medicine.name}
       />
     </div>
   );
 };
 
-export default DeleteCard;
+export default MedicineDeleteCard;

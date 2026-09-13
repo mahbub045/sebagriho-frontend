@@ -2,17 +2,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MIASM_STYLES } from '@/data/Organization/Homeopathy/PatientsData';
-import { Patient } from '@/types/Organization/Homeopathy/Patients/PatientsType';
+import { PatientDetailsCardProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { formatChoiceFieldValue } from '@/utils/formatters';
 import { Edit, Stethoscope } from 'lucide-react';
 import { useState } from 'react';
 import EditPatientMedicalInfoDialog from '../../Dialogs/EditPatientMedicalInfoDialog';
 
-interface Props {
-  patient: Patient;
-}
-
-const PatientMedicalInfoCard: React.FC<Props> = ({ patient }) => {
+const PatientMedicalInfoCard: React.FC<PatientDetailsCardProps> = ({
+  patient,
+}) => {
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
   const miasmClass =
     (patient.miasm_type && MIASM_STYLES[patient.miasm_type]) ??
@@ -28,7 +26,7 @@ const PatientMedicalInfoCard: React.FC<Props> = ({ patient }) => {
 
         <Button
           size='sm'
-          variant='outline'
+          variant='default'
           onClick={() => setIsOpenEditPatientDialog(true)}
         >
           <Edit />
