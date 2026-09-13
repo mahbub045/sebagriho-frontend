@@ -36,7 +36,7 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
           </p>
         </div>
       ) : (
-        <div className='divide-border/60 [&::-webkit-scrollbar-thumb]:bg-border max-h-60 divide-y overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'>
+        <div className='divide-border/60 [&::-webkit-scrollbar-thumb]:bg-border max-h-62.5 divide-y overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'>
           {appointment_prescription.map((prescription) => {
             return (
               <div

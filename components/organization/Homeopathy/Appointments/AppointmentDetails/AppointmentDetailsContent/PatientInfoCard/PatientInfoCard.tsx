@@ -8,14 +8,23 @@ import {
   formatDate,
   getInitials,
 } from '@/utils/formatters';
-import { Calendar, Droplet, Mail, Phone, User } from 'lucide-react';
+import {
+  Calendar,
+  Droplet,
+  Mail,
+  Map,
+  Phone,
+  Stethoscope,
+  User,
+} from 'lucide-react';
 import Link from 'next/link';
 
 const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
   const fullName =
     `${patient?.user?.first_name} ${patient?.user?.last_name}`.trim();
 
-  const age = calculateAge(patient?.user?.date_of_birth);
+  const age =
+    patient?.age || calculateAge(patient?.user?.date_of_birth) || null;
 
   return (
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
@@ -135,6 +144,44 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
               >
                 {patient?.user?.blood_group}
               </Badge>
+            ) : (
+              <p className='text-muted-foreground truncate italic'>
+                Not recorded
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Miasm Type */}
+        <div className='flex items-center gap-2'>
+          <Stethoscope className='text-danger h-3.5 w-3.5 shrink-0' />
+
+          <div className='min-w-0'>
+            <p className='text-muted-foreground'>Miasm Type</p>
+
+            {patient?.miasm_type ? (
+              <span className='mt-0.5 text-[10px] font-medium'>
+                {formatChoiceFieldValue(patient?.miasm_type)}
+              </span>
+            ) : (
+              <p className='text-muted-foreground truncate italic'>
+                Not recorded
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Address */}
+        <div className='flex items-center gap-2'>
+          <Map className='text-danger h-3.5 w-3.5 shrink-0' />
+
+          <div className='min-w-0'>
+            <p className='text-muted-foreground'>Address</p>
+
+            {patient?.address ? (
+              <span className='mt-0.5 truncate text-[10px] font-medium'>
+                {formatChoiceFieldValue(patient?.address)}
+              </span>
             ) : (
               <p className='text-muted-foreground truncate italic'>
                 Not recorded
