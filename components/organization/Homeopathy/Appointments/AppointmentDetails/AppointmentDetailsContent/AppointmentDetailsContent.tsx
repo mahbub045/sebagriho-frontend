@@ -165,6 +165,7 @@ const AppointmentDetailsContent: React.FC = () => {
           <AppointmentInfoCard appointment={appointment} />
           <PrescriptionCard
             appointment_prescription={appointment.appointment_prescription}
+            appointmentUid={appointment.uid}
           />
         </div>
       </div>

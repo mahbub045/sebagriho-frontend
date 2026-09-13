@@ -1,30 +1,77 @@
+'use client';
+import Loading from '@/components/common/CustomLoader/Loading';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { MedicinesCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
+import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import {
+  AppointmentPrescription,
+  MedicinesCardProps,
+} from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { formatChoiceFieldValue } from '@/utils/formatters';
 import {
   CalendarDays,
   Clock3,
   Droplets,
+  Pencil,
   Pill,
   StickyNoteCheck,
+  Trash2,
 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import EditPrescriptionDialog from '../../Dialogs/EditPrescriptionDialog';
 
 const PrescriptionCard: React.FC<MedicinesCardProps> = ({
   appointment_prescription,
+  appointmentUid,
 }) => {
+  const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
+    useState(false);
+  const [editingPrescription, setEditingPrescription] =
+    useState<AppointmentPrescription | null>(null);
+  const [deletingUid, setDeletingUid] = useState<string | null>(null);
+
+  const [editAppointment] = useEditAppointmentMutation();
+
+  const handleEditClick = (prescription: AppointmentPrescription) => {
+    setEditingPrescription(prescription);
+    setIsOpenAppointmentEditDialog(true);
+  };
+
+  const handleDelete = async (prescription: AppointmentPrescription) => {
+    setDeletingUid(prescription.uid);
+
+    try {
+      await editAppointment({
+        appointmentUid,
+        appointmentData: {
+          remove_prescription_uids: [prescription.uid],
+        },
+      }).unwrap();
+
+      toast.success('Medicine removed successfully!');
+    } catch {
+      toast.error('Failed to remove medicine. Please try again.');
+    } finally {
+      setDeletingUid(null);
+    }
+  };
+
   return (
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
-      <div className='border-border/60 flex items-center gap-2.5 border-b px-4 py-3.5'>
-        <div className='bg-secondary/10 flex h-7 w-7 items-center justify-center rounded-full'>
-          <Pill className='text-secondary h-3.5 w-3.5' />
-        </div>
+      <div className='border-border/60 flex items-center justify-between border-b px-4 py-3.5'>
+        <div className='flex items-center gap-2.5'>
+          <div className='bg-secondary/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full'>
+            <Pill className='text-secondary h-4 w-4' />
+          </div>
 
-        <p className='text-sm font-semibold'>
-          Medicines{' '}
-          {appointment_prescription.length > 0 &&
-            `(${appointment_prescription.length})`}
-        </p>
+          <p className='text-sm font-semibold'>
+            Medicines{' '}
+            {appointment_prescription.length > 0 &&
+              `(${appointment_prescription.length})`}
+          </p>
+        </div>
       </div>
 
       {appointment_prescription.length === 0 ? (
@@ -38,12 +85,14 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
       ) : (
         <div className='divide-border/60 [&::-webkit-scrollbar-thumb]:bg-border max-h-62.5 divide-y overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'>
           {appointment_prescription.map((prescription) => {
+            const isDeleting = deletingUid === prescription.uid;
+
             return (
               <div
                 key={prescription.uid}
-                className='hover:bg-muted/30 flex flex-col gap-0.5 px-4 py-3.5 text-sm transition-colors'
+                className='group hover:bg-muted/30 flex flex-col gap-0.5 px-4 py-3.5 text-sm transition-colors'
               >
-                <div className='flex items-start justify-between gap-3'>
+                <div className='flex items-center justify-between gap-3'>
                   <div className='min-w-0'>
                     <div className='flex items-baseline gap-1.5'>
                       <p className='truncate font-medium'>
@@ -64,30 +113,57 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
                     )}
                   </div>
 
-                  <div className='text-muted-foreground shrink-0 space-y-1 text-right text-xs'>
-                    {prescription.dosage && (
-                      <p className='flex items-center justify-end gap-1'>
-                        {prescription.dosage}
-                        <Droplets className='h-3 w-3' />
-                      </p>
-                    )}
-                    {prescription.frequency && (
-                      <p className='flex items-center justify-end gap-1'>
-                        {prescription.frequency}
-                        <Clock3 className='h-3 w-3' />
-                      </p>
-                    )}
-                    {prescription.duration ? (
-                      <p className='flex items-center justify-end gap-1'>
-                        {prescription.duration} days
-                        <CalendarDays className='h-3 w-3' />
-                      </p>
-                    ) : (
-                      <p className='flex items-center justify-end gap-1'>
-                        0 days
-                        <CalendarDays className='h-3 w-3' />
-                      </p>
-                    )}
+                  <div className='flex shrink-0 items-center gap-3'>
+                    <div className='text-muted-foreground space-y-1 text-right text-xs'>
+                      {prescription.dosage && (
+                        <p className='flex items-center justify-end gap-1'>
+                          {prescription.dosage}
+                          <Droplets className='h-3 w-3' />
+                        </p>
+                      )}
+                      {prescription.frequency && (
+                        <p className='flex items-center justify-end gap-1'>
+                          {prescription.frequency}
+                          <Clock3 className='h-3 w-3' />
+                        </p>
+                      )}
+                      {prescription.duration ? (
+                        <p className='flex items-center justify-end gap-1'>
+                          {prescription.duration} days
+                          <CalendarDays className='h-3 w-3' />
+                        </p>
+                      ) : (
+                        <p className='flex items-center justify-end gap-1'>
+                          0 days
+                          <CalendarDays className='h-3 w-3' />
+                        </p>
+                      )}
+                    </div>
+
+                    <div className='border-primary/60 flex items-center gap-0.5 border-l pl-2.5 transition-opacity group-hover:opacity-100'>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='icon'
+                        onClick={() => handleEditClick(prescription)}
+                      >
+                        <Pencil className='h-3.5 w-3.5' />
+                      </Button>
+
+                      <Button
+                        type='button'
+                        variant='destructive'
+                        size='icon'
+                        onClick={() => handleDelete(prescription)}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? (
+                          <Loading className='h-3.5 w-3.5' />
+                        ) : (
+                          <Trash2 className='h-3.5 w-3.5' />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
@@ -119,6 +195,18 @@ const PrescriptionCard: React.FC<MedicinesCardProps> = ({
           })}
         </div>
       )}
+      {/* dialog  */}
+      <EditPrescriptionDialog
+        isOpen={isOpenAppointmentEditDialog}
+        onClose={() => {
+          setIsOpenAppointmentEditDialog(false);
+          setEditingPrescription(null);
+        }}
+        prescription={
+          editingPrescription ? [editingPrescription] : appointment_prescription
+        }
+        appointmentUid={appointmentUid}
+      />
     </Card>
   );
 };

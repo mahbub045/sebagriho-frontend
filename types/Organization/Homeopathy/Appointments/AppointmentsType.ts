@@ -135,6 +135,18 @@ export interface EditAppointmentInfoDialogProps {
   onClose: () => void;
   appointment: Appointment;
 }
+
+export interface MedicinesCardProps {
+  appointment_prescription: AppointmentPrescription[];
+  appointmentUid: string;
+}
+
+export interface EditPrescriptionDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  prescription: AppointmentPrescription[];
+  appointmentUid: string;
+}
 export interface DeleteAppointmentDialogProps {
   isOpen: boolean;
   onClose: () => void;

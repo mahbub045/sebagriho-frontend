@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AppointmentInfoCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
@@ -24,7 +26,11 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
         <div>
           <p className='text-sm font-semibold'>Appointment Overview</p>
         </div>
-        <Button variant='default' size='sm' onClick={() => setIsOpenAppointmentEditDialog(true)}>
+        <Button
+          variant='default'
+          size='sm'
+          onClick={() => setIsOpenAppointmentEditDialog(true)}
+        >
           <Edit />
           Edit
         </Button>
