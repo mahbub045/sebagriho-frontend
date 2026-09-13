@@ -1,5 +1,6 @@
 'use client';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -24,7 +25,6 @@ import {
   APPOINTMENT_STATUS_OPTIONS,
   MIASM_TYPE_OPTIONS,
 } from '@/data/common/ChoiceFields';
-import { STATUS_STYLES } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
 import { useGetAppointmentsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import {
   Appointment,
@@ -32,7 +32,7 @@ import {
 } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { MiasmType } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { PAGE_LIMIT } from '@/utils/constants';
-import { formatChoiceFieldValue, formatDateAndTime } from '@/utils/formatters';
+import { formatDateAndTime, getInitials } from '@/utils/formatters';
 import {
   CalendarDays,
   ClipboardList,
@@ -41,7 +41,6 @@ import {
   Search,
   SlidersHorizontal,
   Stethoscope,
-  User,
   X,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -274,11 +273,8 @@ const AppointmentList: React.FC = () => {
               }`}
             >
               {appointments.results.map((appointment: Appointment) => {
-                const statusClass =
-                  STATUS_STYLES[appointment.status] ?? STATUS_STYLES.ACTIVE;
-
                 const patientName =
-                  `${appointment.patient.first_name} ${appointment.patient.last_name}`.trim();
+                  `${appointment?.patient?.user?.first_name} ${appointment?.patient?.user?.last_name}`.trim();
 
                 return (
                   <Link
@@ -291,9 +287,21 @@ const AppointmentList: React.FC = () => {
                     >
                       <div className='flex items-start gap-3 p-4'>
                         {/* Avatar */}
-                        <div className='bg-primary/5 text-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold'>
-                          <User className='h-5 w-5' />
-                        </div>
+                        <Avatar className='border-border/60 h-10 w-10 border'>
+                          <AvatarImage
+                            src={
+                              appointment?.patient?.user?.avatar ?? undefined
+                            }
+                            alt={patientName}
+                          />
+
+                          <AvatarFallback className='bg-primary/5 text-primary text-sm font-semibold'>
+                            {getInitials(
+                              appointment?.patient?.user?.first_name,
+                              appointment?.patient?.user?.last_name,
+                            )}
+                          </AvatarFallback>
+                        </Avatar>
 
                         {/* Name */}
                         <div className='min-w-0 flex-1'>
@@ -302,21 +310,33 @@ const AppointmentList: React.FC = () => {
                           </p>
 
                           <p className='text-muted-foreground mt-1 truncate text-xs'>
-                            {appointment.patient.phone}
+                            {appointment?.patient?.user?.phone ? (
+                              appointment?.patient?.user?.phone
+                            ) : (
+                              <small className='text-muted-foreground italic'>
+                                No phone number available
+                              </small>
+                            )}
                           </p>
                         </div>
 
                         {/* Status */}
                         <Badge
-                          variant='outline'
-                          className={`shrink-0 text-[11px] font-medium ${statusClass}`}
+                          variant='success'
+                          className={`shrink-0 text-[11px] font-medium`}
                         >
-                          {formatChoiceFieldValue(appointment.status)}
+                          Patient SL -{' '}
+                          {appointment?.patient?.serial_number ? (
+                            appointment?.patient?.serial_number
+                          ) : (
+                            <small className='text-muted-foreground italic'>
+                              No serial number available
+                            </small>
+                          )}
                         </Badge>
                       </div>
 
                       <div className='border-border/60 border-t' />
-
                       <div className='flex flex-col gap-3 p-4 text-xs'>
                         {/* Symptoms */}
                         <div className='flex items-start gap-2'>

@@ -1,8 +1,6 @@
-import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { STATUS_STYLES } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
 import { AppointmentInfoCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
-import { formatChoiceFieldValue, formatDateAndTime } from '@/utils/formatters';
+import { formatDateAndTime } from '@/utils/formatters';
 import {
   CalendarDays,
   ClipboardList,
@@ -13,21 +11,12 @@ import {
 const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
   appointment,
 }) => {
-  const statusClass = STATUS_STYLES[appointment.status] ?? STATUS_STYLES.ACTIVE;
-
   return (
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='border-border/60 flex items-center justify-between border-b p-4'>
         <div>
           <p className='text-sm font-semibold'>Appointment Overview</p>
         </div>
-
-        <Badge
-          variant='outline'
-          className={`shrink-0 text-[11px] font-medium ${statusClass}`}
-        >
-          {formatChoiceFieldValue(appointment.status)}
-        </Badge>
       </div>
 
       <div className='flex flex-col gap-4 p-4 text-sm'>

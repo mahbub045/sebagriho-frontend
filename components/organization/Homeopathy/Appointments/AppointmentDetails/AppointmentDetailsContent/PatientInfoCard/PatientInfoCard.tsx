@@ -12,23 +12,28 @@ import { Calendar, Droplet, Mail, Phone, User } from 'lucide-react';
 import Link from 'next/link';
 
 const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
-  const fullName = `${patient.first_name} ${patient.last_name}`.trim();
+  const fullName =
+    `${patient?.user?.first_name} ${patient?.user?.last_name}`.trim();
 
-  const age = calculateAge(patient.date_of_birth);
+  const age = calculateAge(patient?.user?.date_of_birth);
 
   return (
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='border-border/60 flex flex-col items-center gap-3 border-b p-6 text-center'>
         <Avatar className='border-border/60 h-20 w-20 border'>
-          <AvatarImage src={patient.avatar ?? undefined} alt={fullName} />
+          <AvatarImage
+            src={patient?.user?.avatar ?? undefined}
+            alt={fullName}
+          />
 
           <AvatarFallback className='bg-primary/5 text-primary text-xl font-semibold'>
-            {getInitials(patient.first_name, patient.last_name)}
+            {getInitials(patient?.user?.first_name, patient?.user?.last_name)}
           </AvatarFallback>
         </Avatar>
 
-        <div className='flex flex-col items-center gap-1'>
+        <div className='flex flex-col items-center gap-0.5'>
           <span className='text-base font-semibold'>{fullName}</span>
+          <small>#{patient.serial_number}</small>
           <Link
             href={`/organization/homeopathy/patients/${patient.uid}`}
             className='text-primary text_decoration_underline text-xs font-medium'
@@ -48,8 +53,8 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
 
             <p className='truncate font-medium'>
               {age !== null ? `${age} years` : 'N/A'} •{' '}
-              {patient.gender ? (
-                formatChoiceFieldValue(patient.gender)
+              {patient?.user?.gender ? (
+                formatChoiceFieldValue(patient?.user?.gender)
               ) : (
                 <small className='text-muted-foreground truncate italic'>
                   Not recorded
@@ -67,8 +72,8 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
             <p className='text-muted-foreground'>Date of Birth</p>
 
             <p className='truncate font-medium'>
-              {patient.date_of_birth ? (
-                formatDate(patient.date_of_birth)
+              {patient?.user?.date_of_birth ? (
+                formatDate(patient?.user?.date_of_birth)
               ) : (
                 <small className='text-muted-foreground truncate italic'>
                   Not recorded
@@ -86,8 +91,8 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
             <p className='text-muted-foreground'>Phone</p>
 
             <p className='truncate font-medium'>
-              {patient.phone ? (
-                patient.phone
+              {patient?.user?.phone ? (
+                patient?.user?.phone
               ) : (
                 <small className='text-muted-foreground truncate italic'>
                   Not provided
@@ -105,8 +110,8 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
             <p className='text-muted-foreground'>Email</p>
 
             <p className='truncate font-medium'>
-              {patient.email ? (
-                patient.email
+              {patient?.user?.email ? (
+                patient?.user?.email
               ) : (
                 <small className='text-muted-foreground truncate italic'>
                   Not provided
@@ -123,12 +128,12 @@ const PatientInfoCard: React.FC<PatientInfoCardProps> = ({ patient }) => {
           <div className='min-w-0'>
             <p className='text-muted-foreground'>Blood Group</p>
 
-            {patient.blood_group ? (
+            {patient?.user?.blood_group ? (
               <Badge
                 variant='outline'
                 className='mt-0.5 text-[10px] font-medium'
               >
-                {patient.blood_group}
+                {patient?.user?.blood_group}
               </Badge>
             ) : (
               <p className='text-muted-foreground truncate italic'>

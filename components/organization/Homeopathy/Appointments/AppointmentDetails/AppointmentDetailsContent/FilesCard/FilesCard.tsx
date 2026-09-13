@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { FilesCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { formatDateAndTime } from '@/utils/formatters';
-import { FileText } from 'lucide-react';
+import { Download, FileText } from 'lucide-react';
 
 const FilesCard: React.FC<FilesCardProps> = ({ files }) => {
   return (
@@ -28,14 +28,19 @@ const FilesCard: React.FC<FilesCardProps> = ({ files }) => {
             <a
               key={file.uid}
               href={file.file}
+              download={file.file}
               target='_blank'
               rel='noopener noreferrer'
               className='hover:bg-muted/40 flex items-center justify-between gap-3 p-4 text-sm transition-colors'
             >
-              <div className='flex min-w-0 items-center gap-2'>
+              <div className='flex w-full min-w-0 items-center gap-2'>
                 <FileText className='text-muted-foreground h-3.5 w-3.5 shrink-0' />
 
-                <p className='truncate font-medium'>{file.name}</p>
+                <p className='min-w-0 flex-1 truncate font-medium'>
+                  {file.name}
+                </p>
+
+                <Download className='text-primary ml-auto h-3.5 w-3.5 shrink-0' />
               </div>
 
               {file.uploaded_at && (

@@ -8,8 +8,8 @@ import { useParams } from 'next/navigation';
 import AppointmentInfoCard from './AppointmentInfoCard/AppointmentInfoCard';
 import DeleteCard from './DeleteCard/DeleteCard';
 import FilesCard from './FilesCard/FilesCard';
-import MedicinesCard from './MedicinesCard/MedicinesCard';
 import PatientInfoCard from './PatientInfoCard/PatientInfoCard';
+import PrescriptionCard from './PrescriptionCard/PrescriptionCard';
 
 const AppointmentDetailsContent: React.FC = () => {
   const { appointmentuid } = useParams<{ appointmentuid: string }>();
@@ -163,7 +163,9 @@ const AppointmentDetailsContent: React.FC = () => {
         {/* Right column — appointment, medicines, files */}
         <div className='flex flex-col gap-4 lg:col-span-2'>
           <AppointmentInfoCard appointment={appointment} />
-          <MedicinesCard medicines={appointment.medicines} />
+          <PrescriptionCard
+            appointment_prescription={appointment.appointment_prescription}
+          />
         </div>
       </div>
       <div>

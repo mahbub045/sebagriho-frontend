@@ -1,34 +1,46 @@
 export type AppointmentStatus = 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
 
-export interface AppointmentPatient {
+interface AppointmentPatientUser {
   uid: string;
   first_name: string;
   last_name: string;
   phone: string;
   email: string;
   gender: string;
+  blood_group: string | null;
   nid: string | null;
   nid_front: string | null;
   nid_back: string | null;
   avatar: string | null;
-  blood_group: string | null;
   date_of_birth: string | null;
-  is_active: boolean;
-  is_staff: boolean;
-  is_superuser: boolean;
-  is_admin: boolean;
-  is_owner: boolean;
+}
+export interface AppointmentPatient {
+  uid: string;
+  user: AppointmentPatientUser;
+  age: number | null;
+  serial_number: string;
+  old_serial_number: string | null;
+  relative_phone: string | null;
+  address: string | null;
+  miasm_type: string | null;
+  case_history: string | null;
+  habits: string | null;
 }
 
-export interface AppointmentMedicine {
-  uid: string;
+interface MedicineDetails {
   name: string;
   power?: string | null;
   manufacturer?: string | null;
+  batch_number?: string | null;
+}
+export interface AppointmentPrescription {
+  uid: string;
+  medicine_details: MedicineDetails;
   dosage?: string | null;
   frequency?: string | null;
   duration?: string | null;
-  notes?: string | null;
+  meal_timing?: string | null;
+  instructions?: string | null;
 }
 
 export interface AppointmentFile {
@@ -45,7 +57,7 @@ export interface Appointment {
   symptoms: string;
   treatment_effectiveness: string;
   status: AppointmentStatus;
-  medicines: AppointmentMedicine[];
+  prescriptions: AppointmentPrescription[];
   files: AppointmentFile[];
   created_at: string;
   updated_at: string;
@@ -61,7 +73,7 @@ export interface PatientInfoCardProps {
 }
 
 export interface MedicinesCardProps {
-  medicines: AppointmentMedicine[];
+  appointment_prescription: AppointmentPrescription[];
 }
 export interface FilesCardProps {
   files: AppointmentFile[];
