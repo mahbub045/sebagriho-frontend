@@ -2,6 +2,7 @@
 
 import AuthPageSidePanel from '@/components/common/AuthPageSidePanel/AuthPageSidePanel';
 import Loading from '@/components/common/CustomLoader/Loading';
+import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -51,9 +52,13 @@ function SigninForm() {
   useEffect(() => {
     if (searchParams.get('reason') === 'subdomain-mismatch') {
       toast.error('For Changing Subdomain Forced Signout');
-      router.replace('/auth/signin');
+      // The middleware already dropped the session cookie server-side, but we
+      // still run the real sign-out flow (backend token invalidation, local
+      // storage cleanup, next-auth signOut) so client state is fully reset
+      // instead of only relying on the redirect.
+      handleSignOut();
     }
-  }, [searchParams, router]);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
