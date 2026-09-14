@@ -1,7 +1,5 @@
-import React from 'react'
+import UnderDevelopment from '@/components/common/UnderDevelopment/UnderDevelopment';
 
 export default function DashboardPage() {
-  return (
-    <div>DashboardPage</div>
-  )
+  return <UnderDevelopment />;
 }

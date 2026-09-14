@@ -23,7 +23,11 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-import { GENDER_OPTIONS, MIASM_TYPE_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  BLOOD_GROUP_OPTIONS,
+  GENDER_OPTIONS,
+  MIASM_TYPE_OPTIONS,
+} from '@/data/common/ChoiceFields';
 
 import { useAddPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 
@@ -121,6 +125,10 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
       newErrors.last_name = 'Last name is required.';
     }
 
+    if (!formValues.phone.trim()) {
+      newErrors.phone = 'Phone number is required.';
+    }
+
     if (
       formValues.email.trim() &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)
@@ -151,6 +159,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
         email: formValues.email.trim() || null,
         gender: formValues.gender || null,
         date_of_birth: formValues.date_of_birth || null,
+        blood_group: formValues.blood_group || null,
       },
 
       old_serial_number: formValues.old_serial_number
@@ -316,12 +325,15 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Phone */}
               <div className='space-y-1.5'>
-                <Label htmlFor='phone'>Phone</Label>
+                <Label htmlFor='phone'>
+                  Phone <span className='text-danger'>*</span>
+                </Label>
 
                 <BdPhoneInput
                   id='phone'
                   value={formValues.phone}
                   onChange={(value) => updateField('phone', value)}
+                  aria-invalid={!!renderError('phone')}
                 />
 
                 <FieldError message={renderError('phone')} />
@@ -469,34 +481,65 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
             <div className='grid grid-cols-1 gap-4'>
               {/* Miasm Type */}
-              <div className='space-y-1.5 sm:w-1/2'>
-                <Label htmlFor='miasm_type'>Miasm Type</Label>
+              <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                <div className='space-y-1.5'>
+                  <Label htmlFor='blood_group'>Blood Group</Label>
 
-                <Select
-                  items={MIASM_TYPE_OPTIONS}
-                  value={formValues.miasm_type}
-                  onValueChange={(value) =>
-                    updateField('miasm_type', value as MiasmType)
-                  }
-                >
-                  <SelectTrigger
-                    id='miasm_type'
-                    className='w-full'
-                    aria-invalid={!!renderError('miasm_type')}
+                  <Select
+                    items={BLOOD_GROUP_OPTIONS}
+                    value={formValues.blood_group}
+                    onValueChange={(value) =>
+                      updateField('blood_group', value as string)
+                    }
                   >
-                    <SelectValue placeholder='Select miasm type' />
-                  </SelectTrigger>
+                    <SelectTrigger
+                      id='blood_group'
+                      className='w-full'
+                      aria-invalid={!!renderError('blood_group')}
+                    >
+                      <SelectValue placeholder='Select blood group' />
+                    </SelectTrigger>
 
-                  <SelectContent>
-                    {MIASM_TYPE_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    <SelectContent>
+                      {BLOOD_GROUP_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <FieldError message={renderError('miasm_type')} />
+                  <FieldError message={renderError('blood_group')} />
+                </div>
+                <div className='space-y-1.5'>
+                  <Label htmlFor='miasm_type'>Miasm Type</Label>
+
+                  <Select
+                    items={MIASM_TYPE_OPTIONS}
+                    value={formValues.miasm_type}
+                    onValueChange={(value) =>
+                      updateField('miasm_type', value as MiasmType)
+                    }
+                  >
+                    <SelectTrigger
+                      id='miasm_type'
+                      className='w-full'
+                      aria-invalid={!!renderError('miasm_type')}
+                    >
+                      <SelectValue placeholder='Select miasm type' />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {MIASM_TYPE_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <FieldError message={renderError('miasm_type')} />
+                </div>
               </div>
 
               {/* Case History */}

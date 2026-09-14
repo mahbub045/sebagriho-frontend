@@ -16,7 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { GENDER_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  BLOOD_GROUP_OPTIONS,
+  GENDER_OPTIONS,
+} from '@/data/common/ChoiceFields';
 import { useEditPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import {
   EditPatientPersonalInfoDailogProps,
@@ -34,6 +37,7 @@ const EditPatientPersonalInfoDialog: React.FC<
     age: patientInfo.age !== null ? String(patientInfo.age) : '',
     gender: patientInfo.user.gender ?? '',
     date_of_birth: patientInfo.user.date_of_birth ?? '',
+    blood_group: patientInfo.user.blood_group ?? '',
   });
 
   // Normalize whatever shape the API sends back into { field: "message" }
@@ -51,6 +55,10 @@ const EditPatientPersonalInfoDialog: React.FC<
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const updateField = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -58,7 +66,7 @@ const EditPatientPersonalInfoDialog: React.FC<
     payload.append('age', formData.age);
     payload.append('user.gender', formData.gender);
     payload.append('user.date_of_birth', formData.date_of_birth);
-
+    payload.append('user.blood_group', formData.blood_group);
     try {
       await editPatient({
         patientUid: patientInfo.uid,
@@ -138,20 +146,54 @@ const EditPatientPersonalInfoDialog: React.FC<
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='date_of_birth'>Date of Birth</Label>
-            <Input
-              type='date'
-              id='date_of_birth'
-              name='date_of_birth'
-              value={formData.date_of_birth}
-              onChange={handleChange}
-              required
-            />
-            {getFieldError('user.date_of_birth') && (
-              <p className='text-destructive text-xs'>
-                {getFieldError('user.date_of_birth')}
-              </p>
-            )}
+            <div className='space-y-1.5'>
+              <Label htmlFor='blood_group'>Blood Group</Label>
+
+              <Select
+                items={BLOOD_GROUP_OPTIONS}
+                value={formData.blood_group}
+                onValueChange={(value) =>
+                  updateField('blood_group', value as string)
+                }
+              >
+                <SelectTrigger
+                  id='blood_group'
+                  className='w-full'
+                  aria-invalid={!!getFieldError('user.blood_group')}
+                >
+                  <SelectValue placeholder='Select blood group' />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {BLOOD_GROUP_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {getFieldError('user.blood_group') && (
+                <p className='text-destructive text-xs'>
+                  {getFieldError('user.blood_group')}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor='date_of_birth'>Date of Birth</Label>
+              <Input
+                type='date'
+                id='date_of_birth'
+                name='date_of_birth'
+                value={formData.date_of_birth}
+                onChange={handleChange}
+              />
+              {getFieldError('user.date_of_birth') && (
+                <p className='text-destructive text-xs'>
+                  {getFieldError('user.date_of_birth')}
+                </p>
+              )}
+            </div>
           </div>
 
           {isError && getFieldError('non_field_errors') && (

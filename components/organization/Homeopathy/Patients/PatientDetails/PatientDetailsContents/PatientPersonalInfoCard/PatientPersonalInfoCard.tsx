@@ -37,6 +37,14 @@ const PatientPersonalInfoCard: React.FC<PatientDetailsCardProps> = ({
           </p>
         </div>
         <div>
+          <p className='text-muted-foreground'>Blood Group</p>
+          <p className='font-medium'>
+            {patient.user.blood_group
+              ? formatChoiceFieldValue(patient.user.blood_group)
+              : 'N/A'}
+          </p>
+        </div>
+        <div>
           <p className='text-muted-foreground'>Date of Birth</p>
           <p className='font-medium'>
             {patient.user.date_of_birth

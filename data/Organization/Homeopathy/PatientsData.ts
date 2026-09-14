@@ -34,4 +34,5 @@ export const DEFAULT_VALUES: AddPatientFormValues = {
   miasm_type: '',
   case_history: '',
   habits: '',
+  blood_group: '',
 };

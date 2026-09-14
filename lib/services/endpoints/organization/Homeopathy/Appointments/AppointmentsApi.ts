@@ -3,9 +3,10 @@ import { baseApi } from '@/lib/services/baseApi';
 export const AppointmentsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAppointments: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: '/homeopathy/appointments',
         method: 'GET',
+        params,
       }),
       providesTags: ['HPAppointments'],
     }),

@@ -220,10 +220,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             {/* Quantity + Unit price */}
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='total_quantity'>
-                  Total Quantity
-                  <span className='text-danger'>*</span>
-                </Label>
+                <Label htmlFor='total_quantity'>Total Quantity</Label>
                 <Input
                   id='total_quantity'
                   name='total_quantity'
@@ -233,7 +230,6 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                     updateField('total_quantity', e.target.value)
                   }
                   placeholder='e.g., 100'
-                  required
                   aria-invalid={!!fieldErrors.total_quantity}
                 />
                 {fieldErrors.total_quantity && (
@@ -246,7 +242,6 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
               <div className='flex flex-col gap-1.5'>
                 <Label htmlFor='unit_price'>
                   Unit Price({getCurrencySymbol()})
-                  <span className='text-danger'>*</span>
                 </Label>
                 <Input
                   id='unit_price'
@@ -256,7 +251,6 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   value={form.unit_price}
                   onChange={(e) => updateField('unit_price', e.target.value)}
                   placeholder='e.g., 25.50'
-                  required
                   aria-invalid={!!fieldErrors.unit_price}
                 />
                 {fieldErrors.unit_price && (
