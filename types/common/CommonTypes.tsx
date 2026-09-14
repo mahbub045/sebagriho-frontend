@@ -30,3 +30,18 @@ export type ProfileFormData = {
 };
 
 export type ProfileFieldErrors = Partial<Record<keyof ProfileFormData, string>>;
+
+export type ResetPasswordFormData = {
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
+};
+
+export type ResetPasswordFieldErrors = Partial<
+  Record<keyof ResetPasswordFormData, string>
+>;
+
+export type ResetPasswordDialogProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};

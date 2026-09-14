@@ -41,7 +41,7 @@ const ProfileSettingsContainer: React.FC = () => {
 
           <div className='flex flex-col gap-4'>
             <ProfileOverviewCard profile={profile} />
-            <SecurityCard isPasswordSet={profile.is_password_set} />
+            <SecurityCard />
           </div>
         </div>
       )}

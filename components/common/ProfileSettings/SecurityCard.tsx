@@ -3,16 +3,11 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { KeyRound, ShieldCheck } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from 'react';
+import ResetPasswordDialog from './Dialogs/ResetPasswordDialog';
 
-type Props = {
-  isPasswordSet: boolean;
-};
-
-const SecurityCard: React.FC<Props> = ({ isPasswordSet }) => {
-  const handleClick = () => {
-    toast.info('Password management is coming soon');
-  };
+const SecurityCard: React.FC = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <Card className='border-border/60 items-center p-5 text-center shadow-sm'>
@@ -30,11 +25,16 @@ const SecurityCard: React.FC<Props> = ({ isPasswordSet }) => {
       <Button
         variant='destructive'
         className='mt-4 w-full'
-        onClick={handleClick}
+        onClick={() => setIsDialogOpen(true)}
       >
         <KeyRound />
-        {isPasswordSet ? 'Change Password' : 'Reset Password'}
+        Reset Password
       </Button>
+
+      <ResetPasswordDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </Card>
   );
 };

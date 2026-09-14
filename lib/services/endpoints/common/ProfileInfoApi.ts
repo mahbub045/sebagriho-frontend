@@ -18,8 +18,20 @@ export const ProfileInfoApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['ProfileInfo'],
     }),
+
+    resetPassword: builder.mutation({
+      query: ({ payload }) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body: payload,
+      }),
+      invalidatesTags: ['ProfileInfo'],
+    }),
   }),
 });
 
-export const { useGetProfileInfoQuery, useUpdateProfileInfoMutation } =
-  ProfileInfoApi;
+export const {
+  useGetProfileInfoQuery,
+  useUpdateProfileInfoMutation,
+  useResetPasswordMutation,
+} = ProfileInfoApi;
