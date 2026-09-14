@@ -9,8 +9,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 /**
@@ -39,13 +39,21 @@ function getSubdomainFromHost(): string {
   return subdomain;
 }
 
-export default function SigninPage() {
+function SigninForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('reason') === 'subdomain-mismatch') {
+      toast.error('For Changing Subdomain Forced Signout');
+      router.replace('/auth/signin');
+    }
+  }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,5 +235,13 @@ export default function SigninPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SigninPage() {
+  return (
+    <Suspense fallback={null}>
+      <SigninForm />
+    </Suspense>
   );
 }
