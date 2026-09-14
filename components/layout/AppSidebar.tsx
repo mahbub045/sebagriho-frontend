@@ -426,7 +426,15 @@ const AppSidebar: React.FC = () => {
     );
   }
 
-  const getProfilePath = () => '/client/profile-settings';
+  const getProfilePath = () => {
+    if (session?.user.is_admin) {
+      return '/super-admin/profile-settings';
+    } else if (session?.user.organization_type) {
+      return '/organization/profile-settings';
+    } else {
+      return '#';
+    }
+  };
 
   return (
     <>

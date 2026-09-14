@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Seba Griho',
-    short_name: 'Seba Griho',
-    description: 'Seba Griho management application',
+    name: 'Sebagriho',
+    short_name: 'Sebagriho',
+    description: 'Sebagriho management application',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
