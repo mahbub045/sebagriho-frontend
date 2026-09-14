@@ -348,12 +348,15 @@ const PatientList: React.FC = () => {
                           </div>
                         </div>
 
-                        {/* Status */}
+                        {/* blood_group */}
                         <Badge
-                          variant='outline'
-                          className={`shrink-0 text-[11px] font-medium ${statusClass}`}
+                          variant='default'
+                          className={`shrink-0 text-[11px] font-medium`}
                         >
-                          {formatChoiceFieldValue(patient.status)}
+                          Blood Group:{' '}
+                          {patient.user.blood_group
+                            ? formatChoiceFieldValue(patient.user.blood_group)
+                            : 'N/A'}
                         </Badge>
                       </div>
 

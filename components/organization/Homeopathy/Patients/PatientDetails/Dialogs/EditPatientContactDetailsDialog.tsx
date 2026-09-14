@@ -137,6 +137,7 @@ const EditPatientContactDetailsDialog: React.FC<
               onChange={(value) =>
                 setFormData((prev) => ({ ...prev, phone: value }))
               }
+              aria-invalid={!!getFieldError('user.phone')}
             />
             {getFieldError('user.phone') && (
               <p className='text-destructive text-xs'>

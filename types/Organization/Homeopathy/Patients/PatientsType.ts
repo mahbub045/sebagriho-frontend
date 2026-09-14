@@ -12,6 +12,7 @@ export interface PatientUser {
   email: string | null;
   gender: PatientGender | null;
   date_of_birth: string | null;
+  blood_group: string | null;
 }
 export interface PatientFile {
   uid: string;
@@ -29,6 +30,7 @@ export interface Patient {
   old_serial_number: number | null;
   relative_phone: string | null;
   address: string | null;
+  blood_group: string | null;
   age: number | null;
   miasm_type: MiasmType | null;
   case_history: string | null;
@@ -51,6 +53,7 @@ export interface AddPatientFormValues {
   email: string;
   gender: PatientGender | '';
   date_of_birth: string;
+  blood_group: string;
   old_serial_number: string;
   relative_phone: string;
   address: string;
@@ -85,6 +88,7 @@ export interface EditPatientPersonalInfoDailogProps {
     user: {
       gender: PatientGender | null;
       date_of_birth: string | null;
+      blood_group: string | null;
     };
   };
 }

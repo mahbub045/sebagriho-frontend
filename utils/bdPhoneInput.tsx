@@ -5,11 +5,13 @@ export const BdPhoneInput = ({
   value,
   onChange,
   required = false,
+  'aria-invalid': ariaInvalid,
 }: {
   id: string;
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
+  'aria-invalid'?: boolean;
 }) => (
   <div className='flex'>
     <span className='border-input bg-primary flex shrink-0 items-center gap-1 rounded-lg rounded-r-none border-r px-3 text-sm font-medium whitespace-nowrap text-white'>
@@ -27,6 +29,7 @@ export const BdPhoneInput = ({
       }}
       className='rounded-l-none!'
       required={required}
+      aria-invalid={ariaInvalid}
     />
   </div>
 );
