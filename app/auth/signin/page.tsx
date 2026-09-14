@@ -54,11 +54,15 @@ function SigninForm() {
       toast.error('For Changing Subdomain Forced Signout');
       // The middleware already dropped the session cookie server-side, but we
       // still run the real sign-out flow (backend token invalidation, local
-      // storage cleanup, next-auth signOut) so client state is fully reset
-      // instead of only relying on the redirect.
-      handleSignOut();
+      // storage cleanup, next-auth signOut) so client state is fully reset.
+      // `redirect: false` avoids next-auth's own hard navigation back to this
+      // same page (which caused a second, jarring reload) — we just clean up
+      // the query param ourselves once it's done.
+      handleSignOut({ redirect: false }).then(() => {
+        router.replace('/auth/signin');
+      });
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

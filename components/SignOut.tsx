@@ -1,6 +1,10 @@
 import { getSession, signOut } from 'next-auth/react';
 
-export const handleSignOut = async () => {
+export const handleSignOut = async (
+  signOutOptions: Parameters<typeof signOut>[0] = {
+    callbackUrl: '/auth/signin',
+  },
+) => {
   try {
     let accessToken: string | null = null;
     let refreshToken: string | null = null;
@@ -42,6 +46,6 @@ export const handleSignOut = async () => {
       localStorage.removeItem('refreshToken');
     }
 
-    await signOut({ callbackUrl: '/auth/signin' });
+    await signOut(signOutOptions);
   }
 };
