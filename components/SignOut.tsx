@@ -40,12 +40,38 @@ export const handleSignOut = async (
   } catch (error) {
     console.error('Error during logout:', error);
   } finally {
-    // Always clear local data regardless of API result
+    // Always clear all local/client-side data regardless of API result
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      localStorage.clear();
+      sessionStorage.clear();
+      clearAllCookies();
+      await clearAllCaches();
     }
 
     await signOut(signOutOptions);
+  }
+};
+
+const clearAllCookies = () => {
+  document.cookie.split(';').forEach((cookie) => {
+    const name = cookie.split('=')[0].trim();
+    if (!name) return;
+
+    // Clear for current path and root path, with and without domain,
+    // to cover cookies set at different path/domain scopes.
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${window.location.pathname}`;
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+  });
+};
+
+const clearAllCaches = async () => {
+  if (typeof caches === 'undefined') return;
+
+  try {
+    const cacheNames = await caches.keys();
+    await Promise.all(cacheNames.map((name) => caches.delete(name)));
+  } catch (error) {
+    console.error('Failed to clear cache storage:', error);
   }
 };
