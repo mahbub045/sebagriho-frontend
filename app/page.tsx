@@ -10,9 +10,5 @@ export default async function Home() {
     redirect('/auth/signin');
   }
 
-  if (!session.user.is_password_set) {
-    redirect('/auth/set-password');
-  }
-
   redirect(getDashboardPath(Boolean(session.user.is_admin)));
 }
