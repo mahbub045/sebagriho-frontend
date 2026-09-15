@@ -42,13 +42,25 @@ export const handleSignOut = async (
   } finally {
     // Always clear all local/client-side data regardless of API result
     if (typeof window !== 'undefined') {
-      localStorage.clear();
+      clearLocalStorageExceptTheme();
       sessionStorage.clear();
       clearAllCookies();
       await clearAllCaches();
     }
 
     await signOut(signOutOptions);
+  }
+};
+
+// next-themes persists the selected theme under the "theme" key by default —
+// keep it so the user's theme preference survives sign-out.
+const THEME_STORAGE_KEY = 'theme';
+
+const clearLocalStorageExceptTheme = () => {
+  const theme = localStorage.getItem(THEME_STORAGE_KEY);
+  localStorage.clear();
+  if (theme !== null) {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
   }
 };
 
