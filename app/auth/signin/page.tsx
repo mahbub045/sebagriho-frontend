@@ -11,7 +11,7 @@ import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 /**
@@ -48,9 +48,18 @@ function SigninForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const hasHandledSubdomainMismatch = useRef(false);
 
   useEffect(() => {
-    if (searchParams.get('reason') === 'subdomain-mismatch') {
+    if (
+      searchParams.get('reason') === 'subdomain-mismatch' &&
+      !hasHandledSubdomainMismatch.current
+    ) {
+      // Guard against React Strict Mode's double-invoke (and any other
+      // re-run of this effect) firing the sign-out + redirect below twice
+      // concurrently — two overlapping client-side navigations to the same
+      // route can otherwise corrupt the RSC stream on the second resolution.
+      hasHandledSubdomainMismatch.current = true;
       toast.error('For Changing Subdomain Forced Signout');
       // The middleware already dropped the session cookie server-side, but we
       // still run the real sign-out flow (backend token invalidation, local
