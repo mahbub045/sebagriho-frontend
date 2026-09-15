@@ -55,7 +55,6 @@ import {
   CalendarDays,
   FileText,
   MapPin,
-  Phone,
   Plus,
   Search,
   SlidersHorizontal,
@@ -397,25 +396,6 @@ const PatientList: React.FC = () => {
                                 : 'Not specified'}
                             </Badge>
                           </div>
-                        </div>
-
-                        {/* Contact */}
-                        <div className='col-span-2 flex items-center gap-2'>
-                          <Phone className='text-info h-3.5 w-3.5 shrink-0' />
-
-                          {patient.user.phone || patient.relative_phone ? (
-                            <div className='min-w-0'>
-                              <p className='text-muted-foreground'>Contact</p>
-
-                              <p className='truncate font-medium'>
-                                {patient.user.phone || patient.relative_phone}
-                              </p>
-                            </div>
-                          ) : (
-                            <span className='text-muted-foreground italic'>
-                              Not provided
-                            </span>
-                          )}
                         </div>
 
                         {/* Address */}

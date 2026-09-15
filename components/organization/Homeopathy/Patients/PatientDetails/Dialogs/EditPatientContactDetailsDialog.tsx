@@ -26,7 +26,6 @@ const EditPatientContactDetailsDialog: React.FC<
 
   const [formData, setFormData] = useState({
     phone: stripCountryCode(patientInfo.user.phone) ?? '',
-    relative_phone: stripCountryCode(patientInfo.relative_phone) ?? '',
     address: patientInfo.address ?? '',
     email: patientInfo.user.email ?? '',
   });
@@ -62,7 +61,6 @@ const EditPatientContactDetailsDialog: React.FC<
 
     const initial = {
       phone: stripCountryCode(patientInfo.user.phone) ?? '',
-      relative_phone: stripCountryCode(patientInfo.relative_phone) ?? '',
       address: patientInfo.address ?? '',
       email: patientInfo.user.email ?? '',
     };
@@ -74,14 +72,6 @@ const EditPatientContactDetailsDialog: React.FC<
       payload.append(
         'user.phone',
         String(addCountryCode(formData.phone) ?? ''),
-      );
-      hasChanges = true;
-    }
-
-    if (formData.relative_phone !== initial.relative_phone) {
-      payload.append(
-        'relative_phone',
-        String(addCountryCode(formData.relative_phone) ?? null),
       );
       hasChanges = true;
     }
@@ -142,21 +132,6 @@ const EditPatientContactDetailsDialog: React.FC<
             {getFieldError('user.phone') && (
               <p className='text-destructive text-xs'>
                 {getFieldError('user.phone')}
-              </p>
-            )}
-          </div>
-          <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='relative_phone'>Relative Phone</Label>
-            <BdPhoneInput
-              id='relative_phone'
-              value={formData.relative_phone}
-              onChange={(value) =>
-                setFormData((prev) => ({ ...prev, relative_phone: value }))
-              }
-            />
-            {getFieldError('relative_phone') && (
-              <p className='text-destructive text-xs'>
-                {getFieldError('relative_phone')}
               </p>
             )}
           </div>

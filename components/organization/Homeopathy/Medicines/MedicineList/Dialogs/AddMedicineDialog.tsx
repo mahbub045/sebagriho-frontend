@@ -15,17 +15,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
-import { HOMEOPATHIC_MEDICINE_STATUS_OPTIONS } from '@/data/common/ChoiceFields';
 import { HP_MEDICINE_INITIAL_STATE } from '@/data/Organization/Medicines/MedicinesData';
 import { useAddMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
@@ -33,7 +24,6 @@ import {
   ApiValidationError,
   FilePreview,
   FormState,
-  MedicineStatus,
 } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getCurrencySymbol } from '@/utils/constants';
 import { toast } from 'sonner';
@@ -109,7 +99,6 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
     payload.append('unit_price', form.unit_price);
     payload.append('description', form.description);
     payload.append('batch_number', form.batch_number);
-    payload.append('status', form.status);
 
     files.forEach(({ file }) => payload.append('upload_files', file));
 
@@ -262,12 +251,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             </div>
 
             {/* Expiration + Status */}
-            <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-3'>
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='expiration_date'>
-                  Expiration Date
-                  <span className='text-danger'>*</span>
-                </Label>
+                <Label htmlFor='expiration_date'>Expiration Date</Label>
                 <Input
                   id='expiration_date'
                   name='expiration_date'
@@ -276,7 +262,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   onChange={(e) =>
                     updateField('expiration_date', e.target.value)
                   }
-                  required
+
                   aria-invalid={!!fieldErrors.expiration_date}
                 />
                 {fieldErrors.expiration_date && (
@@ -285,46 +271,6 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   </p>
                 )}
               </div>
-
-              <div className='flex flex-col gap-1.5'>
-                <Label>Status</Label>
-                <Select
-                  items={HOMEOPATHIC_MEDICINE_STATUS_OPTIONS}
-                  value={form.status}
-                  onValueChange={(value) =>
-                    updateField('status', value as MedicineStatus)
-                  }
-                >
-                  <SelectTrigger id='status' className='w-full'>
-                    <SelectValue placeholder='Status' />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    {HOMEOPATHIC_MEDICINE_STATUS_OPTIONS.map((item) => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldErrors.status && (
-                  <p className='text-danger text-xs'>{fieldErrors.status}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Is available */}
-            <div className='flex items-center justify-between rounded-lg border p-3'>
-              <Label htmlFor='is_available' className='cursor-pointer'>
-                Available
-              </Label>
-              <Switch
-                id='is_available'
-                checked={form.is_available}
-                onCheckedChange={(checked) =>
-                  updateField('is_available', checked)
-                }
-              />
             </div>
 
             {/* Description */}

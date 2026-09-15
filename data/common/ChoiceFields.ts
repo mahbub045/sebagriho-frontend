@@ -84,11 +84,6 @@ export const HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS: Option[] = [
   { value: 'DELETED', label: 'Deleted' },
 ];
 
-export const HOMEOPATHIC_MEDICINE_STATUS_OPTIONS: Option[] = [
-  { value: 'AVAILABLE', label: 'Available' },
-  { value: 'UNAVAILABLE', label: 'Unavailable' },
-];
-
 export const MEAL_TIMING_OPTIONS = [
   { value: 'BEFORE_MEAL', label: 'Before meal' },
   { value: 'AFTER_MEAL', label: 'After meal' },

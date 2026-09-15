@@ -158,16 +158,12 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
           : null,
         email: formValues.email.trim() || null,
         gender: formValues.gender || null,
-        date_of_birth: formValues.date_of_birth || null,
+
         blood_group: formValues.blood_group || null,
       },
 
       old_serial_number: formValues.old_serial_number
         ? Number(formValues.old_serial_number)
-        : null,
-
-      relative_phone: formValues.relative_phone.trim()
-        ? addCountryCode(formValues.relative_phone.trim())
         : null,
 
       address: formValues.address.trim() || null,
@@ -386,21 +382,6 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                 <FieldError message={renderError('gender')} />
               </div>
 
-              {/* Date of Birth */}
-              <div className='space-y-1.5'>
-                <Label htmlFor='date_of_birth'>Date of Birth</Label>
-
-                <Input
-                  id='date_of_birth'
-                  type='date'
-                  value={formValues.date_of_birth}
-                  onChange={(e) => updateField('date_of_birth', e.target.value)}
-                  aria-invalid={!!renderError('date_of_birth')}
-                />
-
-                <FieldError message={renderError('date_of_birth')} />
-              </div>
-
               {/* Age */}
               <div className='space-y-1.5'>
                 <Label htmlFor='age'>Age</Label>
@@ -443,19 +424,8 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
           <div>
             <h3 className='mb-3 text-sm font-semibold'>Contact Information</h3>
 
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+            <div className='grid grid-cols-1'>
               {/* Relative Phone */}
-              <div className='space-y-1.5'>
-                <Label htmlFor='relative_phone'>Relative Phone</Label>
-
-                <BdPhoneInput
-                  id='relative_phone'
-                  value={formValues.relative_phone}
-                  onChange={(value) => updateField('relative_phone', value)}
-                />
-
-                <FieldError message={renderError('relative_phone')} />
-              </div>
 
               {/* Address */}
               <div className='space-y-1.5 sm:col-span-1'>
