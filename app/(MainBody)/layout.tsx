@@ -15,6 +15,10 @@ export default async function MainBodyLayout({
     redirect('/auth/signin');
   }
 
+  if (!session.user.is_password_set) {
+    redirect('/auth/set-password');
+  }
+
   return (
     <>
       <SessionExpiryReload />

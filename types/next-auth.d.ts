@@ -8,6 +8,7 @@ declare module 'next-auth' {
     is_admin: boolean;
     organization_type?: string;
     subdomain?: string | null;
+    is_password_set: boolean;
     accessToken: string;
     refreshToken: string;
   }
@@ -19,6 +20,7 @@ declare module 'next-auth' {
       is_admin: boolean;
       organization_type?: string;
       subdomain?: string | null;
+      is_password_set: boolean;
       accessToken: string;
       refreshToken: string;
     };
@@ -32,6 +34,7 @@ declare module 'next-auth/jwt' {
     is_admin: boolean;
     organization_type?: string;
     subdomain?: string | null;
+    is_password_set: boolean;
     accessToken: string;
     refreshToken: string;
   }
