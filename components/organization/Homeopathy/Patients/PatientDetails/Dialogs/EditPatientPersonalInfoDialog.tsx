@@ -36,7 +36,6 @@ const EditPatientPersonalInfoDialog: React.FC<
   const [formData, setFormData] = useState({
     age: patientInfo.age !== null ? String(patientInfo.age) : '',
     gender: patientInfo.user.gender ?? '',
-    date_of_birth: patientInfo.user.date_of_birth ?? '',
     blood_group: patientInfo.user.blood_group ?? '',
   });
 
@@ -65,7 +64,6 @@ const EditPatientPersonalInfoDialog: React.FC<
     const payload = new FormData();
     payload.append('age', formData.age);
     payload.append('user.gender', formData.gender);
-    payload.append('user.date_of_birth', formData.date_of_birth);
     payload.append('user.blood_group', formData.blood_group);
     try {
       await editPatient({
@@ -176,21 +174,6 @@ const EditPatientPersonalInfoDialog: React.FC<
               {getFieldError('user.blood_group') && (
                 <p className='text-destructive text-xs'>
                   {getFieldError('user.blood_group')}
-                </p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor='date_of_birth'>Date of Birth</Label>
-              <Input
-                type='date'
-                id='date_of_birth'
-                name='date_of_birth'
-                value={formData.date_of_birth}
-                onChange={handleChange}
-              />
-              {getFieldError('user.date_of_birth') && (
-                <p className='text-destructive text-xs'>
-                  {getFieldError('user.date_of_birth')}
                 </p>
               )}
             </div>
