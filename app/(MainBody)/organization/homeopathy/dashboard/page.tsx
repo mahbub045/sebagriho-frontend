@@ -1,5 +1,5 @@
-import UnderDevelopment from '@/components/common/UnderDevelopment/UnderDevelopment';
+import HomeopathyDashboardContainer from '@/components/organization/Homeopathy/Dashboard';
 
-export default function DashboardPage() {
-  return <UnderDevelopment />;
+export default function HomeopathyDashboardPage() {
+  return <HomeopathyDashboardContainer />;
 }

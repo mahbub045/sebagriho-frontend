@@ -83,6 +83,7 @@ export const authOptions: NextAuthOptions = {
           is_admin: profile.is_admin,
           organization_type: profile.organization_type,
           subdomain: credentials.subdomain || null,
+          is_password_set: profile.is_password_set,
           accessToken: access,
           refreshToken: refresh,
         };
@@ -92,12 +93,18 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, account, trigger, session }) {
-      // ✅ Called by SessionSync → update() after token refresh in baseApi
-      if (trigger === 'update' && session?.accessToken) {
-        token.accessToken = session.accessToken;
-        token.refreshToken = session.refreshToken;
+      // ✅ Called by SessionSync → update() after token refresh in baseApi,
+      // or by the set-password page right after the password is set.
+      if (trigger === 'update' && session) {
+        if (session.accessToken) {
+          token.accessToken = session.accessToken;
+          token.refreshToken = session.refreshToken;
+        }
         if (session.subdomain !== undefined) {
           token.subdomain = session.subdomain;
+        }
+        if (session.is_password_set !== undefined) {
+          token.is_password_set = session.is_password_set;
         }
         return token;
       }
@@ -146,6 +153,7 @@ export const authOptions: NextAuthOptions = {
               token.is_admin = profile.is_admin;
               token.organization_type = profile.organization_type;
               token.subdomain = subdomain || null;
+              token.is_password_set = profile.is_password_set;
               token.accessToken = access;
               token.refreshToken = refresh;
             }
@@ -166,6 +174,7 @@ export const authOptions: NextAuthOptions = {
         token.is_admin = user.is_admin;
         token.organization_type = user.organization_type;
         token.subdomain = user.subdomain ?? null;
+        token.is_password_set = user.is_password_set;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }
@@ -179,6 +188,7 @@ export const authOptions: NextAuthOptions = {
       session.user.is_admin = token.is_admin;
       session.user.organization_type = token.organization_type;
       session.user.subdomain = token.subdomain ?? null;
+      session.user.is_password_set = token.is_password_set;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       return session;
