@@ -1,5 +1,3 @@
-export type MedicineStatus = 'AVAILABLE' | 'UNAVAILABLE';
-
 export interface MedicineFile {
   uid: string;
   file: string;
@@ -16,7 +14,6 @@ export interface Medicine {
   unit_price: string;
   description: string;
   batch_number: string;
-  status: MedicineStatus;
   files: MedicineFile[];
   created_at: string;
   updated_at: string;
@@ -49,7 +46,6 @@ export interface FormState {
   unit_price: string;
   description: string;
   batch_number: string;
-  status: MedicineStatus;
 }
 
 export interface ApiValidationError {
@@ -74,7 +70,6 @@ export interface MedicineFormData {
   power: string;
   manufacturer: string;
   batch_number: string;
-  status: MedicineStatus;
 }
 
 export interface MedicineInventoryFormData {

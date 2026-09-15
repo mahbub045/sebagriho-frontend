@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { PatientDetailsCardProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
-import { formatChoiceFieldValue, formatDate } from '@/utils/formatters';
+import { formatChoiceFieldValue } from '@/utils/formatters';
 import { Edit, User } from 'lucide-react';
 import { useState } from 'react';
 import EditPatientPersonalInfoDialog from '../../Dialogs/EditPatientPersonalInfoDialog';
@@ -41,14 +41,6 @@ const PatientPersonalInfoCard: React.FC<PatientDetailsCardProps> = ({
           <p className='font-medium'>
             {patient.user.blood_group
               ? formatChoiceFieldValue(patient.user.blood_group)
-              : 'N/A'}
-          </p>
-        </div>
-        <div>
-          <p className='text-muted-foreground'>Date of Birth</p>
-          <p className='font-medium'>
-            {patient.user.date_of_birth
-              ? formatDate(patient.user.date_of_birth)
               : 'N/A'}
           </p>
         </div>

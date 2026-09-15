@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { useEditMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   EditMedicineOverviewDialogProps,
@@ -63,7 +62,6 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
     power: medicine?.power?.toString() ?? '',
     manufacturer: medicine?.manufacturer ?? '',
     batch_number: medicine?.batch_number ?? '',
-    status: medicine?.status ?? 'AVAILABLE',
   });
 
   const [formData, setFormData] = useState<MedicineFormData>(getInitialData());
@@ -180,22 +178,6 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
                 {getFieldError(error, 'batch_number')}
               </p>
             )}
-          </div>
-
-          <div className='flex items-center justify-between space-y-2'>
-            <div>
-              <Label htmlFor='status'>Status</Label>
-              <p className='text-muted-foreground text-sm'>
-                {formData.status === 'AVAILABLE' ? 'Available' : 'Unavailable'}
-              </p>
-            </div>
-            <Switch
-              id='status'
-              checked={formData.status === 'AVAILABLE'}
-              onCheckedChange={handleStatusToggle}
-              aria-invalid={!!getFieldError(error, 'status')}
-              className='cursor-pointer'
-            />
           </div>
 
           <DialogFooter>

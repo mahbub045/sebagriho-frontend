@@ -6,8 +6,6 @@ import {
   CalendarDays,
   LucideIcon,
   Pill,
-  PillBottle,
-  UserCheck,
   Users,
 } from 'lucide-react';
 
@@ -30,14 +28,7 @@ const StatCards: React.FC<{ summary: DashboardSummary }> = ({ summary }) => {
       accent: 'text-primary',
       iconBg: 'bg-primary/10',
     },
-    {
-      label: 'Active Patients',
-      value: summary.active_patients,
-      subLabel: 'Currently active',
-      icon: UserCheck,
-      accent: 'text-primary',
-      iconBg: 'bg-primary/10',
-    },
+
     {
       label: 'Total Appointments',
       value: summary.total_appointments,
@@ -62,20 +53,16 @@ const StatCards: React.FC<{ summary: DashboardSummary }> = ({ summary }) => {
       accent: 'text-success',
       iconBg: 'bg-success/10',
     },
-    {
-      label: 'Available Medicines',
-      value: summary.available_medicines,
-      subLabel: 'In stock',
-      icon: PillBottle,
-      accent: 'text-success',
-      iconBg: 'bg-success/10',
-    },
   ];
 
   return (
-    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
       {statCards.map((stat) => (
-        <Card glow key={stat.label} className='border-border/60 gap-3 shadow-sm'>
+        <Card
+          glow
+          key={stat.label}
+          className='border-border/60 gap-3 shadow-sm'
+        >
           <CardContent className='flex items-center gap-4'>
             <div
               className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${stat.iconBg}`}

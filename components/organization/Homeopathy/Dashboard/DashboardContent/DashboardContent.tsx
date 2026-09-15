@@ -3,10 +3,8 @@
 import { ChartConfig } from '@/components/ui/chart';
 import { useGetHomeopathyDashboardDataQuery } from '@/lib/services/endpoints/organization/Homeopathy/Dashboard/DashboardApi';
 import { AlertTriangle, CalendarCheck, TrendingUp } from 'lucide-react';
-import { buildStatusConfig } from '../../../../common/chartConfig';
 import GrowthChartCard from './DashboardComponents/GrowthChartCard';
 import StatCards from './DashboardComponents/StatCards';
-import StatusPieCard from './DashboardComponents/StatusPieCard';
 
 const patientGrowthConfig = {
   count: {
@@ -72,9 +70,6 @@ const DashboardContent: React.FC = () => {
     medicine_status,
   } = data;
 
-  const patientStatusConfig = buildStatusConfig(patient_status);
-  const medicineStatusConfig = buildStatusConfig(medicine_status);
-
   return (
     <div className='flex flex-col gap-4'>
       {/* HEADER */}
@@ -113,23 +108,6 @@ const DashboardContent: React.FC = () => {
           config={appointmentGrowthConfig}
           gradientId='appointmentGrowthFill'
           emptyLabel='No appointment growth data yet'
-        />
-      </div>
-
-      {/* STATUS BREAKDOWNS */}
-      <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-        <StatusPieCard
-          title='Patient Status'
-          description='Distribution of patients by status'
-          data={patient_status}
-          config={patientStatusConfig}
-        />
-
-        <StatusPieCard
-          title='Medicine Status'
-          description='Distribution of medicines by availability'
-          data={medicine_status}
-          config={medicineStatusConfig}
         />
       </div>
     </div>

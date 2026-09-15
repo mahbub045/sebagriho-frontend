@@ -34,15 +34,6 @@ const PatientContactCard: React.FC<PatientDetailsCardProps> = ({ patient }) => {
           </div>
         </div>
         <div className='flex items-center gap-2'>
-          <Phone className='text-info h-3.5 w-3.5 shrink-0' />
-          <div className='min-w-0'>
-            <p className='text-muted-foreground'>Relative Phone</p>
-            <p className='truncate font-medium'>
-              {patient.relative_phone ?? 'Not provided'}
-            </p>
-          </div>
-        </div>
-        <div className='flex items-center gap-2'>
           <Mail className='text-primary h-3.5 w-3.5 shrink-0' />
           <div className='min-w-0'>
             <p className='text-muted-foreground'>Email</p>

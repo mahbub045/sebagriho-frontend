@@ -1,12 +1,4 @@
-import {
-  FormState,
-  MedicineStatus,
-} from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
-
-export const MEDICINE_STATUS_STYLES: Record<MedicineStatus, string> = {
-  AVAILABLE: 'border-success/30 bg-success/10 text-success',
-  UNAVAILABLE: 'border-danger/30 bg-danger/10 text-danger',
-};
+import { FormState } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 
 export const HP_MEDICINE_INITIAL_STATE: FormState = {
   name: '',
@@ -18,5 +10,4 @@ export const HP_MEDICINE_INITIAL_STATE: FormState = {
   unit_price: '',
   description: '',
   batch_number: '',
-  status: 'AVAILABLE',
 };

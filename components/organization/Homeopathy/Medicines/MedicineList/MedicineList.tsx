@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
@@ -24,27 +23,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { HOMEOPATHIC_MEDICINE_STATUS_OPTIONS } from '@/data/common/ChoiceFields';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
-import {
-  Medicine,
-  MedicineStatus,
-} from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { Medicine } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getCurrencySymbol, PAGE_LIMIT } from '@/utils/constants';
-import {
-  formatChoiceFieldValue,
-  formatDate,
-  formatDateAndTime,
-} from '@/utils/formatters';
+import { formatDate, formatDateAndTime } from '@/utils/formatters';
 
-import { MEDICINE_STATUS_STYLES } from '@/data/Organization/Medicines/MedicinesData';
 import {
   Boxes,
   CalendarClock,
@@ -67,7 +50,6 @@ const MedicineList: React.FC = () => {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-  const [status, setStatus] = useState<MedicineStatus | 'ALL'>('ALL');
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isOpenAddingMedicineDialog, setIsOpenAddingMedicineDialog] =
     useState(false);
@@ -93,7 +75,6 @@ const MedicineList: React.FC = () => {
     page,
     page_size: PAGE_LIMIT,
     ...(search ? { search } : {}),
-    ...(status !== 'ALL' ? { status } : {}),
     ...(expirationGte ? { expiration_date__gte: expirationGte } : {}),
     ...(expirationLte ? { expiration_date__lte: expirationLte } : {}),
   });
@@ -124,12 +105,11 @@ const MedicineList: React.FC = () => {
   };
 
   const hasActiveFilters =
-    search !== '' || status !== 'ALL' || !!dateRange?.from || !!dateRange?.to;
+    search !== '' || !!dateRange?.from || !!dateRange?.to;
 
   const clearFilters = () => {
     setSearchInput('');
     setSearch('');
-    setStatus('ALL');
     setDateRange(undefined);
     setPage(1);
   };
@@ -178,30 +158,6 @@ const MedicineList: React.FC = () => {
             className='pl-9!'
           />
         </div>
-
-        {/* Status */}
-        <Select
-          items={HOMEOPATHIC_MEDICINE_STATUS_OPTIONS}
-          value={status}
-          onValueChange={(value) => {
-            setStatus(value as MedicineStatus | 'ALL');
-            setPage(1);
-          }}
-        >
-          <SelectTrigger className='w-full sm:w-40'>
-            <SelectValue placeholder='Status' />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectItem value='ALL'>All Status</SelectItem>
-
-            {HOMEOPATHIC_MEDICINE_STATUS_OPTIONS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
 
         {/* Expiration date range */}
         <Popover>
@@ -300,10 +256,6 @@ const MedicineList: React.FC = () => {
               }`}
             >
               {medicines.results.map((medicine: Medicine) => {
-                const statusClass =
-                  MEDICINE_STATUS_STYLES[medicine.status] ??
-                  MEDICINE_STATUS_STYLES.UNAVAILABLE;
-
                 return (
                   <Link
                     key={medicine.uid}
@@ -355,17 +307,6 @@ const MedicineList: React.FC = () => {
                             </span>
                           </div>
                         </div>
-
-                        <Badge
-                          variant='outline'
-                          className={`shrink-0 text-[11px] font-medium ${statusClass}`}
-                        >
-                          {medicine.status ? (
-                            formatChoiceFieldValue(medicine.status)
-                          ) : (
-                            <small className='italic'>Not Specified</small>
-                          )}
-                        </Badge>
                       </div>
 
                       <div className='border-border/60 border-t' />
