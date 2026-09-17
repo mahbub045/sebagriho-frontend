@@ -202,13 +202,14 @@ const AppointmentList: React.FC = () => {
           dispatch(setAppointmentStatusFilter(value as AppointmentStatus));
           setPage(1);
         }}
+        className='items-center'
       >
-        <TabsList variant='line' className='border-border/60 w-full border-b'>
+        <TabsList className='border-border/60 bg-muted/40 h-auto w-fit gap-1 rounded-lg border p-0'>
           {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
             <TabsTrigger
               key={option.value}
               value={option.value}
-              className='cursor-pointer gap-2 px-3'
+              className='text-foreground/70 data-active:text-foreground h-8 cursor-pointer gap-1.5 rounded-md px-3 data-active:font-semibold'
             >
               <span
                 className={`size-2 shrink-0 rounded-full ${
