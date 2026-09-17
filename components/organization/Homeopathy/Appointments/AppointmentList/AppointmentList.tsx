@@ -21,9 +21,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { MIASM_TYPE_OPTIONS } from '@/data/common/ChoiceFields';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+  MIASM_TYPE_OPTIONS,
+} from '@/data/common/ChoiceFields';
+import { STATUS_DOT_COLOR } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
+import { setAppointmentStatusFilter } from '@/lib/features/appointments/appointmentsSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useGetAppointmentsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
-import { Appointment } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
+import {
+  Appointment,
+  AppointmentStatus,
+} from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { MiasmType } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { PAGE_LIMIT } from '@/utils/constants';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
@@ -48,6 +58,9 @@ const AppointmentList: React.FC = () => {
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.appointments.statusFilter);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setSearch(searchInput.trim());
@@ -65,6 +78,7 @@ const AppointmentList: React.FC = () => {
   } = useGetAppointmentsQuery({
     page,
     page_size: PAGE_LIMIT,
+    status,
     ...(search ? { search } : {}),
     ...(miasmType !== 'ALL'
       ? { homeopathic_patient__miasm_type: miasmType }
@@ -179,6 +193,33 @@ const AppointmentList: React.FC = () => {
           </button>
         )}
       </Card>
+
+      {/* STATUS TABS */}
+
+      <Tabs
+        value={status}
+        onValueChange={(value) => {
+          dispatch(setAppointmentStatusFilter(value as AppointmentStatus));
+          setPage(1);
+        }}
+      >
+        <TabsList variant='line' className='border-border/60 w-full border-b'>
+          {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+            <TabsTrigger
+              key={option.value}
+              value={option.value}
+              className='cursor-pointer gap-2 px-3'
+            >
+              <span
+                className={`size-2 shrink-0 rounded-full ${
+                  STATUS_DOT_COLOR[option.value as AppointmentStatus]
+                }`}
+              />
+              {option.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {isLoading && (
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
