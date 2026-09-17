@@ -80,8 +80,9 @@ export const MIASM_TYPE_OPTIONS: Option[] = [
 ];
 
 export const HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS: Option[] = [
-  { value: 'ACTIVE', label: 'Active' },
-  { value: 'DELETED', label: 'Deleted' },
+  { value: 'SCHEDULED', label: 'Scheduled' },
+  { value: 'COMPLETED', label: 'Completed' },
+  { value: 'CANCELLED', label: 'Cancelled' },
 ];
 
 export const MEAL_TIMING_OPTIONS = [

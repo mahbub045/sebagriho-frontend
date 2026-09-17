@@ -35,11 +35,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { MEAL_TIMING_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+  MEAL_TIMING_OPTIONS,
+} from '@/data/common/ChoiceFields';
 import { useCreateAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import { useGetPatientsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import {
+  AppointmentStatus,
   CreateAppointmentDialogProps,
   MedicineOption,
   SelectedMedicineDraft,
@@ -71,6 +75,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
   // Form fields
   const [symptoms, setSymptoms] = useState('');
   const [treatmentEffectiveness, setTreatmentEffectiveness] = useState('');
+  const [status, setStatus] = useState<AppointmentStatus>('SCHEDULED');
 
   // Debounce patient search
   useEffect(() => {
@@ -112,6 +117,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
     setSearchMedicine('');
     setSymptoms('');
     setTreatmentEffectiveness('');
+    setStatus('SCHEDULED');
   };
 
   const handleClose = () => {
@@ -177,6 +183,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
         patient: selectedPatient.uid,
         symptoms: symptoms.trim(),
         treatment_effectiveness: treatmentEffectiveness.trim(),
+        status,
         appointment_prescription: selectedMedicines.map((medicine) => ({
           medicine: medicine.uid,
           dosage: medicine.dosage || undefined,
@@ -516,6 +523,31 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                 ))}
               </div>
             )}
+          </div>
+
+          {/* STATUS */}
+          <div className='flex flex-col gap-1.5'>
+            <Label>Status</Label>
+
+            <Select
+              items={HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS}
+              value={status}
+              onValueChange={(value) =>
+                value && setStatus(value as AppointmentStatus)
+              }
+            >
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='Select status' />
+              </SelectTrigger>
+
+              <SelectContent>
+                {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* SYMPTOMS */}

@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,19 +16,36 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { MIASM_TYPE_OPTIONS } from '@/data/common/ChoiceFields';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+  MIASM_TYPE_OPTIONS,
+} from '@/data/common/ChoiceFields';
+import { STATUS_DOT_COLOR } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
+import { setAppointmentStatusFilter } from '@/lib/features/appointments/appointmentsSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useGetAppointmentsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
-import { Appointment } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
+import {
+  Appointment,
+  AppointmentStatus,
+} from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { MiasmType } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { PAGE_LIMIT } from '@/utils/constants';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
+import { format } from 'date-fns';
 import {
+  CalendarClock,
   CalendarDays,
   ClipboardList,
   FileText,
@@ -39,14 +57,22 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import CreateAppointmentDialog from './Dialog/CreateAppointmentDialog';
+
+const toApiDate = (date?: Date) =>
+  date ? format(date, 'yyyy-MM-dd') : undefined;
 
 const AppointmentList: React.FC = () => {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.appointments.statusFilter);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -57,6 +83,9 @@ const AppointmentList: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
+  const appointmentDateGte = toApiDate(dateRange?.from);
+  const appointmentDateLte = toApiDate(dateRange?.to);
+
   const {
     data: appointments,
     isLoading,
@@ -65,9 +94,16 @@ const AppointmentList: React.FC = () => {
   } = useGetAppointmentsQuery({
     page,
     page_size: PAGE_LIMIT,
+    status,
     ...(search ? { search } : {}),
     ...(miasmType !== 'ALL'
       ? { homeopathic_patient__miasm_type: miasmType }
+      : {}),
+    ...(appointmentDateGte
+      ? { appointment_date__gte: appointmentDateGte }
+      : {}),
+    ...(appointmentDateLte
+      ? { appointment_date__lte: appointmentDateLte }
       : {}),
   });
 
@@ -96,15 +132,26 @@ const AppointmentList: React.FC = () => {
     return pages;
   };
 
-  const hasActiveFilters = search !== '' || miasmType !== 'ALL';
+  const hasActiveFilters =
+    search !== '' ||
+    miasmType !== 'ALL' ||
+    !!dateRange?.from ||
+    !!dateRange?.to;
 
   const clearFilters = () => {
     setSearchInput('');
     setSearch('');
 
     setMiasmType('ALL');
+    setDateRange(undefined);
     setPage(1);
   };
+
+  const dateRangeLabel = dateRange?.from
+    ? dateRange.to
+      ? `${format(dateRange.from, 'MMM d, yyyy')} - ${format(dateRange.to, 'MMM d, yyyy')}`
+      : format(dateRange.from, 'MMM d, yyyy')
+    : 'Appointment date';
 
   return (
     <div className='flex flex-col gap-4'>
@@ -144,6 +191,33 @@ const AppointmentList: React.FC = () => {
           />
         </div>
 
+        {/* Appointment date range */}
+        <Popover>
+          <PopoverTrigger
+            render={
+              <Button
+                variant='outline'
+                className='h-10! w-full justify-start text-left font-normal sm:w-56'
+              >
+                <CalendarClock className='h-4 w-4' />
+                <span className='truncate'>{dateRangeLabel}</span>
+              </Button>
+            }
+          />
+
+          <PopoverContent className='w-auto p-0' align='start'>
+            <Calendar
+              mode='range'
+              selected={dateRange}
+              onSelect={(range) => {
+                setDateRange(range);
+                setPage(1);
+              }}
+              numberOfMonths={2}
+            />
+          </PopoverContent>
+        </Popover>
+
         {/* Miasm (filters via patient relation) */}
         <Select
           items={MIASM_TYPE_OPTIONS}
@@ -179,6 +253,34 @@ const AppointmentList: React.FC = () => {
           </button>
         )}
       </Card>
+
+      {/* STATUS TABS */}
+
+      <Tabs
+        value={status}
+        onValueChange={(value) => {
+          dispatch(setAppointmentStatusFilter(value as AppointmentStatus));
+          setPage(1);
+        }}
+        className='items-center'
+      >
+        <TabsList className='border-border/60 bg-muted/40 h-auto w-fit gap-1 rounded-lg border p-0'>
+          {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+            <TabsTrigger
+              key={option.value}
+              value={option.value}
+              className='text-foreground/70 data-active:text-foreground h-8 cursor-pointer gap-1.5 rounded-md px-3 data-active:font-semibold'
+            >
+              <span
+                className={`size-2 shrink-0 rounded-full ${
+                  STATUS_DOT_COLOR[option.value as AppointmentStatus]
+                }`}
+              />
+              {option.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {isLoading && (
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>

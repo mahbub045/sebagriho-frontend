@@ -1,4 +1,4 @@
-export type AppointmentStatus = 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
+export type AppointmentStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
 
 interface AppointmentPatientUser {
   uid: string;

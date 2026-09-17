@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import appointmentsReducer from './features/appointments/appointmentsSlice';
 import authReducer from './features/auth/authSlice';
 import { authApi } from './services/authApi';
 import { baseApi } from './services/baseApi';
@@ -7,6 +8,7 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
+      appointments: appointmentsReducer,
       [baseApi.reducerPath]: baseApi.reducer,
       [authApi.reducerPath]: authApi.reducer,
     },

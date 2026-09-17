@@ -1,17 +1,36 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { AppointmentInfoCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  APPOINTMENT_STATUS_BADGE,
+  STATUS_DOT_COLOR,
+} from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
+import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import {
+  AppointmentInfoCardProps,
+  AppointmentStatus,
+} from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { formatDateAndTime } from '@/utils/formatters';
 import {
   CalendarDays,
+  ChevronDown,
   ClipboardList,
   Edit,
   RefreshCcw,
   Stethoscope,
 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import EditAppointmentInfoDialog from '../../Dialogs/EditAppointmentInfoDialog';
 
 const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
@@ -20,11 +39,69 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
   const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
     useState(false);
 
+  const [editAppointment, { isLoading: isUpdatingStatus }] =
+    useEditAppointmentMutation();
+
+  const statusBadge = APPOINTMENT_STATUS_BADGE[appointment.status];
+
+  const handleStatusChange = async (value: string | null) => {
+    if (!value || value === appointment.status) return;
+
+    try {
+      await editAppointment({
+        appointmentUid: appointment.uid,
+        appointmentData: { status: value as AppointmentStatus },
+      }).unwrap();
+
+      toast.success('Appointment status updated successfully!');
+    } catch {
+      toast.error('Failed to update status. Please try again.');
+    }
+  };
+
   return (
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='border-border/60 flex items-center justify-between border-b p-4'>
-        <div>
+        <div className='flex items-center gap-2'>
           <p className='text-sm font-semibold'>Appointment Overview</p>
+
+          <Select
+            items={HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS}
+            value={appointment.status}
+            onValueChange={handleStatusChange}
+            disabled={isUpdatingStatus}
+          >
+            <SelectTrigger
+              size='sm'
+              className='h-auto w-fit cursor-pointer border-none bg-transparent p-0 shadow-none focus-visible:ring-0 [&>svg]:hidden'
+            >
+              <SelectValue>
+                {statusBadge && (
+                  <Badge variant={statusBadge.variant} size='lg'>
+                    {statusBadge.label}
+                    <ChevronDown data-icon='inline-end' className='size-3!' />
+                  </Badge>
+                )}
+              </SelectValue>
+            </SelectTrigger>
+
+            <SelectContent>
+              {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                  className='cursor-pointer'
+                >
+                  <span
+                    className={`size-2 shrink-0 self-center rounded-full ${
+                      STATUS_DOT_COLOR[option.value as AppointmentStatus]
+                    }`}
+                  />
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <Button
           variant='default'
