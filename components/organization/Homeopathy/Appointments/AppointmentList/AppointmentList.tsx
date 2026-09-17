@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,6 +15,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -37,7 +43,9 @@ import {
 import { MiasmType } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { PAGE_LIMIT } from '@/utils/constants';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
+import { format } from 'date-fns';
 import {
+  CalendarClock,
   CalendarDays,
   ClipboardList,
   FileText,
@@ -49,13 +57,18 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import CreateAppointmentDialog from './Dialog/CreateAppointmentDialog';
+
+const toApiDate = (date?: Date) =>
+  date ? format(date, 'yyyy-MM-dd') : undefined;
 
 const AppointmentList: React.FC = () => {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -70,6 +83,9 @@ const AppointmentList: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
+  const appointmentDateGte = toApiDate(dateRange?.from);
+  const appointmentDateLte = toApiDate(dateRange?.to);
+
   const {
     data: appointments,
     isLoading,
@@ -82,6 +98,12 @@ const AppointmentList: React.FC = () => {
     ...(search ? { search } : {}),
     ...(miasmType !== 'ALL'
       ? { homeopathic_patient__miasm_type: miasmType }
+      : {}),
+    ...(appointmentDateGte
+      ? { appointment_date__gte: appointmentDateGte }
+      : {}),
+    ...(appointmentDateLte
+      ? { appointment_date__lte: appointmentDateLte }
       : {}),
   });
 
@@ -110,15 +132,26 @@ const AppointmentList: React.FC = () => {
     return pages;
   };
 
-  const hasActiveFilters = search !== '' || miasmType !== 'ALL';
+  const hasActiveFilters =
+    search !== '' ||
+    miasmType !== 'ALL' ||
+    !!dateRange?.from ||
+    !!dateRange?.to;
 
   const clearFilters = () => {
     setSearchInput('');
     setSearch('');
 
     setMiasmType('ALL');
+    setDateRange(undefined);
     setPage(1);
   };
+
+  const dateRangeLabel = dateRange?.from
+    ? dateRange.to
+      ? `${format(dateRange.from, 'MMM d, yyyy')} - ${format(dateRange.to, 'MMM d, yyyy')}`
+      : format(dateRange.from, 'MMM d, yyyy')
+    : 'Appointment date';
 
   return (
     <div className='flex flex-col gap-4'>
@@ -157,6 +190,33 @@ const AppointmentList: React.FC = () => {
             className='pl-9!'
           />
         </div>
+
+        {/* Appointment date range */}
+        <Popover>
+          <PopoverTrigger
+            render={
+              <Button
+                variant='outline'
+                className='h-10! w-full justify-start text-left font-normal sm:w-56'
+              >
+                <CalendarClock className='h-4 w-4' />
+                <span className='truncate'>{dateRangeLabel}</span>
+              </Button>
+            }
+          />
+
+          <PopoverContent className='w-auto p-0' align='start'>
+            <Calendar
+              mode='range'
+              selected={dateRange}
+              onSelect={(range) => {
+                setDateRange(range);
+                setPage(1);
+              }}
+              numberOfMonths={2}
+            />
+          </PopoverContent>
+        </Popover>
 
         {/* Miasm (filters via patient relation) */}
         <Select
