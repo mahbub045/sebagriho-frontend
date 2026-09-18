@@ -12,6 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useDeleteOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
 import { ShieldAlert, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -29,8 +31,11 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
   const router = useRouter();
   const [deleteOrganization, { isLoading }] = useDeleteOrganizationMutation();
   const [open, setOpen] = useState(false);
+  const [confirmationText, setConfirmationText] = useState('');
+  const isConfirmed = confirmationText === organizationName;
 
   const handleDelete = async () => {
+    if (!isConfirmed) return;
     try {
       await deleteOrganization({ organizationUid }).unwrap();
       setOpen(false);
@@ -40,8 +45,15 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
     }
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (!nextOpen) {
+      setConfirmationText('');
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <Button variant='destructive' className='shrink-0' asChild>
         <DialogTrigger>
           <Trash2 className='h-4 w-4' />
@@ -82,6 +94,25 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
           </ul>
         </div>
 
+        <div className='space-y-2'>
+          <Label htmlFor='confirm-organization-name' className='text-sm'>
+            Please type{' '}
+            <span className='text-danger font-semibold'>
+              {organizationName}
+            </span>{' '}
+            to confirm.
+          </Label>
+          <Input
+            type='text'
+            id='confirm-organization-name'
+            value={confirmationText}
+            onChange={(e) => setConfirmationText(e.target.value)}
+            disabled={isLoading}
+            autoComplete='off'
+            autoFocus
+          />
+        </div>
+
         <DialogFooter className='mt-2'>
           <Button variant='outline' disabled={isLoading} asChild>
             <DialogClose>Cancel</DialogClose>
@@ -89,7 +120,7 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
           <Button
             variant='destructive'
             onClick={handleDelete}
-            disabled={isLoading}
+            disabled={isLoading || !isConfirmed}
           >
             {isLoading && <Loading className='text-danger! h-4 w-4' />}
             {isLoading ? 'Deleting...' : 'Yes, delete organization'}
