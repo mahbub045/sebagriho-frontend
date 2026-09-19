@@ -11,7 +11,11 @@ import {
 import { cn } from '@/lib/utils';
 import { locales, localeLabels, type Locale } from '@/lib/i18n/config';
 import { useTranslation } from '@/lib/i18n/useTranslation';
-import { Languages } from 'lucide-react';
+
+const localeFlags: Record<Locale, string> = {
+  en: '🇬🇧',
+  bn: '🇧🇩',
+};
 
 export function LanguageSwitcher() {
   const { locale, dict, changeLocale } = useTranslation();
@@ -24,7 +28,7 @@ export function LanguageSwitcher() {
           'cursor-pointer gap-1.5 border border-gray-200 px-2 dark:border-gray-700',
         )}
       >
-        <Languages className='h-4 w-4' />
+        <span className='text-base leading-none'>{localeFlags[locale]}</span>
         <span className='text-xs font-medium uppercase'>{locale}</span>
         <span className='sr-only'>{dict.navbar.language}</span>
       </DropdownMenuTrigger>
@@ -34,7 +38,8 @@ export function LanguageSwitcher() {
           onValueChange={(value) => changeLocale(value as Locale)}
         >
           {locales.map((code) => (
-            <DropdownMenuRadioItem key={code} value={code} className='cursor-pointer'>
+            <DropdownMenuRadioItem key={code} value={code} className='cursor-pointer gap-2'>
+              <span className='text-base leading-none'>{localeFlags[code]}</span>
               <span className='font-bengali'>{localeLabels[code]}</span>
             </DropdownMenuRadioItem>
           ))}
