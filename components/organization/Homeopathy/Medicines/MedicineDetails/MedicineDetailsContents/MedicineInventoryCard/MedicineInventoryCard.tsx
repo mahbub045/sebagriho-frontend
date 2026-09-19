@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getCurrencySymbol } from '@/utils/constants';
-import { Edit } from 'lucide-react';
+import { Calendar, Edit } from 'lucide-react';
 import { useState } from 'react';
 import EditMedicineInventoryDialog from '../../Dialogs/EditMedicineInventoryDialog';
 
@@ -56,6 +56,22 @@ const MedicineInventoryCard: React.FC<MedicineDetailsCardProps> = ({
               {medicine.unit_price || '0.00'}
             </p>
           )}
+        </div>
+
+        <div className='flex items-center justify-between'>
+          <p className='text-muted-foreground text-sm'>
+            {dict.medicines.details.inventoryCard.expirationDate}
+          </p>
+          <p className='flex items-center gap-1 text-sm font-medium'>
+            <Calendar size={14} />
+            {medicine.expiration_date ? (
+              medicine.expiration_date
+            ) : (
+              <small className='italic'>
+                {dict.medicines.details.inventoryCard.notSpecified}
+              </small>
+            )}
+          </p>
         </div>
       </CardContent>
 

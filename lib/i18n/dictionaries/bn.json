@@ -421,7 +421,8 @@
         "title": "ইনভেন্টরি",
         "totalQuantity": "মোট পরিমাণ",
         "unitPrice": "একক মূল্য",
-        "notSpecified": "উল্লেখ করা হয়নি"
+        "notSpecified": "উল্লেখ করা হয়নি",
+        "expirationDate": "মেয়াদ উত্তীর্ণের তারিখ"
       },
       "overviewCard": {
         "power": "শক্তি:",

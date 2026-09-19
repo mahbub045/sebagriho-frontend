@@ -421,7 +421,8 @@
         "title": "Inventory",
         "totalQuantity": "Total Quantity",
         "unitPrice": "Unit Price",
-        "notSpecified": "Not specified"
+        "notSpecified": "Not specified",
+        "expirationDate": "Expiration Date"
       },
       "overviewCard": {
         "power": "Power:",
