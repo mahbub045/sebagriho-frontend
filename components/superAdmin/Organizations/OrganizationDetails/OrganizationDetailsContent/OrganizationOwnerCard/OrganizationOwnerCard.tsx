@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import {
   BLOOD_GROUP_OPTIONS,
   GENDER_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { OrganizationOwner } from '@/types/superAdmin/Organizations/OrganizationsType';
@@ -41,13 +42,15 @@ const DetailRow = ({
 );
 
 const OrganizationOwnerCard: React.FC<Props> = ({ user }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
+  const genderOptions = localizeOptions(GENDER_OPTIONS, locale);
+  const bloodGroupOptions = localizeOptions(BLOOD_GROUP_OPTIONS, locale);
   const fullName = `${user.first_name} ${user.last_name}`.trim();
   const genderLabel =
-    GENDER_OPTIONS.find((option) => option.value === user.gender)?.label ??
+    genderOptions.find((option) => option.value === user.gender)?.label ??
     user.gender;
   const bloodGroupLabel = user.blood_group
-    ? (BLOOD_GROUP_OPTIONS.find((option) => option.value === user.blood_group)
+    ? (bloodGroupOptions.find((option) => option.value === user.blood_group)
         ?.label ?? user.blood_group)
     : null;
 

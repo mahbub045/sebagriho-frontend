@@ -26,6 +26,7 @@ import {
   GENDER_OPTIONS,
   ORGANIZATION_STATUS_OPTIONS,
   ORGANIZATION_TYPE_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { INITIAL_FORM } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useUpdateOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
@@ -145,10 +146,21 @@ const FieldError = ({ message }: { message?: string }) =>
 const UpdateOrganizationDialogContent: React.FC<
   UpdateOrganizationDialogProps
 > = ({ isOpen, onClose, organizationDetails }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [updateOrganization, { isLoading }] = useUpdateOrganizationMutation();
 
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
+
+  const bloodGroupOptions = localizeOptions(BLOOD_GROUP_OPTIONS, locale);
+  const genderOptions = localizeOptions(GENDER_OPTIONS, locale);
+  const organizationStatusOptions = localizeOptions(
+    ORGANIZATION_STATUS_OPTIONS,
+    locale,
+  );
+  const organizationTypeOptions = localizeOptions(
+    ORGANIZATION_TYPE_OPTIONS,
+    locale,
+  );
 
   // Keep the original values in state so they stay stable for this dialog instance.
   const [originalOrgForm] = useState<OrganizationDetail>(() =>
@@ -438,7 +450,7 @@ const UpdateOrganizationDialogContent: React.FC<
                       <span className='text-danger'>*</span>
                     </Label>
                     <Select
-                      items={ORGANIZATION_TYPE_OPTIONS}
+                      items={organizationTypeOptions}
                       value={orgForm.organization_type}
                       onValueChange={(value) =>
                         updateOrg('organization_type', value)
@@ -456,7 +468,7 @@ const UpdateOrganizationDialogContent: React.FC<
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        {ORGANIZATION_TYPE_OPTIONS.map((option) => (
+                        {organizationTypeOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -555,7 +567,7 @@ const UpdateOrganizationDialogContent: React.FC<
                       {dict.organizations.dialogs.fields.status}
                     </Label>
                     <Select
-                      items={ORGANIZATION_STATUS_OPTIONS}
+                      items={organizationStatusOptions}
                       value={orgForm.status}
                       onValueChange={(value) => updateOrg('status', value)}
                     >
@@ -567,7 +579,7 @@ const UpdateOrganizationDialogContent: React.FC<
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        {ORGANIZATION_STATUS_OPTIONS.map((option) => (
+                        {organizationStatusOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -664,7 +676,7 @@ const UpdateOrganizationDialogContent: React.FC<
                       <span className='text-danger'>*</span>
                     </Label>
                     <Select
-                      items={GENDER_OPTIONS}
+                      items={genderOptions}
                       value={userForm.gender}
                       onValueChange={(value) => updateUser('gender', value)}
                     >
@@ -680,7 +692,7 @@ const UpdateOrganizationDialogContent: React.FC<
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        {GENDER_OPTIONS.map((option) => (
+                        {genderOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -695,7 +707,7 @@ const UpdateOrganizationDialogContent: React.FC<
                       {dict.organizations.dialogs.fields.bloodGroup}
                     </Label>
                     <Select
-                      items={BLOOD_GROUP_OPTIONS}
+                      items={bloodGroupOptions}
                       value={userForm.blood_group}
                       onValueChange={(value) =>
                         updateUser('blood_group', value)
@@ -710,7 +722,7 @@ const UpdateOrganizationDialogContent: React.FC<
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        {BLOOD_GROUP_OPTIONS.map((option) => (
+                        {bloodGroupOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>

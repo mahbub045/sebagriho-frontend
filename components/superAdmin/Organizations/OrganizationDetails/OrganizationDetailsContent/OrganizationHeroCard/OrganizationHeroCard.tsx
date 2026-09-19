@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import {
   ORGANIZATION_STATUS_OPTIONS,
   ORGANIZATION_TYPE_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { statusStyles } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -25,14 +26,22 @@ const OrganizationHeroCard: React.FC<Props> = ({
   status,
   joinedAt,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
+  const organizationTypeOptions = localizeOptions(
+    ORGANIZATION_TYPE_OPTIONS,
+    locale,
+  );
+  const organizationStatusOptions = localizeOptions(
+    ORGANIZATION_STATUS_OPTIONS,
+    locale,
+  );
   const statusClass = statusStyles[status] ?? statusStyles.INACTIVE;
   const typeLabel =
-    ORGANIZATION_TYPE_OPTIONS.find(
+    organizationTypeOptions.find(
       (option) => option.value === organization.organization_type,
     )?.label ?? organization.organization_type;
   const statusLabel =
-    ORGANIZATION_STATUS_OPTIONS.find((option) => option.value === status)
+    organizationStatusOptions.find((option) => option.value === status)
       ?.label ?? status;
 
   const url = `https://${organization.subdomain}${process.env.NEXT_PUBLIC_COOKIE_DOMAIN}`;

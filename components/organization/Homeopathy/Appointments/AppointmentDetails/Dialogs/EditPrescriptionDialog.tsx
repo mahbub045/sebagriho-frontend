@@ -21,7 +21,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { MEAL_TIMING_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  MEAL_TIMING_OPTIONS,
+  localizeOptions,
+} from '@/data/common/ChoiceFields';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
@@ -55,8 +58,10 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
   prescription,
   appointmentUid,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [drafts, setDrafts] = useState<PrescriptionDraft[]>([]);
+
+  const mealTimingOptions = localizeOptions(MEAL_TIMING_OPTIONS, locale);
 
   // Tracks the prescription set/open state we last synced from, so the form
   // resets once per "open" transition rather than on every render.
@@ -229,7 +234,7 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
                     </Label>
 
                     <Select
-                      items={MEAL_TIMING_OPTIONS}
+                      items={mealTimingOptions}
                       value={draft.meal_timing}
                       onValueChange={(value) =>
                         updateDraftField(draft.uid, 'meal_timing', value || '')
@@ -248,7 +253,7 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
                       </SelectTrigger>
 
                       <SelectContent>
-                        {MEAL_TIMING_OPTIONS.map((option) => (
+                        {mealTimingOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>

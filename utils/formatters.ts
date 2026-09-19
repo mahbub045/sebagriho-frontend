@@ -1,11 +1,12 @@
+import { resolveChoiceFieldLabel } from '@/data/common/ChoiceFields';
+import { defaultLocale, type Locale } from '@/lib/i18n/config';
+
 export const formatChoiceFieldValue = (
   choiceFieldValue?: string | null,
+  locale: Locale = defaultLocale,
 ): string => {
   if (!choiceFieldValue) return '';
-  return choiceFieldValue
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+  return resolveChoiceFieldLabel(choiceFieldValue, locale);
 };
 
 export const getInitials = (

@@ -8,11 +8,11 @@ export const STATUS_STYLES: Record<AppointmentStatus, string> = {
 
 export const APPOINTMENT_STATUS_BADGE: Record<
   AppointmentStatus,
-  { label: string; variant: 'default' | 'success' | 'danger' }
+  { variant: 'default' | 'success' | 'danger' }
 > = {
-  SCHEDULED: { label: 'Scheduled', variant: 'default' },
-  COMPLETED: { label: 'Completed', variant: 'success' },
-  CANCELLED: { label: 'Cancelled', variant: 'danger' },
+  SCHEDULED: { variant: 'default' },
+  COMPLETED: { variant: 'success' },
+  CANCELLED: { variant: 'danger' },
 };
 
 export const STATUS_DOT_COLOR: Record<AppointmentStatus, string> = {

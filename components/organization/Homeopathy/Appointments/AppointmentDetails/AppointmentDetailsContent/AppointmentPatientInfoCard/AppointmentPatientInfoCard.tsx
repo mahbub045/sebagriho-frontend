@@ -25,7 +25,7 @@ import Link from 'next/link';
 const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
   patient,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const fullName =
     `${patient?.user?.first_name} ${patient?.user?.last_name}`.trim();
 
@@ -77,7 +77,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
                 : dict.appointments.patientInfoCard.notAvailable}{' '}
               •{' '}
               {patient?.user?.gender ? (
-                formatChoiceFieldValue(patient?.user?.gender)
+                formatChoiceFieldValue(patient?.user?.gender, locale)
               ) : (
                 <small className='text-muted-foreground truncate italic'>
                   {dict.appointments.patientInfoCard.notRecorded}
@@ -185,7 +185,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
 
             {patient?.miasm_type ? (
               <span className='mt-0.5 text-[10px] font-medium'>
-                {formatChoiceFieldValue(patient?.miasm_type)}
+                {formatChoiceFieldValue(patient?.miasm_type, locale)}
               </span>
             ) : (
               <p className='text-muted-foreground truncate italic'>
@@ -206,7 +206,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
 
             {patient?.address ? (
               <span className='mt-0.5 truncate text-[10px] font-medium'>
-                {formatChoiceFieldValue(patient?.address)}
+                {formatChoiceFieldValue(patient?.address, locale)}
               </span>
             ) : (
               <p className='text-muted-foreground truncate italic'>

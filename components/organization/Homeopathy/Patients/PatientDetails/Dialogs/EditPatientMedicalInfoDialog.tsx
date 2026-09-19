@@ -17,7 +17,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { MIASM_TYPE_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  MIASM_TYPE_OPTIONS,
+  localizeOptions,
+} from '@/data/common/ChoiceFields';
 import { useEditPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import {
   EditPatientMedicalInfoDailogProps,
@@ -31,7 +34,7 @@ import { toast } from 'sonner';
 const EditPatientMedicalInfoDialog: React.FC<
   EditPatientMedicalInfoDailogProps
 > = ({ isOpen, onClose, patientInfo }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [editPatient, { isLoading, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState<{
@@ -41,6 +44,8 @@ const EditPatientMedicalInfoDialog: React.FC<
     miasm_type: patientInfo.miasm_type ?? null,
     habits: patientInfo.habits ?? '',
   });
+
+  const miasmTypeOptions = localizeOptions(MIASM_TYPE_OPTIONS, locale);
 
   const fieldErrors: FieldErrorMap =
     (error as { data?: FieldErrorMap })?.data ?? {};
@@ -121,7 +126,7 @@ const EditPatientMedicalInfoDialog: React.FC<
               {dict.patients.dialogs.editMedicalInfo.miasmType}
             </Label>
             <Select
-              items={MIASM_TYPE_OPTIONS}
+              items={miasmTypeOptions}
               value={formData.miasm_type}
               onValueChange={handleMiasmChange}
             >
@@ -133,7 +138,7 @@ const EditPatientMedicalInfoDialog: React.FC<
                 />
               </SelectTrigger>
               <SelectContent>
-                {MIASM_TYPE_OPTIONS.map((option) => (
+                {miasmTypeOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>

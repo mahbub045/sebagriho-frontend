@@ -31,6 +31,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
   MIASM_TYPE_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { STATUS_DOT_COLOR } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
 import { setAppointmentStatusFilter } from '@/lib/features/appointments/appointmentsSlice';
@@ -65,13 +66,19 @@ const toApiDate = (date?: Date) =>
   date ? format(date, 'yyyy-MM-dd') : undefined;
 
 const AppointmentList: React.FC = () => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
+
+  const homeopathicAppointmentStatusOptions = localizeOptions(
+    HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+    locale,
+  );
+  const miasmTypeOptions = localizeOptions(MIASM_TYPE_OPTIONS, locale);
 
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.appointments.statusFilter);
@@ -224,7 +231,7 @@ const AppointmentList: React.FC = () => {
 
         {/* Miasm (filters via patient relation) */}
         <Select
-          items={MIASM_TYPE_OPTIONS}
+          items={miasmTypeOptions}
           value={miasmType}
           onValueChange={(value) => {
             setMiasmType(value as MiasmType | 'ALL');
@@ -238,7 +245,7 @@ const AppointmentList: React.FC = () => {
           <SelectContent>
             <SelectItem value='ALL'>{dict.appointments.list.allMiasm}</SelectItem>
 
-            {MIASM_TYPE_OPTIONS.map((item) => (
+            {miasmTypeOptions.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 {item.label}
               </SelectItem>
@@ -269,7 +276,7 @@ const AppointmentList: React.FC = () => {
         className='items-center'
       >
         <TabsList className='border-border/60 bg-muted/40 h-auto w-fit gap-1 rounded-lg border p-0'>
-          {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+          {homeopathicAppointmentStatusOptions.map((option) => (
             <TabsTrigger
               key={option.value}
               value={option.value}

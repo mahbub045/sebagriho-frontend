@@ -10,7 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+  localizeOptions,
+} from '@/data/common/ChoiceFields';
 import {
   APPOINTMENT_STATUS_BADGE,
   STATUS_DOT_COLOR,
@@ -37,14 +40,22 @@ import EditAppointmentInfoDialog from '../../Dialogs/EditAppointmentInfoDialog';
 const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
   appointment,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
     useState(false);
 
   const [editAppointment, { isLoading: isUpdatingStatus }] =
     useEditAppointmentMutation();
 
+  const homeopathicAppointmentStatusOptions = localizeOptions(
+    HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+    locale,
+  );
+
   const statusBadge = APPOINTMENT_STATUS_BADGE[appointment.status];
+  const statusLabel = homeopathicAppointmentStatusOptions.find(
+    (option) => option.value === appointment.status,
+  )?.label;
 
   const handleStatusChange = async (value: string | null) => {
     if (!value || value === appointment.status) return;
@@ -70,7 +81,7 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
           </p>
 
           <Select
-            items={HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS}
+            items={homeopathicAppointmentStatusOptions}
             value={appointment.status}
             onValueChange={handleStatusChange}
             disabled={isUpdatingStatus}
@@ -82,7 +93,7 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
               <SelectValue>
                 {statusBadge && (
                   <Badge variant={statusBadge.variant} size='lg'>
-                    {statusBadge.label}
+                    {statusLabel}
                     <ChevronDown data-icon='inline-end' className='size-3!' />
                   </Badge>
                 )}
@@ -90,7 +101,7 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
             </SelectTrigger>
 
             <SelectContent>
-              {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+              {homeopathicAppointmentStatusOptions.map((option) => (
                 <SelectItem
                   key={option.value}
                   value={option.value}

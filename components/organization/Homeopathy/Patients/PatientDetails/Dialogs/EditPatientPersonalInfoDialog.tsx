@@ -20,6 +20,7 @@ import {
 import {
   BLOOD_GROUP_OPTIONS,
   GENDER_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { useEditPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import {
@@ -32,7 +33,7 @@ import { toast } from 'sonner';
 const EditPatientPersonalInfoDialog: React.FC<
   EditPatientPersonalInfoDailogProps
 > = ({ isOpen, onClose, patientInfo }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [editPatient, { isLoading, isError, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState({
@@ -40,6 +41,9 @@ const EditPatientPersonalInfoDialog: React.FC<
     gender: patientInfo.user.gender ?? '',
     blood_group: patientInfo.user.blood_group ?? '',
   });
+
+  const genderOptions = localizeOptions(GENDER_OPTIONS, locale);
+  const bloodGroupOptions = localizeOptions(BLOOD_GROUP_OPTIONS, locale);
 
   // Normalize whatever shape the API sends back into { field: "message" }
   const fieldErrors: FieldErrorMap =
@@ -118,7 +122,7 @@ const EditPatientPersonalInfoDialog: React.FC<
                 {dict.patients.dialogs.editPersonalInfo.gender}
               </Label>
               <Select
-                items={GENDER_OPTIONS}
+                items={genderOptions}
                 id='gender'
                 name='gender'
                 value={formData.gender}
@@ -138,7 +142,7 @@ const EditPatientPersonalInfoDialog: React.FC<
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {GENDER_OPTIONS.map((option) => (
+                  {genderOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
@@ -160,7 +164,7 @@ const EditPatientPersonalInfoDialog: React.FC<
               </Label>
 
               <Select
-                items={BLOOD_GROUP_OPTIONS}
+                items={bloodGroupOptions}
                 value={formData.blood_group}
                 onValueChange={(value) =>
                   updateField('blood_group', value as string)
@@ -180,7 +184,7 @@ const EditPatientPersonalInfoDialog: React.FC<
                 </SelectTrigger>
 
                 <SelectContent>
-                  {BLOOD_GROUP_OPTIONS.map((option) => (
+                  {bloodGroupOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>

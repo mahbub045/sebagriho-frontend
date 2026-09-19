@@ -38,6 +38,7 @@ import { Textarea } from '@/components/ui/textarea';
 import {
   HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
   MEAL_TIMING_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { useCreateAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
@@ -59,7 +60,13 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
+
+  const homeopathicAppointmentStatusOptions = localizeOptions(
+    HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS,
+    locale,
+  );
+  const mealTimingOptions = localizeOptions(MEAL_TIMING_OPTIONS, locale);
 
   // Patient select state
   const [patientPopoverOpen, setPatientPopoverOpen] = useState(false);
@@ -500,7 +507,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                       />
 
                       <Select
-                        items={MEAL_TIMING_OPTIONS}
+                        items={mealTimingOptions}
                         value={medicine.meal_timing}
                         onValueChange={(value) =>
                           updateMedicineField(
@@ -519,7 +526,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                         </SelectTrigger>
 
                         <SelectContent>
-                          {MEAL_TIMING_OPTIONS.map((option) => (
+                          {mealTimingOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>
@@ -553,7 +560,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
             <Label>{dict.appointments.createDialog.statusLabel}</Label>
 
             <Select
-              items={HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS}
+              items={homeopathicAppointmentStatusOptions}
               value={status}
               onValueChange={(value) =>
                 value && setStatus(value as AppointmentStatus)
@@ -566,7 +573,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
               </SelectTrigger>
 
               <SelectContent>
-                {HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS.map((option) => (
+                {homeopathicAppointmentStatusOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>

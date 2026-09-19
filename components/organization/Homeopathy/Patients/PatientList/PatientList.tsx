@@ -28,6 +28,7 @@ import {
 import {
   HOMEOPATHIC_PATIENT_STATUS_OPTIONS,
   MIASM_TYPE_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 
 import {
@@ -68,7 +69,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation';
 import AddPatientDialog from './Dialogs/AddPatientDialog';
 
 const PatientList: React.FC = () => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [page, setPage] = useState(1);
 
   const [searchInput, setSearchInput] = useState('');
@@ -79,6 +80,12 @@ const PatientList: React.FC = () => {
   const [miasmType, setMiasmType] = useState<MiasmType | 'ALL'>('ALL');
 
   const [isPatientAdded, setIsPatientAdded] = useState(false);
+
+  const homeopathicPatientStatusOptions = localizeOptions(
+    HOMEOPATHIC_PATIENT_STATUS_OPTIONS,
+    locale,
+  );
+  const miasmTypeOptions = localizeOptions(MIASM_TYPE_OPTIONS, locale);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -183,7 +190,7 @@ const PatientList: React.FC = () => {
 
         {/* Status */}
         <Select
-          items={HOMEOPATHIC_PATIENT_STATUS_OPTIONS}
+          items={homeopathicPatientStatusOptions}
           value={status}
           onValueChange={(value) => {
             setStatus(value as PatientStatus | 'ALL');
@@ -197,7 +204,7 @@ const PatientList: React.FC = () => {
           <SelectContent>
             <SelectItem value='ALL'>{dict.patients.list.allStatus}</SelectItem>
 
-            {HOMEOPATHIC_PATIENT_STATUS_OPTIONS.map((item) => (
+            {homeopathicPatientStatusOptions.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 {item.label}
               </SelectItem>
@@ -207,7 +214,7 @@ const PatientList: React.FC = () => {
 
         {/* Miasm */}
         <Select
-          items={MIASM_TYPE_OPTIONS}
+          items={miasmTypeOptions}
           value={miasmType}
           onValueChange={(value) => {
             setMiasmType(value as MiasmType | 'ALL');
@@ -221,7 +228,7 @@ const PatientList: React.FC = () => {
           <SelectContent>
             <SelectItem value='ALL'>{dict.patients.list.allMiasm}</SelectItem>
 
-            {MIASM_TYPE_OPTIONS.map((item) => (
+            {miasmTypeOptions.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 {item.label}
               </SelectItem>
@@ -371,6 +378,7 @@ const PatientList: React.FC = () => {
                             patient.user.blood_group
                               ? formatChoiceFieldValue(
                                   patient.user.blood_group,
+                                  locale,
                                 )
                               : dict.patients.list.notAvailable,
                           )}
@@ -403,6 +411,7 @@ const PatientList: React.FC = () => {
                                   patient.user.gender
                                     ? formatChoiceFieldValue(
                                         patient.user.gender,
+                                        locale,
                                       )
                                     : dict.patients.list.notAvailable,
                                 )}
@@ -424,7 +433,10 @@ const PatientList: React.FC = () => {
                               className={`mt-0.5 text-[10px] font-medium ${miasmClass}`}
                             >
                               {patient.miasm_type
-                                ? formatChoiceFieldValue(patient.miasm_type)
+                                ? formatChoiceFieldValue(
+                                    patient.miasm_type,
+                                    locale,
+                                  )
                                 : dict.patients.list.notSpecified}
                             </Badge>
                           </div>

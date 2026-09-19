@@ -29,7 +29,7 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
   appointment_prescription,
   appointmentUid,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
     useState(false);
   const [isOpenAddDialog, setIsOpenAddDialog] = useState(false);
@@ -202,7 +202,10 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
                             : 'border-transparent bg-emerald-100 text-xs text-emerald-800 hover:bg-emerald-100'
                         }
                       >
-                        {formatChoiceFieldValue(prescription.meal_timing)}
+                        {formatChoiceFieldValue(
+                          prescription.meal_timing,
+                          locale,
+                        )}
                       </Badge>
                     )}
 
