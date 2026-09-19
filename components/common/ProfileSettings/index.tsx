@@ -2,6 +2,7 @@
 
 import Loading from '@/components/common/CustomLoader/Loading';
 import { useGetProfileInfoQuery } from '@/lib/services/endpoints/common/ProfileInfoApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { ProfileInfo } from '@/types/common/CommonTypes';
 import ProfileInfoForm from './ProfileInfoForm';
 import ProfileOverviewCard from './ProfileOverviewCard';
@@ -10,14 +11,16 @@ import SecurityCard from './SecurityCard';
 const ProfileSettingsContainer: React.FC = () => {
   const { data, isLoading, isError } = useGetProfileInfoQuery(undefined);
   const profile = data as ProfileInfo | undefined;
+  const { dict } = useTranslation();
 
   return (
     <div>
       <div className='mb-4'>
-        <h2 className='text-lg font-semibold'>Profile Settings</h2>
+        <h2 className='text-lg font-semibold'>
+          {dict.profileSettings.pageTitle}
+        </h2>
         <p className='text-muted-foreground text-sm'>
-          Manage your personal details, contact information, and account
-          security.
+          {dict.profileSettings.pageDescription}
         </p>
       </div>
 
@@ -29,7 +32,7 @@ const ProfileSettingsContainer: React.FC = () => {
 
       {!isLoading && isError && (
         <p className='text-destructive text-sm'>
-          Failed to load profile information. Please try again.
+          {dict.profileSettings.loadError}
         </p>
       )}
 

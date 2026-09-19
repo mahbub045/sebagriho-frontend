@@ -17,6 +17,7 @@ import {
   GENDER_OPTIONS,
 } from '@/data/common/ChoiceFields';
 import { useUpdateProfileInfoMutation } from '@/lib/services/endpoints/common/ProfileInfoApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   ProfileFieldErrors,
   ProfileFormData,
@@ -42,6 +43,7 @@ const buildFormData = (profile: ProfileInfo): ProfileFormData => ({
 });
 
 const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
+  const { dict } = useTranslation();
   const [updateProfileInfo, { isLoading, isError, error }] =
     useUpdateProfileInfoMutation();
 
@@ -80,9 +82,9 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
 
     try {
       await updateProfileInfo(payload).unwrap();
-      toast.success('Profile updated successfully');
+      toast.success(dict.profileSettings.updateSuccess);
     } catch {
-      toast.error('Failed to update profile. Please check the form.');
+      toast.error(dict.profileSettings.updateError);
     }
   };
 
@@ -90,10 +92,10 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='border-border/60 border-b p-4'>
         <h3 className='text-sm font-semibold'>
-          Personal Information &amp; Identification
+          {dict.profileSettings.personalInfo.title}
         </h3>
         <p className='text-muted-foreground mt-0.5 text-xs'>
-          Your name as it will appear across the platform.
+          {dict.profileSettings.personalInfo.description}
         </p>
       </div>
 
@@ -101,7 +103,8 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           <div className='flex flex-col gap-1.5'>
             <Label htmlFor='first_name'>
-              First Name <span className='text-destructive'>*</span>
+              {dict.profileSettings.personalInfo.firstName}{' '}
+              <span className='text-destructive'>*</span>
             </Label>
             <Input
               type='text'
@@ -120,7 +123,8 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
 
           <div className='flex flex-col gap-1.5'>
             <Label htmlFor='last_name'>
-              Last Name <span className='text-destructive'>*</span>
+              {dict.profileSettings.personalInfo.lastName}{' '}
+              <span className='text-destructive'>*</span>
             </Label>
             <Input
               type='text'
@@ -138,11 +142,11 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='phone'>Phone</Label>
+            <Label htmlFor='phone'>{dict.profileSettings.personalInfo.phone}</Label>
             <Input
               id='phone'
               name='phone'
-              placeholder='Phone'
+              placeholder={dict.profileSettings.personalInfo.phone}
               value={formData.phone}
               disabled
             />
@@ -154,12 +158,12 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='email'>Email</Label>
+            <Label htmlFor='email'>{dict.profileSettings.personalInfo.email}</Label>
             <Input
               id='email'
               name='email'
               type='email'
-              placeholder='Email'
+              placeholder={dict.profileSettings.personalInfo.email}
               value={formData.email}
               onChange={handleChange}
               aria-invalid={!!getFieldError('email')}
@@ -172,7 +176,7 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='gender'>Gender</Label>
+            <Label htmlFor='gender'>{dict.profileSettings.personalInfo.gender}</Label>
             <Select
               items={GENDER_OPTIONS}
               id='gender'
@@ -187,7 +191,9 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
                 className='w-full'
                 aria-invalid={!!getFieldError('gender')}
               >
-                <SelectValue placeholder='Select a gender' />
+                <SelectValue
+                  placeholder={dict.profileSettings.personalInfo.selectGender}
+                />
               </SelectTrigger>
               <SelectContent>
                 {GENDER_OPTIONS.map((option) => (
@@ -205,7 +211,9 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='blood_group'>Blood Group</Label>
+            <Label htmlFor='blood_group'>
+              {dict.profileSettings.personalInfo.bloodGroup}
+            </Label>
             <Select
               items={BLOOD_GROUP_OPTIONS}
               id='blood_group'
@@ -220,7 +228,9 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
                 className='w-full'
                 aria-invalid={!!getFieldError('blood_group')}
               >
-                <SelectValue placeholder='Select blood group' />
+                <SelectValue
+                  placeholder={dict.profileSettings.personalInfo.selectBloodGroup}
+                />
               </SelectTrigger>
               <SelectContent>
                 {BLOOD_GROUP_OPTIONS.map((option) => (
@@ -238,7 +248,9 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='date_of_birth'>Date of Birth</Label>
+            <Label htmlFor='date_of_birth'>
+              {dict.profileSettings.personalInfo.dateOfBirth}
+            </Label>
             <Input
               id='date_of_birth'
               name='date_of_birth'
@@ -255,12 +267,12 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='nid'>NID Number</Label>
+            <Label htmlFor='nid'>{dict.profileSettings.personalInfo.nidNumber}</Label>
             <Input
               type='text'
               id='nid'
               name='nid'
-              placeholder='NID Number'
+              placeholder={dict.profileSettings.personalInfo.nidNumber}
               value={formData.nid}
               onChange={handleChange}
               aria-invalid={!!getFieldError('nid')}
@@ -289,7 +301,7 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
             ) : (
               <Edit />
             )}
-            Save Changes
+            {dict.profileSettings.saveChanges}
           </Button>
         </div>
       </form>

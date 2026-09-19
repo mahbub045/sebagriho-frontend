@@ -64,9 +64,11 @@ import {
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import AddPatientDialog from './Dialogs/AddPatientDialog';
 
 const PatientList: React.FC = () => {
+  const { dict } = useTranslation();
   const [page, setPage] = useState(1);
 
   const [searchInput, setSearchInput] = useState('');
@@ -142,17 +144,19 @@ const PatientList: React.FC = () => {
 
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <h1 className='text-xl font-semibold tracking-tight'>Patients</h1>
+          <h1 className='text-xl font-semibold tracking-tight'>
+            {dict.patients.list.title}
+          </h1>
 
           <p className='text-muted-foreground mt-1 text-sm'>
-            Manage and view all patient records in your organization.
+            {dict.patients.list.subtitle}
           </p>
         </div>
 
         {/* ONLY ADD PATIENT BUTTON */}
         <Button onClick={() => setIsPatientAdded(true)}>
           <Plus className='h-4 w-4' />
-          Add Patient
+          {dict.patients.list.addPatient}
         </Button>
       </div>
 
@@ -172,7 +176,7 @@ const PatientList: React.FC = () => {
             type='text'
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
-            placeholder='Search by name, serial number, phone...'
+            placeholder={dict.patients.list.searchPlaceholder}
             className='pl-9!'
           />
         </div>
@@ -187,11 +191,11 @@ const PatientList: React.FC = () => {
           }}
         >
           <SelectTrigger className='w-full sm:w-40'>
-            <SelectValue placeholder='Status' />
+            <SelectValue placeholder={dict.patients.list.statusPlaceholder} />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value='ALL'>All Status</SelectItem>
+            <SelectItem value='ALL'>{dict.patients.list.allStatus}</SelectItem>
 
             {HOMEOPATHIC_PATIENT_STATUS_OPTIONS.map((item) => (
               <SelectItem key={item.value} value={item.value}>
@@ -211,11 +215,11 @@ const PatientList: React.FC = () => {
           }}
         >
           <SelectTrigger className='w-full sm:w-40'>
-            <SelectValue placeholder='Miasm Type' />
+            <SelectValue placeholder={dict.patients.list.miasmPlaceholder} />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value='ALL'>All Miasm</SelectItem>
+            <SelectItem value='ALL'>{dict.patients.list.allMiasm}</SelectItem>
 
             {MIASM_TYPE_OPTIONS.map((item) => (
               <SelectItem key={item.value} value={item.value}>
@@ -229,7 +233,7 @@ const PatientList: React.FC = () => {
         {hasActiveFilters && (
           <Button variant='destructive' size='lg' onClick={clearFilters}>
             <X className='h-3.5 w-3.5' />
-            Clear filters
+            {dict.patients.list.clearFilters}
           </Button>
         )}
       </Card>
@@ -251,10 +255,12 @@ const PatientList: React.FC = () => {
         <div className='border-danger/40 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center'>
           <Stethoscope className='text-danger/50 h-10 w-10' />
 
-          <p className='mt-3 text-sm font-medium'>Failed to load patients</p>
+          <p className='mt-3 text-sm font-medium'>
+            {dict.patients.list.failedToLoad}
+          </p>
 
           <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-            Something went wrong while loading the patient list.
+            {dict.patients.list.failedToLoadDescription}
           </p>
         </div>
       )}
@@ -266,13 +272,15 @@ const PatientList: React.FC = () => {
           <User className='text-muted-foreground/40 h-10 w-10' />
 
           <p className='mt-3 text-sm font-medium'>
-            {hasActiveFilters ? 'No matching patients' : 'No patients yet'}
+            {hasActiveFilters
+              ? dict.patients.list.noMatchingPatients
+              : dict.patients.list.noPatientsYet}
           </p>
 
           <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
             {hasActiveFilters
-              ? 'Try adjusting your search or filters.'
-              : 'Patients will appear here once they are added to the system.'}
+              ? dict.patients.list.adjustFilters
+              : dict.patients.list.emptyDescription}
           </p>
         </div>
       )}
@@ -311,7 +319,10 @@ const PatientList: React.FC = () => {
                         <Avatar className='border-border/60 h-10 w-10 border'>
                           <AvatarImage
                             src={patient.user.avatar ?? undefined}
-                            alt={`Avatar of ${patient.user.name}`}
+                            alt={dict.patients.list.avatarAlt.replace(
+                              '{name}',
+                              patient.user.name,
+                            )}
                           />
 
                           <AvatarFallback className='bg-primary/5 text-primary text-sm font-semibold'>
@@ -340,7 +351,10 @@ const PatientList: React.FC = () => {
                                 </span>
 
                                 <span className='text-muted-foreground text-xs'>
-                                  Old #{patient.old_serial_number}
+                                  {dict.patients.list.oldSerialNumberShort.replace(
+                                    '{number}',
+                                    String(patient.old_serial_number),
+                                  )}
                                 </span>
                               </>
                             )}
@@ -352,10 +366,14 @@ const PatientList: React.FC = () => {
                           variant='default'
                           className={`shrink-0 text-[11px] font-medium`}
                         >
-                          Blood Group:{' '}
-                          {patient.user.blood_group
-                            ? formatChoiceFieldValue(patient.user.blood_group)
-                            : 'N/A'}
+                          {dict.patients.list.bloodGroupLabel.replace(
+                            '{value}',
+                            patient.user.blood_group
+                              ? formatChoiceFieldValue(
+                                  patient.user.blood_group,
+                                )
+                              : dict.patients.list.notAvailable,
+                          )}
                         </Badge>
                       </div>
 
@@ -368,14 +386,26 @@ const PatientList: React.FC = () => {
 
                           <div className='min-w-0'>
                             <p className='text-muted-foreground'>
-                              Age / Gender
+                              {dict.patients.list.ageGenderLabel}
                             </p>
 
                             <p className='truncate font-medium'>
-                              {patient.age ?? 'N/A'} years •{' '}
-                              {patient.user.gender
-                                ? formatChoiceFieldValue(patient.user.gender)
-                                : 'N/A'}
+                              {dict.patients.list.ageGenderValue
+                                .replace(
+                                  '{age}',
+                                  String(
+                                    patient.age ??
+                                      dict.patients.list.notAvailable,
+                                  ),
+                                )
+                                .replace(
+                                  '{gender}',
+                                  patient.user.gender
+                                    ? formatChoiceFieldValue(
+                                        patient.user.gender,
+                                      )
+                                    : dict.patients.list.notAvailable,
+                                )}
                             </p>
                           </div>
                         </div>
@@ -385,7 +415,9 @@ const PatientList: React.FC = () => {
                           <Stethoscope className='text-secondary h-3.5 w-3.5 shrink-0' />
 
                           <div className='min-w-0'>
-                            <p className='text-muted-foreground'>Miasm</p>
+                            <p className='text-muted-foreground'>
+                              {dict.patients.list.miasmLabel}
+                            </p>
 
                             <Badge
                               variant='outline'
@@ -393,7 +425,7 @@ const PatientList: React.FC = () => {
                             >
                               {patient.miasm_type
                                 ? formatChoiceFieldValue(patient.miasm_type)
-                                : 'Not specified'}
+                                : dict.patients.list.notSpecified}
                             </Badge>
                           </div>
                         </div>
@@ -408,7 +440,7 @@ const PatientList: React.FC = () => {
                             </span>
                           ) : (
                             <span className='text-muted-foreground italic'>
-                              Address not provided
+                              {dict.patients.list.addressNotProvided}
                             </span>
                           )}
                         </div>
@@ -420,8 +452,13 @@ const PatientList: React.FC = () => {
                           <FileText className='text-warning h-3.5 w-3.5' />
 
                           <span className='font-medium'>
-                            {patient.files?.length ?? 0}{' '}
-                            {patient.files?.length === 1 ? 'File' : 'Files'}
+                            {(patient.files?.length === 1
+                              ? dict.patients.list.fileCountSingular
+                              : dict.patients.list.fileCountPlural
+                            ).replace(
+                              '{count}',
+                              String(patient.files?.length ?? 0),
+                            )}
                           </span>
                         </div>
 
@@ -443,9 +480,15 @@ const PatientList: React.FC = () => {
             <div className='flex items-center justify-between'>
               {(patients?.count ?? 0) > 0 && (
                 <p className='text-muted-foreground text-sm whitespace-nowrap'>
-                  Showing {(page - 1) * PAGE_LIMIT + 1} to{' '}
-                  {Math.min(page * PAGE_LIMIT, patients?.count ?? 0)} of{' '}
-                  {patients?.count ?? 0} Patients
+                  {dict.patients.list.showingRange
+                    .replace('{from}', String((page - 1) * PAGE_LIMIT + 1))
+                    .replace(
+                      '{to}',
+                      String(
+                        Math.min(page * PAGE_LIMIT, patients?.count ?? 0),
+                      ),
+                    )
+                    .replace('{total}', String(patients?.count ?? 0))}
                 </p>
               )}
 

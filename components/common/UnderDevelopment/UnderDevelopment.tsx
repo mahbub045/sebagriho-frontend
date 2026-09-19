@@ -1,6 +1,11 @@
+'use client';
+
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Construction, Sparkles } from 'lucide-react';
 
 const UnderDevelopment: React.FC = () => {
+  const { dict } = useTranslation();
+
   return (
     <div className='flex h-full items-center justify-center px-4 py-10'>
       <div className='bg-card relative w-full max-w-2xl overflow-hidden rounded-3xl border p-8 shadow-sm sm:p-12'>
@@ -19,27 +24,28 @@ const UnderDevelopment: React.FC = () => {
           {/* Badge */}
           <div className='border-secondary/30 bg-secondary/10 text-secondary-foreground mb-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium'>
             <Sparkles className='text-secondary h-3.5 w-3.5' />
-            Coming Soon
+            {dict.underDevelopment.comingSoon}
           </div>
 
           {/* Heading */}
           <h1 className='text-foreground text-2xl font-bold tracking-tight sm:text-3xl'>
-            This Feature Is Under Development
+            {dict.underDevelopment.heading}
           </h1>
 
           {/* Description */}
           <p className='text-muted-foreground mt-3 max-w-lg text-sm leading-6 sm:text-base'>
-            We&apos;re working hard to bring this feature to you. It&apos;s
-            currently under development and will be available soon.
+            {dict.underDevelopment.description}
           </p>
 
           {/* Progress decoration */}
           <div className='mt-8 w-full max-w-sm'>
             <div className='mb-2 flex items-center justify-between text-xs'>
               <span className='text-muted-foreground font-medium'>
-                Development in progress
+                {dict.underDevelopment.developmentInProgress}
               </span>
-              <span className='text-primary font-semibold'>Coming soon</span>
+              <span className='text-primary font-semibold'>
+                {dict.underDevelopment.comingSoonShort}
+              </span>
             </div>
 
             <div className='bg-muted h-2 overflow-hidden rounded-full'>
@@ -50,7 +56,7 @@ const UnderDevelopment: React.FC = () => {
           {/* Footer */}
           <div className='text-muted-foreground mt-8 flex items-center gap-2 text-xs'>
             <span className='bg-secondary h-1.5 w-1.5 rounded-full' />
-            <span>Thank you for your patience</span>
+            <span>{dict.underDevelopment.thankYou}</span>
           </div>
         </div>
       </div>

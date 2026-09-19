@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useDeleteAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { DeleteAppointmentDialogProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { ShieldAlert } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -23,6 +24,7 @@ const DeleteAppointmentDialog: React.FC<DeleteAppointmentDialogProps> = ({
   appointmentPatientName,
 }) => {
   const router = useRouter();
+  const { dict } = useTranslation();
   const [errorMessage, setErrorMessage] = useState('');
 
   const [deleteAppointment, { isLoading }] = useDeleteAppointmentMutation();
@@ -30,13 +32,13 @@ const DeleteAppointmentDialog: React.FC<DeleteAppointmentDialogProps> = ({
   const handleDelete = async () => {
     try {
       await deleteAppointment(appointmentUid).unwrap();
-      toast.success('Appointment deleted successfully');
+      toast.success(dict.appointments.deleteDialog.deleteSuccess);
       onClose();
       router.back();
     } catch (error) {
-      setErrorMessage('Failed to delete appointment. Please try again.');
+      setErrorMessage(dict.appointments.deleteDialog.deleteError);
       //   console.error('Failed to delete appointment:', error);
-      toast.error('Failed to delete appointment. Please try again.');
+      toast.error(dict.appointments.deleteDialog.deleteError);
     }
   };
   return (
@@ -48,31 +50,36 @@ const DeleteAppointmentDialog: React.FC<DeleteAppointmentDialogProps> = ({
           </div>
 
           <DialogTitle className='mt-3 text-center sm:text-left'>
-            Delete {appointmentPatientName}?
+            {dict.appointments.deleteDialog.titlePrefix.replace(
+              '{name}',
+              appointmentPatientName,
+            )}
           </DialogTitle>
 
           <DialogDescription className='text-center sm:text-left'>
-            This action is permanent and can&apos;t be reversed.
+            {dict.appointments.deleteDialog.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className='border-danger/20 bg-danger/5 rounded-lg border p-3'>
-          <p className='text-sm font-medium'>Deleting this appointment will:</p>
+          <p className='text-sm font-medium'>
+            {dict.appointments.deleteDialog.willDo}
+          </p>
 
           <ul className='text-muted-foreground mt-2 space-y-1.5 text-sm'>
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Permanently remove the appointment record
+              {dict.appointments.deleteDialog.removeRecord}
             </li>
 
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Remove associated files and information
+              {dict.appointments.deleteDialog.removeFiles}
             </li>
 
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              This action cannot be undone
+              {dict.appointments.deleteDialog.cannotBeUndone}
             </li>
           </ul>
         </div>

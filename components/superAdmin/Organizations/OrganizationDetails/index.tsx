@@ -1,18 +1,20 @@
 'use client';
 import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useParams } from 'next/navigation';
 import OrganizationDetailsContent from './OrganizationDetailsContent/OrganizationDetailsContent';
 
 const OrganizationDetailsContainer: React.FC = () => {
+  const { dict } = useTranslation();
   const { organizationuid } = useParams();
   return (
     <div>
       <Breadcrumbs
         items={[
-          { label: 'Dashboard', href: `/super-admin/dashboard` },
-          { label: 'Organizations', href: `/super-admin/organizations` },
+          { label: dict.nav.dashboard, href: `/super-admin/dashboard` },
+          { label: dict.nav.organizations, href: `/super-admin/organizations` },
           {
-            label: 'Organization Details',
+            label: dict.organizations.detail.breadcrumb,
             href: `/super-admin/organizations/${organizationuid}`,
           },
         ]}

@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useDeleteOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { ShieldAlert, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -28,6 +29,7 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
   organizationUid,
   organizationName,
 }) => {
+  const { dict } = useTranslation();
   const router = useRouter();
   const [deleteOrganization, { isLoading }] = useDeleteOrganizationMutation();
   const [open, setOpen] = useState(false);
@@ -57,7 +59,7 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
       <Button variant='destructive' className='shrink-0' asChild>
         <DialogTrigger>
           <Trash2 className='h-4 w-4' />
-          Delete organization
+          {dict.organizations.dialogs.deleteOrganization.trigger}
         </DialogTrigger>
       </Button>
 
@@ -67,40 +69,43 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
             <ShieldAlert className='text-danger h-6 w-6' />
           </div>
           <DialogTitle className='mt-3 text-center sm:text-left'>
-            Delete {organizationName}?
+            {dict.organizations.dialogs.deleteOrganization.title.replace(
+              '{name}',
+              organizationName,
+            )}
           </DialogTitle>
           <DialogDescription className='text-center sm:text-left'>
-            This action is permanent and can&apos;t be reversed.
+            {dict.organizations.dialogs.deleteOrganization.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className='border-danger/20 bg-danger/5 rounded-lg border p-3'>
           <p className='text-sm font-medium'>
-            Deleting this organization will:
+            {dict.organizations.dialogs.deleteOrganization.consequencesTitle}
           </p>
           <ul className='text-muted-foreground mt-2 space-y-1.5 text-sm'>
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Remove all organization data and settings
+              {dict.organizations.dialogs.deleteOrganization.consequence1}
             </li>
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Delete the owner account tied to this organization
+              {dict.organizations.dialogs.deleteOrganization.consequence2}
             </li>
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Revoke access for anyone currently using it
+              {dict.organizations.dialogs.deleteOrganization.consequence3}
             </li>
           </ul>
         </div>
 
         <div className='space-y-2'>
           <Label htmlFor='confirm-organization-name' className='text-sm'>
-            Please type{' '}
+            {dict.organizations.dialogs.deleteOrganization.confirmPrefix}{' '}
             <span className='text-danger font-semibold'>
               {organizationName}
             </span>{' '}
-            to confirm.
+            {dict.organizations.dialogs.deleteOrganization.confirmSuffix}
           </Label>
           <Input
             type='text'
@@ -115,7 +120,7 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
 
         <DialogFooter className='mt-2'>
           <Button variant='outline' disabled={isLoading} asChild>
-            <DialogClose>Cancel</DialogClose>
+            <DialogClose>{dict.common.cancel}</DialogClose>
           </Button>
           <Button
             variant='destructive'
@@ -123,7 +128,9 @@ const DeleteOrganizationDialog: React.FC<Props> = ({
             disabled={isLoading || !isConfirmed}
           >
             {isLoading && <Loading className='text-danger! h-4 w-4' />}
-            {isLoading ? 'Deleting...' : 'Yes, delete organization'}
+            {isLoading
+              ? dict.organizations.dialogs.deleteOrganization.deleting
+              : dict.organizations.dialogs.deleteOrganization.confirmButton}
           </Button>
         </DialogFooter>
       </DialogContent>

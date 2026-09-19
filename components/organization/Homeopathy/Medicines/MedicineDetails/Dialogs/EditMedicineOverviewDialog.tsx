@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useEditMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   EditMedicineOverviewDialogProps,
@@ -40,22 +41,23 @@ const getFieldError = (
   return String(fieldError);
 };
 
-const getGeneralError = (error: unknown): string | undefined => {
-  if (!error || typeof error !== 'object') return undefined;
-  const data = (error as { data?: unknown }).data;
-  if (data && typeof data === 'object') {
-    const dataObj = data as Record<string, unknown>;
-    if (typeof dataObj.message === 'string') return dataObj.message;
-  }
-  return 'Something went wrong while updating the medicine.';
-};
-
 const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
   isOpen,
   onClose,
   medicine,
 }) => {
+  const { dict } = useTranslation();
   const [editMedicine, { isLoading, error }] = useEditMedicineMutation();
+
+  const getGeneralError = (error: unknown): string | undefined => {
+    if (!error || typeof error !== 'object') return undefined;
+    const data = (error as { data?: unknown }).data;
+    if (data && typeof data === 'object') {
+      const dataObj = data as Record<string, unknown>;
+      if (typeof dataObj.message === 'string') return dataObj.message;
+    }
+    return dict.medicines.dialogs.editOverview.genericError;
+  };
 
   const getInitialData = (): MedicineFormData => ({
     name: medicine?.name ?? '',
@@ -92,12 +94,12 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
         medicineUid: medicine.uid,
         payload: changedFields,
       }).unwrap();
-      toast.success('Medicine updated successfully');
+      toast.success(dict.medicines.dialogs.editOverview.successToast);
       onClose();
     } catch (err) {
       console.error('Failed to update medicine:', err);
       toast.error(
-        getGeneralError(err) ?? 'Failed to update medicine. Please try again.',
+        getGeneralError(err) ?? dict.medicines.dialogs.editOverview.errorToast,
       );
     }
   };
@@ -107,16 +109,18 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Medicine
+            {dict.medicines.dialogs.editOverview.title}
           </DialogTitle>
           <DialogDescription>
-            Update the details of the medicine.
+            {dict.medicines.dialogs.editOverview.description}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='name'>Name</Label>
+            <Label htmlFor='name'>
+              {dict.medicines.dialogs.editOverview.name}
+            </Label>
             <Input
               type='text'
               id='name'
@@ -133,7 +137,9 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='power'>Power</Label>
+            <Label htmlFor='power'>
+              {dict.medicines.dialogs.editOverview.power}
+            </Label>
             <Input
               type='number'
               id='power'
@@ -149,7 +155,9 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='manufacturer'>Manufacturer</Label>
+            <Label htmlFor='manufacturer'>
+              {dict.medicines.dialogs.editOverview.manufacturer}
+            </Label>
             <Input
               type='text'
               id='manufacturer'
@@ -165,7 +173,9 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='batch_number'>Batch Number</Label>
+            <Label htmlFor='batch_number'>
+              {dict.medicines.dialogs.editOverview.batchNumber}
+            </Label>
             <Input
               type='text'
               id='batch_number'
@@ -182,10 +192,12 @@ const EditMedicineOverviewDialog: React.FC<EditMedicineOverviewDialogProps> = ({
 
           <DialogFooter>
             <Button type='button' variant='outline' onClick={onClose}>
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isUnchanged || isLoading}>
-              {isLoading ? 'Saving...' : 'Save Changes'}
+              {isLoading
+                ? dict.medicines.dialogs.editOverview.saving
+                : dict.medicines.dialogs.editOverview.saveChanges}
             </Button>
           </DialogFooter>
         </form>

@@ -1,9 +1,12 @@
 'use client';
 import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { LogOut, ShieldX } from 'lucide-react';
 
 export default function AccessDeniedPage() {
+  const { dict } = useTranslation();
+
   return (
     <main className='bg-background relative flex min-h-screen items-center justify-center overflow-hidden px-6'>
       {/* Decorative background glows */}
@@ -30,19 +33,18 @@ export default function AccessDeniedPage() {
 
         {/* Heading */}
         <h1 className='text-2xl font-bold tracking-tight sm:text-3xl'>
-          Access denied
+          {dict.authPages.accessDenied.title}
         </h1>
 
         {/* Description */}
         <p className='text-muted-foreground mt-3 text-sm sm:text-base'>
-          Your account isn&rsquo;t assigned to an organization, or doesn&rsquo;t
-          have permission to view this page.
+          {dict.authPages.accessDenied.description}
         </p>
 
         {/* Secondary / recovery actions */}
         <div className='mt-6 border-t pt-6'>
           <p className='text-muted-foreground text-xs'>
-            Signed in to the wrong account, or think this is a mistake?
+            {dict.authPages.accessDenied.wrongAccount}
           </p>
           <div className='mt-3 flex items-center justify-center gap-2'>
             <Button
@@ -53,7 +55,7 @@ export default function AccessDeniedPage() {
               }}
             >
               <LogOut className='size-3.5' />
-              Sign out and try a different account
+              {dict.authPages.accessDenied.signOutButton}
             </Button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import Loading from '@/components/common/CustomLoader/Loading';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -22,6 +23,7 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
   onClose,
   patient,
 }) => {
+  const { dict } = useTranslation();
   const [uploadFiles, { isLoading: isUploading, error: uploadError }] =
     useEditPatientMutation();
   const [deleteFile] = useEditPatientMutation();
@@ -63,9 +65,9 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
         patientUid: patient.uid,
         payload,
       }).unwrap();
-      toast.success('File removed');
+      toast.success(dict.patients.dialogs.editFiles.fileRemovedToast);
     } catch {
-      toast.error('Failed to remove file. Please try again.');
+      toast.error(dict.patients.dialogs.editFiles.fileRemoveErrorToast);
     } finally {
       setDeletingFileUid(null);
     }
@@ -94,10 +96,10 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
         patientUid: patient.uid,
         payload,
       }).unwrap();
-      toast.success('Files uploaded successfully');
+      toast.success(dict.patients.dialogs.editFiles.filesUploadedToast);
       handleClose();
     } catch {
-      toast.error('Failed to upload files. Please try again.');
+      toast.error(dict.patients.dialogs.editFiles.filesUploadErrorToast);
     }
   };
 
@@ -106,10 +108,10 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Patient Files
+            {dict.patients.dialogs.editFiles.title}
           </DialogTitle>
           <DialogDescription>
-            Manage and upload files for this patient.
+            {dict.patients.dialogs.editFiles.description}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -119,7 +121,7 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
         >
           {patient.files && patient.files.length > 0 && (
             <div className='flex flex-col gap-1.5'>
-              <Label>Existing Files</Label>
+              <Label>{dict.patients.dialogs.editFiles.existingFiles}</Label>
               <div className='flex flex-col gap-2'>
                 {patient.files.map((file) => {
                   const isDeletingThis = deletingFileUid === file.uid;
@@ -152,7 +154,9 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
           )}
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='upload_files'>Upload Files</Label>
+            <Label htmlFor='upload_files'>
+              {dict.patients.dialogs.editFiles.uploadFiles}
+            </Label>
             <input
               ref={fileInputRef}
               id='upload_files'
@@ -169,7 +173,7 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
               className='justify-center'
             >
               <Upload className='h-4 w-4' />
-              Choose Files
+              {dict.patients.dialogs.editFiles.chooseFiles}
             </Button>
             {getFieldError('upload_files') && (
               <p className='text-destructive text-xs'>
@@ -180,7 +184,12 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
 
           {selectedFiles.length > 0 && (
             <div className='flex flex-col gap-1.5'>
-              <Label>Selected Files ({selectedFiles.length})</Label>
+              <Label>
+                {dict.patients.dialogs.editFiles.selectedFiles.replace(
+                  '{count}',
+                  String(selectedFiles.length),
+                )}
+              </Label>
               <div className='flex flex-col gap-2'>
                 {selectedFiles.map((file, index) => (
                   <div
@@ -212,11 +221,11 @@ const EditPatientFilesDialog: React.FC<EditPatientFilesDialogProps> = ({
               onClick={handleClose}
               disabled={isUploading || isAnyDeleting}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isUploading || isAnyDeleting}>
               {isUploading && <Loading className='h-4 w-4 text-white!' />}
-              Upload
+              {dict.patients.dialogs.editFiles.upload}
             </Button>
           </div>
         </form>

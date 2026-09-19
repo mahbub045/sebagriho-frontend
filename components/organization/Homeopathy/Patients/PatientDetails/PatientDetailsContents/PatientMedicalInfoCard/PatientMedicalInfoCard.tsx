@@ -1,6 +1,9 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { MIASM_STYLES } from '@/data/Organization/Homeopathy/PatientsData';
 import { PatientDetailsCardProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import { formatChoiceFieldValue } from '@/utils/formatters';
@@ -11,6 +14,7 @@ import EditPatientMedicalInfoDialog from '../../Dialogs/EditPatientMedicalInfoDi
 const PatientMedicalInfoCard: React.FC<PatientDetailsCardProps> = ({
   patient,
 }) => {
+  const { dict } = useTranslation();
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
   const miasmClass =
     (patient.miasm_type && MIASM_STYLES[patient.miasm_type]) ??
@@ -21,7 +25,9 @@ const PatientMedicalInfoCard: React.FC<PatientDetailsCardProps> = ({
       <div className='border-border/60 flex items-center justify-between gap-2 border-b p-4'>
         <div className='flex items-center gap-2'>
           <Stethoscope className='text-secondary h-4 w-4' />
-          <h3 className='text-sm font-semibold'>Medical Information</h3>
+          <h3 className='text-sm font-semibold'>
+            {dict.patients.detail.medicalInfoCard.title}
+          </h3>
         </div>
 
         <Button
@@ -30,24 +36,30 @@ const PatientMedicalInfoCard: React.FC<PatientDetailsCardProps> = ({
           onClick={() => setIsOpenEditPatientDialog(true)}
         >
           <Edit />
-          Edit
+          {dict.common.edit}
         </Button>
       </div>
       <div className='flex flex-col gap-3 p-4 text-xs'>
         <div>
-          <p className='text-muted-foreground'>Miasm Type</p>
+          <p className='text-muted-foreground'>
+            {dict.patients.detail.medicalInfoCard.miasmType}
+          </p>
           <Badge
             variant='outline'
             className={`mt-1 text-[10px] font-medium ${miasmClass}`}
           >
             {patient.miasm_type
               ? formatChoiceFieldValue(patient.miasm_type)
-              : 'Not specified'}
+              : dict.patients.detail.medicalInfoCard.notSpecified}
           </Badge>
         </div>
         <div>
-          <p className='text-muted-foreground'>Habits</p>
-          <p className='font-medium'>{patient.habits ?? 'N/A'}</p>
+          <p className='text-muted-foreground'>
+            {dict.patients.detail.medicalInfoCard.habits}
+          </p>
+          <p className='font-medium'>
+            {patient.habits ?? dict.patients.detail.medicalInfoCard.notAvailable}
+          </p>
         </div>
       </div>
       <EditPatientMedicalInfoDialog

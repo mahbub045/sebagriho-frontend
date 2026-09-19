@@ -4,6 +4,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 
+import { LanguageSwitcher } from '../common/LanguageSwitcher/LanguageSwitcher';
 import { Button } from '../ui/button';
 import { ThemeToggle } from '../ui/theme-toggle';
 import Notification from './Notification/Notification';
@@ -36,6 +37,8 @@ const AppNavbar: React.FC = () => {
 
       <div className='flex flex-1 items-center justify-end gap-4'>
         <div className='flex items-center gap-2'>
+          <LanguageSwitcher />
+
           <ThemeToggle />
 
           <Notification />

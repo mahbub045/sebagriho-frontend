@@ -41,6 +41,7 @@ import {
 } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 
 import { DEFAULT_VALUES } from '@/data/Organization/Homeopathy/PatientsData';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { BdPhoneInput } from '@/utils/bdPhoneInput';
 import { addCountryCode } from '@/utils/constants';
 
@@ -61,6 +62,7 @@ const FieldError = ({ message }: { message?: string }) =>
   message ? <p className='text-danger text-xs'>{message}</p> : null;
 
 const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
+  const { dict } = useTranslation();
   const [addPatient, { isLoading }] = useAddPatientMutation();
 
   const [formValues, setFormValues] =
@@ -118,22 +120,22 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
     const newErrors: FieldErrors = {};
 
     if (!formValues.first_name.trim()) {
-      newErrors.first_name = 'First name is required.';
+      newErrors.first_name = dict.patients.dialogs.addPatient.errors.firstNameRequired;
     }
 
     if (!formValues.last_name.trim()) {
-      newErrors.last_name = 'Last name is required.';
+      newErrors.last_name = dict.patients.dialogs.addPatient.errors.lastNameRequired;
     }
 
     if (!formValues.phone.trim()) {
-      newErrors.phone = 'Phone number is required.';
+      newErrors.phone = dict.patients.dialogs.addPatient.errors.phoneRequired;
     }
 
     if (
       formValues.email.trim() &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)
     ) {
-      newErrors.email = 'Enter a valid email address.';
+      newErrors.email = dict.patients.dialogs.addPatient.errors.invalidEmail;
     }
 
     setErrors(newErrors);
@@ -190,7 +192,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
       )?.data;
 
       if (!data || typeof data !== 'object') {
-        setNonFieldError('Something went wrong. Please try again.');
+        setNonFieldError(dict.patients.dialogs.addPatient.errors.genericError);
         return;
       }
 
@@ -237,7 +239,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
         setNonFieldError(detail);
         delete flattened.detail;
       } else if (Object.keys(flattened).length === 0) {
-        setNonFieldError('Something went wrong. Please try again.');
+        setNonFieldError(dict.patients.dialogs.addPatient.errors.genericError);
       }
 
       setApiErrors(flattened);
@@ -259,11 +261,11 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-185'>
         <DialogHeader className='text-lg font-semibold'>
           <DialogTitle className='text-primary -mb-3 text-2xl'>
-            Add Patient
+            {dict.patients.dialogs.addPatient.title}
           </DialogTitle>
 
           <DialogDescription className='text-muted-foreground text-sm'>
-            Enter the patient&apos;s details below.
+            {dict.patients.dialogs.addPatient.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -280,19 +282,22 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
           {/* Personal Information */}
           <div>
-            <h3 className='mb-3 text-sm font-semibold'>Personal Information</h3>
+            <h3 className='mb-3 text-sm font-semibold'>
+              {dict.patients.dialogs.addPatient.personalInformationSection}
+            </h3>
 
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
               {/* First Name */}
               <div className='space-y-1.5'>
                 <Label htmlFor='first_name'>
-                  First Name <span className='text-danger'>*</span>
+                  {dict.patients.dialogs.addPatient.firstName}{' '}
+                  <span className='text-danger'>*</span>
                 </Label>
 
                 <Input
                   id='first_name'
                   type='text'
-                  placeholder='First name'
+                  placeholder={dict.patients.dialogs.addPatient.firstNamePlaceholder}
                   value={formValues.first_name}
                   onChange={(e) => updateField('first_name', e.target.value)}
                   aria-invalid={!!renderError('first_name')}
@@ -304,13 +309,14 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
               {/* Last Name */}
               <div className='space-y-1.5'>
                 <Label htmlFor='last_name'>
-                  Last Name <span className='text-danger'>*</span>
+                  {dict.patients.dialogs.addPatient.lastName}{' '}
+                  <span className='text-danger'>*</span>
                 </Label>
 
                 <Input
                   id='last_name'
                   type='text'
-                  placeholder='Last name'
+                  placeholder={dict.patients.dialogs.addPatient.lastNamePlaceholder}
                   value={formValues.last_name}
                   onChange={(e) => updateField('last_name', e.target.value)}
                   aria-invalid={!!renderError('last_name')}
@@ -322,7 +328,8 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
               {/* Phone */}
               <div className='space-y-1.5'>
                 <Label htmlFor='phone'>
-                  Phone <span className='text-danger'>*</span>
+                  {dict.patients.dialogs.addPatient.phone}{' '}
+                  <span className='text-danger'>*</span>
                 </Label>
 
                 <BdPhoneInput
@@ -337,12 +344,14 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Email */}
               <div className='space-y-1.5'>
-                <Label htmlFor='email'>Email</Label>
+                <Label htmlFor='email'>
+                  {dict.patients.dialogs.addPatient.email}
+                </Label>
 
                 <Input
                   id='email'
                   type='email'
-                  placeholder='name@example.com'
+                  placeholder={dict.patients.dialogs.addPatient.emailPlaceholder}
                   value={formValues.email}
                   onChange={(e) => updateField('email', e.target.value)}
                   aria-invalid={!!renderError('email')}
@@ -353,7 +362,9 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Gender */}
               <div className='space-y-1.5'>
-                <Label htmlFor='gender'>Gender</Label>
+                <Label htmlFor='gender'>
+                  {dict.patients.dialogs.addPatient.gender}
+                </Label>
 
                 <Select
                   items={GENDER_OPTIONS}
@@ -367,7 +378,9 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                     className='w-full'
                     aria-invalid={!!renderError('gender')}
                   >
-                    <SelectValue placeholder='Select gender' />
+                    <SelectValue
+                      placeholder={dict.patients.dialogs.addPatient.genderPlaceholder}
+                    />
                   </SelectTrigger>
 
                   <SelectContent>
@@ -384,13 +397,13 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Age */}
               <div className='space-y-1.5'>
-                <Label htmlFor='age'>Age</Label>
+                <Label htmlFor='age'>{dict.patients.dialogs.addPatient.age}</Label>
 
                 <Input
                   id='age'
                   type='number'
                   min={0}
-                  placeholder='Age'
+                  placeholder={dict.patients.dialogs.addPatient.agePlaceholder}
                   value={formValues.age}
                   onChange={(e) => updateField('age', e.target.value)}
                   aria-invalid={!!renderError('age')}
@@ -401,13 +414,17 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Old Serial Number */}
               <div className='space-y-1.5'>
-                <Label htmlFor='old_serial_number'>Old Serial Number</Label>
+                <Label htmlFor='old_serial_number'>
+                  {dict.patients.dialogs.addPatient.oldSerialNumber}
+                </Label>
 
                 <Input
                   id='old_serial_number'
                   type='number'
                   min={0}
-                  placeholder='Old serial number'
+                  placeholder={
+                    dict.patients.dialogs.addPatient.oldSerialNumberPlaceholder
+                  }
                   value={formValues.old_serial_number}
                   onChange={(e) =>
                     updateField('old_serial_number', e.target.value)
@@ -422,19 +439,23 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
           {/* Contact Information */}
           <div>
-            <h3 className='mb-3 text-sm font-semibold'>Contact Information</h3>
+            <h3 className='mb-3 text-sm font-semibold'>
+              {dict.patients.dialogs.addPatient.contactInformationSection}
+            </h3>
 
             <div className='grid grid-cols-1'>
               {/* Relative Phone */}
 
               {/* Address */}
               <div className='space-y-1.5 sm:col-span-1'>
-                <Label htmlFor='address'>Address</Label>
+                <Label htmlFor='address'>
+                  {dict.patients.dialogs.addPatient.address}
+                </Label>
 
                 <Input
                   id='address'
                   type='text'
-                  placeholder='e.g. Dhaka, Bangladesh'
+                  placeholder={dict.patients.dialogs.addPatient.addressPlaceholder}
                   value={formValues.address}
                   onChange={(e) => updateField('address', e.target.value)}
                   aria-invalid={!!renderError('address')}
@@ -447,13 +468,17 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
           {/* Medical Information */}
           <div>
-            <h3 className='mb-3 text-sm font-semibold'>Medical Information</h3>
+            <h3 className='mb-3 text-sm font-semibold'>
+              {dict.patients.dialogs.addPatient.medicalInformationSection}
+            </h3>
 
             <div className='grid grid-cols-1 gap-4'>
               {/* Miasm Type */}
               <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                 <div className='space-y-1.5'>
-                  <Label htmlFor='blood_group'>Blood Group</Label>
+                  <Label htmlFor='blood_group'>
+                    {dict.patients.dialogs.addPatient.bloodGroup}
+                  </Label>
 
                   <Select
                     items={BLOOD_GROUP_OPTIONS}
@@ -467,7 +492,11 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                       className='w-full'
                       aria-invalid={!!renderError('blood_group')}
                     >
-                      <SelectValue placeholder='Select blood group' />
+                      <SelectValue
+                        placeholder={
+                          dict.patients.dialogs.addPatient.bloodGroupPlaceholder
+                        }
+                      />
                     </SelectTrigger>
 
                     <SelectContent>
@@ -482,7 +511,9 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                   <FieldError message={renderError('blood_group')} />
                 </div>
                 <div className='space-y-1.5'>
-                  <Label htmlFor='miasm_type'>Miasm Type</Label>
+                  <Label htmlFor='miasm_type'>
+                    {dict.patients.dialogs.addPatient.miasmType}
+                  </Label>
 
                   <Select
                     items={MIASM_TYPE_OPTIONS}
@@ -496,7 +527,11 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                       className='w-full'
                       aria-invalid={!!renderError('miasm_type')}
                     >
-                      <SelectValue placeholder='Select miasm type' />
+                      <SelectValue
+                        placeholder={
+                          dict.patients.dialogs.addPatient.miasmTypePlaceholder
+                        }
+                      />
                     </SelectTrigger>
 
                     <SelectContent>
@@ -514,11 +549,13 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Case History */}
               <div className='space-y-1.5'>
-                <Label htmlFor='case_history'>Case History</Label>
+                <Label htmlFor='case_history'>
+                  {dict.patients.dialogs.addPatient.caseHistory}
+                </Label>
 
                 <Textarea
                   id='case_history'
-                  placeholder='Enter case history'
+                  placeholder={dict.patients.dialogs.addPatient.caseHistoryPlaceholder}
                   rows={4}
                   value={formValues.case_history}
                   onChange={(e) => updateField('case_history', e.target.value)}
@@ -530,11 +567,13 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
 
               {/* Habits */}
               <div className='space-y-1.5'>
-                <Label htmlFor='habits'>Habits</Label>
+                <Label htmlFor='habits'>
+                  {dict.patients.dialogs.addPatient.habits}
+                </Label>
 
                 <Textarea
                   id='habits'
-                  placeholder='Enter patient habits'
+                  placeholder={dict.patients.dialogs.addPatient.habitsPlaceholder}
                   rows={3}
                   value={formValues.habits}
                   onChange={(e) => updateField('habits', e.target.value)}
@@ -554,13 +593,15 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
             onClick={handleClose}
             disabled={isLoading}
           >
-            Cancel
+            {dict.common.cancel}
           </Button>
 
           <Button type='submit' form='add-patient-form' disabled={isLoading}>
             {isLoading && <Loading className='h-4 w-4 text-white!' />}
 
-            {isLoading ? 'Adding...' : 'Add Patient'}
+            {isLoading
+              ? dict.patients.dialogs.addPatient.adding
+              : dict.patients.dialogs.addPatient.title}
           </Button>
         </DialogFooter>
       </DialogContent>

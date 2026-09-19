@@ -13,6 +13,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { EditAppointmentInfoDialogProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -22,6 +23,7 @@ const EditAppointmentInfoDialog: React.FC<EditAppointmentInfoDialogProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { dict } = useTranslation();
   const [symptoms, setSymptoms] = useState('');
   const [treatmentEffectiveness, setTreatmentEffectiveness] = useState('');
 
@@ -69,10 +71,10 @@ const EditAppointmentInfoDialog: React.FC<EditAppointmentInfoDialogProps> = ({
         },
       }).unwrap();
 
-      toast.success('Appointment updated successfully!');
+      toast.success(dict.appointments.editInfoDialog.updateSuccess);
       handleClose();
     } catch {
-      toast.error('Failed to update appointment. Please try again.');
+      toast.error(dict.appointments.editInfoDialog.updateError);
     }
   };
 
@@ -81,22 +83,23 @@ const EditAppointmentInfoDialog: React.FC<EditAppointmentInfoDialogProps> = ({
       <DialogContent className='max-w-lg'>
         <DialogHeader>
           <DialogTitle className='text-primary text-lg font-semibold'>
-            Edit Appointment Info
+            {dict.appointments.editInfoDialog.title}
           </DialogTitle>
 
           <DialogDescription>
-            Update the symptoms and treatment effectiveness for this
-            appointment.
+            {dict.appointments.editInfoDialog.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className='flex flex-col gap-5 py-2'>
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='symptoms'>Symptoms</Label>
+            <Label htmlFor='symptoms'>
+              {dict.appointments.editInfoDialog.symptomsLabel}
+            </Label>
 
             <Textarea
               id='symptoms'
-              placeholder='Describe the symptoms...'
+              placeholder={dict.appointments.editInfoDialog.symptomsPlaceholder}
               value={symptoms}
               onChange={(event) => setSymptoms(event.target.value)}
               rows={3}
@@ -110,12 +113,15 @@ const EditAppointmentInfoDialog: React.FC<EditAppointmentInfoDialogProps> = ({
 
           <div className='flex flex-col gap-1.5'>
             <Label htmlFor='treatment_effectiveness'>
-              Treatment Effectiveness
+              {dict.appointments.editInfoDialog.treatmentEffectivenessLabel}
             </Label>
 
             <Textarea
               id='treatment_effectiveness'
-              placeholder='Notes on how prior treatment is working...'
+              placeholder={
+                dict.appointments.editInfoDialog
+                  .treatmentEffectivenessPlaceholder
+              }
               value={treatmentEffectiveness}
               onChange={(event) =>
                 setTreatmentEffectiveness(event.target.value)
@@ -134,12 +140,12 @@ const EditAppointmentInfoDialog: React.FC<EditAppointmentInfoDialogProps> = ({
 
         <DialogFooter>
           <Button variant='outline' onClick={handleClose} disabled={isLoading}>
-            Cancel
+            {dict.common.cancel}
           </Button>
 
           <Button onClick={handleSubmit} disabled={isLoading}>
             {isLoading ? <Loading className='text-white!' /> : ''}
-            Save Changes
+            {dict.appointments.editInfoDialog.saveChanges}
           </Button>
         </DialogFooter>
       </DialogContent>

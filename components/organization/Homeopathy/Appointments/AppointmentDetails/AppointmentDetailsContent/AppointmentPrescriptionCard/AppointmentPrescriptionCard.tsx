@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   AppointmentPrescription,
   MedicinesCardProps,
@@ -28,6 +29,7 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
   appointment_prescription,
   appointmentUid,
 }) => {
+  const { dict } = useTranslation();
   const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
     useState(false);
   const [isOpenAddDialog, setIsOpenAddDialog] = useState(false);
@@ -53,9 +55,9 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
         },
       }).unwrap();
 
-      toast.success('Medicine removed successfully!');
+      toast.success(dict.appointments.prescriptionCard.removeSuccess);
     } catch {
-      toast.error('Failed to remove medicine. Please try again.');
+      toast.error(dict.appointments.prescriptionCard.removeError);
     } finally {
       setDeletingUid(null);
     }
@@ -70,9 +72,12 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
           </div>
 
           <p className='text-sm font-semibold'>
-            Medicines{' '}
-            {appointment_prescription.length > 0 &&
-              `(${appointment_prescription.length})`}
+            {dict.appointments.prescriptionCard.medicines.replace(
+              '{count}',
+              appointment_prescription.length > 0
+                ? `(${appointment_prescription.length})`
+                : '',
+            )}
           </p>
         </div>
 
@@ -83,7 +88,7 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
           onClick={() => setIsOpenAddDialog(true)}
         >
           <Plus className='h-3.5 w-3.5' />
-          Add new medicine
+          {dict.appointments.prescriptionCard.addNewMedicine}
         </Button>
       </div>
 
@@ -92,7 +97,7 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
           <Pill className='text-muted-foreground/30 h-7 w-7' />
 
           <p className='text-muted-foreground text-xs'>
-            No medicines prescribed yet.
+            {dict.appointments.prescriptionCard.noMedicinesPrescribed}
           </p>
         </div>
       ) : (
@@ -142,12 +147,18 @@ const AppointmentPrescriptionCard: React.FC<MedicinesCardProps> = ({
                       )}
                       {prescription.duration ? (
                         <p className='flex items-center justify-end gap-1'>
-                          {prescription.duration} days
+                          {dict.appointments.prescriptionCard.days.replace(
+                            '{count}',
+                            String(prescription.duration),
+                          )}
                           <CalendarDays className='h-3 w-3' />
                         </p>
                       ) : (
                         <p className='flex items-center justify-end gap-1'>
-                          0 days
+                          {dict.appointments.prescriptionCard.days.replace(
+                            '{count}',
+                            '0',
+                          )}
                           <CalendarDays className='h-3 w-3' />
                         </p>
                       )}

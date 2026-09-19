@@ -1,0 +1,838 @@
+{
+  "common": {
+    "loading": "লোড হচ্ছে...",
+    "save": "সংরক্ষণ করুন",
+    "cancel": "বাতিল",
+    "delete": "মুছুন",
+    "edit": "সম্পাদনা",
+    "add": "যোগ করুন",
+    "search": "খুঁজুন",
+    "submit": "জমা দিন",
+    "close": "বন্ধ করুন",
+    "confirm": "নিশ্চিত করুন",
+    "back": "পেছনে",
+    "next": "পরবর্তী",
+    "yes": "হ্যাঁ",
+    "no": "না",
+    "actions": "কার্যক্রম",
+    "status": "অবস্থা",
+    "noResults": "কোনো ফলাফল পাওয়া যায়নি"
+  },
+  "nav": {
+    "dashboard": "ড্যাশবোর্ড",
+    "appointments": "অ্যাপয়েন্টমেন্ট",
+    "patients": "রোগী",
+    "medicines": "ঔষধ",
+    "organizations": "প্রতিষ্ঠান",
+    "users": "ব্যবহারকারী",
+    "profileSettings": "প্রোফাইল সেটিংস",
+    "menu": "মেনু",
+    "logout": "লগ আউট"
+  },
+  "navbar": {
+    "joinReferral": "আমাদের রেফারেল প্রোগ্রামে যোগ দিন",
+    "language": "ভাষা",
+    "toggleTheme": "থিম পরিবর্তন করুন"
+  },
+  "auth": {
+    "signIn": "সাইন ইন",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+    "setPassword": "পাসওয়ার্ড সেট করুন",
+    "accessDenied": "প্রবেশাধিকার নেই"
+  },
+  "appointments": {
+    "list": {
+      "title": "অ্যাপয়েন্টমেন্ট",
+      "subtitle": "আপনার প্রতিষ্ঠানের সকল রোগীর অ্যাপয়েন্টমেন্ট দেখুন এবং পরিচালনা করুন।",
+      "createAppointment": "অ্যাপয়েন্টমেন্ট তৈরি করুন",
+      "searchPlaceholder": "রোগীর নাম, উপসর্গ দিয়ে খুঁজুন...",
+      "appointmentDateDefault": "অ্যাপয়েন্টমেন্টের তারিখ",
+      "miasmTypePlaceholder": "মায়াজম ধরন",
+      "allMiasm": "সকল মায়াজম",
+      "clearFilters": "ফিল্টার মুছুন",
+      "failedToLoad": "অ্যাপয়েন্টমেন্ট লোড করতে ব্যর্থ হয়েছে",
+      "failedToLoadDescription": "অ্যাপয়েন্টমেন্টের তালিকা লোড করার সময় একটি সমস্যা হয়েছে।",
+      "noMatching": "কোনো মিলযুক্ত অ্যাপয়েন্টমেন্ট নেই",
+      "noAppointmentsYet": "এখনো কোনো অ্যাপয়েন্টমেন্ট নেই",
+      "tryAdjusting": "আপনার অনুসন্ধান বা ফিল্টার সামঞ্জস্য করার চেষ্টা করুন।",
+      "appearHere": "অ্যাপয়েন্টমেন্ট তৈরি হলে এখানে প্রদর্শিত হবে।",
+      "noPhoneNumber": "কোনো ফোন নম্বর নেই",
+      "patientSerial": "রোগী নং - {value}",
+      "noSerialNumber": "কোনো ক্রমিক নম্বর নেই",
+      "symptoms": "উপসর্গ",
+      "notRecorded": "রেকর্ড করা হয়নি",
+      "treatmentEffectiveness": "চিকিৎসার কার্যকারিতা",
+      "file": "ফাইল",
+      "files": "ফাইলসমূহ",
+      "showing": "{total} টির মধ্যে {from} থেকে {to} টি অ্যাপয়েন্টমেন্ট দেখানো হচ্ছে"
+    },
+    "createDialog": {
+      "title": "অ্যাপয়েন্টমেন্ট তৈরি করুন",
+      "description": "একজন রোগী নির্বাচন করুন, ওষুধ যোগ করুন এবং ভিজিটের বিবরণ লিপিবদ্ধ করুন।",
+      "patientLabel": "রোগী",
+      "searchPatientPlaceholder": "নাম, ক্রমিক নম্বর দিয়ে রোগী খুঁজুন...",
+      "searchPatientsPlaceholder": "রোগী খুঁজুন...",
+      "searching": "খোঁজা হচ্ছে...",
+      "noPatientsFound": "কোনো রোগী পাওয়া যায়নি।",
+      "medicinesLabel": "ওষুধসমূহ",
+      "medicineSelected": "{count} টি ওষুধ নির্বাচিত",
+      "medicinesSelected": "{count} টি ওষুধ নির্বাচিত",
+      "searchAndAddMedicines": "ওষুধ খুঁজুন এবং যোগ করুন...",
+      "searchMedicinesPlaceholder": "ওষুধ খুঁজুন...",
+      "noMedicinesFound": "কোনো ওষুধ পাওয়া যায়নি।",
+      "dosagePlaceholder": "মাত্রা",
+      "frequencyPlaceholder": "কতবার",
+      "durationPlaceholder": "মেয়াদ (দিন)",
+      "mealTimingPlaceholder": "খাবারের সময়",
+      "instructionsPlaceholder": "নির্দেশনা (যেমন: পানির সাথে খান)",
+      "statusLabel": "অবস্থা",
+      "statusPlaceholder": "অবস্থা নির্বাচন করুন",
+      "symptomsLabel": "উপসর্গ",
+      "symptomsPlaceholder": "উপসর্গ বর্ণনা করুন...",
+      "treatmentEffectivenessLabel": "চিকিৎসার কার্যকারিতা",
+      "treatmentEffectivenessPlaceholder": "পূর্ববর্তী চিকিৎসা কেমন কাজ করছে তার নোট...",
+      "createSuccess": "অ্যাপয়েন্টমেন্ট সফলভাবে তৈরি হয়েছে!",
+      "createError": "অ্যাপয়েন্টমেন্ট তৈরি করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "details": {
+      "breadcrumb": "অ্যাপয়েন্টমেন্টের বিবরণ",
+      "title": "অ্যাপয়েন্টমেন্টের বিবরণ",
+      "subtitle": "এই রোগীর অ্যাপয়েন্টমেন্টের সম্পূর্ণ রেকর্ড।",
+      "failedToLoad": "অ্যাপয়েন্টমেন্ট লোড করতে ব্যর্থ হয়েছে",
+      "failedToLoadDescription": "এই অ্যাপয়েন্টমেন্টের বিবরণ লোড করার সময় একটি সমস্যা হয়েছে।"
+    },
+    "addMedicineDialog": {
+      "title": "ওষুধ যোগ করুন",
+      "description": "এই প্রেসক্রিপশনে যোগ করার জন্য ওষুধ খুঁজুন এবং নির্বাচন করুন।",
+      "selectAtLeastOne": "যোগ করার জন্য অন্তত একটি ওষুধ নির্বাচন করুন।",
+      "addSuccess": "ওষুধ(সমূহ) সফলভাবে যোগ করা হয়েছে!",
+      "addError": "ওষুধ(সমূহ) যোগ করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+      "addMedicine": "ওষুধ যোগ করুন",
+      "addMedicines": "ওষুধসমূহ যোগ করুন"
+    },
+    "deleteDialog": {
+      "titlePrefix": "{name} মুছে ফেলবেন?",
+      "description": "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না।",
+      "willDo": "এই অ্যাপয়েন্টমেন্ট মুছে ফেললে যা হবে:",
+      "removeRecord": "অ্যাপয়েন্টমেন্টের রেকর্ড স্থায়ীভাবে মুছে যাবে",
+      "removeFiles": "সংশ্লিষ্ট ফাইল এবং তথ্য মুছে যাবে",
+      "cannotBeUndone": "এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না",
+      "deleting": "মুছে ফেলা হচ্ছে...",
+      "confirmDelete": "হ্যাঁ, অ্যাপয়েন্টমেন্ট মুছুন",
+      "deleteSuccess": "অ্যাপয়েন্টমেন্ট সফলভাবে মুছে ফেলা হয়েছে",
+      "deleteError": "অ্যাপয়েন্টমেন্ট মুছতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "editFilesDialog": {
+      "title": "অ্যাপয়েন্টমেন্টের ফাইল সম্পাদনা করুন",
+      "description": "এই অ্যাপয়েন্টমেন্টের ফাইল পরিচালনা এবং আপলোড করুন।",
+      "existingFiles": "বিদ্যমান ফাইল",
+      "uploadFiles": "ফাইল আপলোড করুন",
+      "chooseFiles": "ফাইল নির্বাচন করুন",
+      "selectedFiles": "নির্বাচিত ফাইল ({count})",
+      "upload": "আপলোড",
+      "fileRemoved": "ফাইল সরানো হয়েছে",
+      "fileRemoveError": "ফাইল সরাতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+      "uploadSuccess": "ফাইল সফলভাবে আপলোড হয়েছে",
+      "uploadError": "ফাইল আপলোড করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "editInfoDialog": {
+      "title": "অ্যাপয়েন্টমেন্টের তথ্য সম্পাদনা করুন",
+      "description": "এই অ্যাপয়েন্টমেন্টের উপসর্গ এবং চিকিৎসার কার্যকারিতা আপডেট করুন।",
+      "symptomsLabel": "উপসর্গ",
+      "symptomsPlaceholder": "উপসর্গ বর্ণনা করুন...",
+      "treatmentEffectivenessLabel": "চিকিৎসার কার্যকারিতা",
+      "treatmentEffectivenessPlaceholder": "পূর্ববর্তী চিকিৎসা কেমন কাজ করছে তার নোট...",
+      "saveChanges": "পরিবর্তনগুলো সংরক্ষণ করুন",
+      "updateSuccess": "অ্যাপয়েন্টমেন্ট সফলভাবে আপডেট হয়েছে!",
+      "updateError": "অ্যাপয়েন্টমেন্ট আপডেট করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "editPrescriptionDialog": {
+      "title": "প্রেসক্রিপশন সম্পাদনা করুন",
+      "description": "প্রতিটি ওষুধের মাত্রা, সময় এবং নির্দেশনা আপডেট করুন, অথবা একটি ওষুধ সম্পূর্ণভাবে সরিয়ে দিন।",
+      "noMedicinesLeft": "এই প্রেসক্রিপশনে আর কোনো ওষুধ নেই।",
+      "dosageLabel": "মাত্রা",
+      "dosagePlaceholder": "যেমন: ৩ টি বড়ি",
+      "frequencyLabel": "কতবার",
+      "frequencyPlaceholder": "যেমন: দিনে ৩ বার",
+      "durationLabel": "মেয়াদ",
+      "durationPlaceholder": "যেমন: ৭ দিন",
+      "mealTimingLabel": "খাবারের সময়",
+      "mealTimingPlaceholder": "খাবারের সময়",
+      "instructionsLabel": "নির্দেশনা",
+      "instructionsPlaceholder": "যেমন: পানির সাথে খান",
+      "saveChanges": "পরিবর্তনগুলো সংরক্ষণ করুন",
+      "updateSuccess": "প্রেসক্রিপশন সফলভাবে আপডেট হয়েছে!",
+      "updateError": "প্রেসক্রিপশন আপডেট করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "deleteCard": {
+      "warningPrefix": "এটি স্থায়ীভাবে সরিয়ে দেবে",
+      "warningSuffixApostropheAppointment": "এর অ্যাপয়েন্টমেন্ট",
+      "warningEnd": "এবং এর সকল তথ্য। এটি পূর্বাবস্থায় ফেরানো যাবে না।",
+      "deleteAppointment": "অ্যাপয়েন্টমেন্ট মুছুন"
+    },
+    "filesCard": {
+      "title": "ফাইল ({count})",
+      "edit": "সম্পাদনা",
+      "noFilesUploaded": "কোনো ফাইল আপলোড করা হয়নি।",
+      "removeSuccess": "ফাইল সফলভাবে সরানো হয়েছে!",
+      "removeError": "ফাইল সরাতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "infoCard": {
+      "overview": "অ্যাপয়েন্টমেন্টের সারসংক্ষেপ",
+      "edit": "সম্পাদনা",
+      "symptoms": "উপসর্গ",
+      "notRecorded": "রেকর্ড করা হয়নি",
+      "treatmentEffectiveness": "চিকিৎসার কার্যকারিতা",
+      "created": "তৈরি হয়েছে",
+      "lastUpdated": "সর্বশেষ আপডেট",
+      "statusUpdateSuccess": "অ্যাপয়েন্টমেন্টের অবস্থা সফলভাবে আপডেট হয়েছে!",
+      "statusUpdateError": "অবস্থা আপডেট করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    },
+    "patientInfoCard": {
+      "viewProfile": "রোগীর প্রোফাইল দেখুন",
+      "ageGender": "বয়স / লিঙ্গ",
+      "years": "{age} বছর",
+      "notAvailable": "প্রযোজ্য নয়",
+      "notRecorded": "রেকর্ড করা হয়নি",
+      "dateOfBirth": "জন্ম তারিখ",
+      "phone": "ফোন",
+      "notProvided": "প্রদান করা হয়নি",
+      "email": "ইমেইল",
+      "bloodGroup": "রক্তের গ্রুপ",
+      "miasmType": "মায়াজম ধরন",
+      "address": "ঠিকানা"
+    },
+    "prescriptionCard": {
+      "medicines": "ওষুধসমূহ {count}",
+      "addNewMedicine": "নতুন ওষুধ যোগ করুন",
+      "noMedicinesPrescribed": "এখনো কোনো ওষুধ প্রেসক্রাইব করা হয়নি।",
+      "days": "{count} দিন",
+      "removeSuccess": "ওষুধ সফলভাবে সরানো হয়েছে!",
+      "removeError": "ওষুধ সরাতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+    }
+  },
+  "dashboard": {
+    "homeopathy": {
+      "title": "ড্যাশবোর্ড ওভারভিউ",
+      "subtitle": "আপনার হোমিওপ্যাথি প্র্যাকটিসের এক নজরে সারসংক্ষেপ।",
+      "failedToLoad": "ড্যাশবোর্ড লোড করতে ব্যর্থ হয়েছে",
+      "failedToLoadDescription": "ড্যাশবোর্ড ওভারভিউ লোড করার সময় একটি সমস্যা হয়েছে।",
+      "patientGrowthTitle": "রোগী বৃদ্ধি",
+      "patientGrowthDescription": "সময়ের সাথে নতুন রোগী নিবন্ধন",
+      "patientGrowthEmpty": "এখনো কোনো রোগী বৃদ্ধির তথ্য নেই",
+      "appointmentGrowthTitle": "অ্যাপয়েন্টমেন্ট বৃদ্ধি",
+      "appointmentGrowthDescription": "সময়ের সাথে বুক করা অ্যাপয়েন্টমেন্ট",
+      "appointmentGrowthEmpty": "এখনো কোনো অ্যাপয়েন্টমেন্ট বৃদ্ধির তথ্য নেই",
+      "patientsSeriesLabel": "রোগী",
+      "appointmentsSeriesLabel": "অ্যাপয়েন্টমেন্ট"
+    },
+    "statCards": {
+      "totalPatients": "মোট রোগী",
+      "totalPatientsSubLabel": "সকল নিবন্ধিত রোগী",
+      "totalAppointments": "মোট অ্যাপয়েন্টমেন্ট",
+      "totalAppointmentsSubLabel": "সকল অ্যাপয়েন্টমেন্ট",
+      "todaysAppointments": "আজকের অ্যাপয়েন্টমেন্ট",
+      "todaysAppointmentsSubLabel": "আজ নির্ধারিত",
+      "totalMedicines": "মোট ওষুধ",
+      "totalMedicinesSubLabel": "সকল ওষুধ"
+    }
+  },
+  "sidebar": {
+    "userProfilePicture": "ব্যবহারকারীর প্রোফাইল ছবি",
+    "defaultUserName": "ব্যবহারকারী",
+    "signOut": "সাইন আউট"
+  },
+  "footer": {
+    "allRightsReserved": "সর্বস্বত্ব সংরক্ষিত।",
+    "privacy": "গোপনীয়তা",
+    "terms": "শর্তাবলী",
+    "support": "সহায়তা"
+  },
+  "breadcrumbs": {},
+  "notification": {
+    "ariaLabel": "বিজ্ঞপ্তি"
+  },
+  "loader": {},
+  "errorState": {
+    "failedToLoad": "{title} লোড করতে ব্যর্থ হয়েছে",
+    "fetchErrorDescription": "{title} আনতে গিয়ে একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "retry": "আবার চেষ্টা করুন",
+    "applicationError": "অ্যাপ্লিকেশন ত্রুটি",
+    "somethingWentWrong": "কিছু একটা ভুল হয়েছে",
+    "unexpectedProblemDescription": "আপনার অনুরোধ প্রক্রিয়া করার সময় একটি অপ্রত্যাশিত সমস্যা হয়েছে। আমাদের টিমকে জানানো হয়েছে এবং তারা সমস্যাটি সমাধানে কাজ করছে।",
+    "tryAgain": "আবার চেষ্টা করুন",
+    "goToDashboard": "ড্যাশবোর্ডে যান",
+    "forceSignOut": "জোরপূর্বক সাইন আউট",
+    "needHelp": "সাহায্য দরকার?",
+    "contactSupportDescription": "সমস্যাটি চলতে থাকলে, সহায়তা কেন্দ্রে যোগাযোগ করুন এবং ত্রুটি ঘটার সময় ও আপনি কী করছিলেন তা উল্লেখ করুন।",
+    "debugInformation": "ডিবাগ তথ্য",
+    "pageNotFound": "এই পৃষ্ঠাটি পাওয়া যায়নি",
+    "pageNotFoundDescription": "আপনি যে পৃষ্ঠাটি খুঁজছেন তা সরানো, মুছে ফেলা বা কখনো তৈরি করা হয়নি হতে পারে। চলুন আপনাকে সঠিক পথে ফিরিয়ে নিয়ে যাই।",
+    "backToDashboard": "ড্যাশবোর্ডে ফিরুন",
+    "goBack": "ফিরে যান",
+    "lostInMapDescription": "পথ হারিয়ে ফেলেছেন? ড্যাশবোর্ড থেকে নেভিগেট করার চেষ্টা করুন অথবা সমস্যা থেকে গেলে সহায়তা কেন্দ্রে যোগাযোগ করুন।"
+  },
+  "underDevelopment": {
+    "comingSoon": "শীঘ্রই আসছে",
+    "heading": "এই ফিচারটি এখনো উন্নয়নাধীন",
+    "description": "আমরা আপনার জন্য এই ফিচারটি নিয়ে আসতে কঠোর পরিশ্রম করছি। এটি বর্তমানে উন্নয়নাধীন এবং শীঘ্রই উপলব্ধ হবে।",
+    "developmentInProgress": "উন্নয়ন কাজ চলছে",
+    "comingSoonShort": "শীঘ্রই আসছে",
+    "thankYou": "আপনার ধৈর্যের জন্য ধন্যবাদ"
+  },
+  "medicines": {
+    "breadcrumbs": {
+      "dashboard": "ড্যাশবোর্ড",
+      "medicines": "ওষুধসমূহ",
+      "medicineDetails": "ওষুধের বিস্তারিত"
+    },
+    "list": {
+      "title": "ওষুধসমূহ",
+      "subtitle": "আপনার ইনভেন্টরিতে থাকা সকল ওষুধ পরিচালনা ও দেখুন।",
+      "addMedicine": "ওষুধ যোগ করুন",
+      "searchPlaceholder": "নাম, প্রস্তুতকারক, ব্যাচ নম্বর দিয়ে খুঁজুন...",
+      "expirationDate": "মেয়াদ উত্তীর্ণের তারিখ",
+      "clearFilters": "ফিল্টার মুছুন",
+      "errorTitle": "ওষুধ লোড করতে ব্যর্থ হয়েছে",
+      "errorDescription": "ওষুধের তালিকা লোড করার সময় কিছু একটা সমস্যা হয়েছে।",
+      "noMatchingTitle": "কোনো মিলযুক্ত ওষুধ নেই",
+      "noMedicinesTitle": "এখনো কোনো ওষুধ নেই",
+      "noMatchingDescription": "আপনার খোঁজ বা ফিল্টার পরিবর্তন করে দেখুন।",
+      "noMedicinesDescription": "ইনভেন্টরিতে ওষুধ যোগ করা হলে তা এখানে দেখা যাবে।",
+      "notSpecified": "উল্লেখ করা হয়নি",
+      "power": "শক্তি:",
+      "manufacturer": "প্রস্তুতকারক:",
+      "quantity": "পরিমাণ",
+      "units": "ইউনিট",
+      "unitPrice": "একক মূল্য",
+      "batchNumber": "ব্যাচ নম্বর",
+      "expirationDateLabel": "মেয়াদ উত্তীর্ণের তারিখ",
+      "file": "ফাইল",
+      "files": "ফাইলসমূহ",
+      "showingResults": "{total} টি ওষুধের মধ্যে {from} থেকে {to} পর্যন্ত দেখানো হচ্ছে"
+    },
+    "dialogs": {
+      "addMedicine": {
+        "title": "ওষুধ যোগ করুন",
+        "description": "ইনভেন্টরিতে যোগ করার জন্য নতুন ওষুধের বিবরণ পূরণ করুন।",
+        "name": "নাম",
+        "namePlaceholder": "যেমন, Montair",
+        "power": "শক্তি",
+        "powerPlaceholder": "যেমন, ৩০",
+        "manufacturer": "প্রস্তুতকারক",
+        "manufacturerPlaceholder": "যেমন, Boiron",
+        "batchNumber": "ব্যাচ নম্বর",
+        "batchNumberPlaceholder": "যেমন, ARN-2026-001",
+        "totalQuantity": "মোট পরিমাণ",
+        "totalQuantityPlaceholder": "যেমন, ১০০",
+        "unitPrice": "একক মূল্য({currency})",
+        "unitPricePlaceholder": "যেমন, ২৫.৫০",
+        "expirationDate": "মেয়াদ উত্তীর্ণের তারিখ",
+        "description_field": "বিবরণ",
+        "descriptionPlaceholder": "যেমন, ক্ষত ও পেশির ব্যথার জন্য ব্যবহৃত হয়।",
+        "files": "ফাইলসমূহ",
+        "clearAll": "সব মুছুন",
+        "uploadPrompt": "ছবি আপলোড করতে ক্লিক করুন",
+        "submit": "ওষুধ যোগ করুন",
+        "successToast": "ওষুধ সফলভাবে যোগ করা হয়েছে।",
+        "errorToast": "ওষুধ যোগ করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করে আবার চেষ্টা করুন।"
+      },
+      "deleteMedicine": {
+        "title": "{medicineName} মুছে ফেলবেন?",
+        "description": "এই কাজটি স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না।",
+        "willTitle": "এই ওষুধটি মুছে ফেললে যা হবে:",
+        "willRemoveRecord": "ওষুধের রেকর্ড স্থায়ীভাবে মুছে যাবে",
+        "willRemoveFiles": "সংশ্লিষ্ট ফাইল ও তথ্য মুছে যাবে",
+        "willCannotUndo": "এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না",
+        "deleting": "মুছে ফেলা হচ্ছে...",
+        "confirmDelete": "হ্যাঁ, ওষুধ মুছে ফেলুন",
+        "successToast": "ওষুধ সফলভাবে মুছে ফেলা হয়েছে",
+        "errorToast": "ওষুধ মুছতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+      },
+      "editDescription": {
+        "title": "বিবরণ সম্পাদনা করুন",
+        "description": "ওষুধের বিবরণ হালনাগাদ করুন।",
+        "descriptionLabel": "বিবরণ",
+        "descriptionPlaceholder": "ওষুধের বিবরণ লিখুন",
+        "successToast": "ওষুধের বিবরণ সফলভাবে হালনাগাদ করা হয়েছে",
+        "genericError": "ওষুধের বিবরণ হালনাগাদ করার সময় কিছু একটা সমস্যা হয়েছে।",
+        "errorToast": "ওষুধের বিবরণ হালনাগাদ করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+        "saving": "সংরক্ষণ করা হচ্ছে...",
+        "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
+      },
+      "editFiles": {
+        "title": "ওষুধের ফাইল সম্পাদনা করুন",
+        "description": "এই ওষুধের ফাইলসমূহ পরিচালনা ও আপলোড করুন।",
+        "existingFiles": "বিদ্যমান ফাইলসমূহ",
+        "uploadFiles": "ফাইল আপলোড করুন",
+        "chooseFiles": "ফাইল নির্বাচন করুন",
+        "selectedFiles": "নির্বাচিত ফাইল ({count})",
+        "removeSuccessToast": "ফাইল সফলভাবে সরানো হয়েছে",
+        "removeErrorToast": "ফাইল সরাতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+        "uploadSuccessToast": "ফাইল সফলভাবে আপলোড করা হয়েছে",
+        "uploadErrorToast": "ফাইল আপলোড করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+        "upload": "আপলোড করুন"
+      },
+      "editInventory": {
+        "title": "ইনভেন্টরি সম্পাদনা করুন",
+        "description": "ওষুধের ইনভেন্টরি বিবরণ হালনাগাদ করুন।",
+        "totalQuantity": "মোট পরিমাণ",
+        "unitPrice": "একক মূল্য",
+        "expirationDate": "মেয়াদ উত্তীর্ণের তারিখ",
+        "successToast": "ইনভেন্টরি সফলভাবে হালনাগাদ করা হয়েছে",
+        "genericError": "ইনভেন্টরি হালনাগাদ করার সময় কিছু একটা সমস্যা হয়েছে।",
+        "errorToast": "ইনভেন্টরি হালনাগাদ করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+        "saving": "সংরক্ষণ করা হচ্ছে...",
+        "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
+      },
+      "editOverview": {
+        "title": "ওষুধ সম্পাদনা করুন",
+        "description": "ওষুধের বিবরণ হালনাগাদ করুন।",
+        "name": "নাম",
+        "power": "শক্তি",
+        "manufacturer": "প্রস্তুতকারক",
+        "batchNumber": "ব্যাচ নম্বর",
+        "successToast": "ওষুধ সফলভাবে হালনাগাদ করা হয়েছে",
+        "genericError": "ওষুধ হালনাগাদ করার সময় কিছু একটা সমস্যা হয়েছে।",
+        "errorToast": "ওষুধ হালনাগাদ করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+        "saving": "সংরক্ষণ করা হচ্ছে...",
+        "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
+      }
+    },
+    "details": {
+      "loadError": "ওষুধের বিস্তারিত তথ্য লোড করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+      "deleteCard": {
+        "warning": "এটি স্থায়ীভাবে {medicineName} এবং এর সকল তথ্য মুছে ফেলবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।",
+        "deleteButton": "ওষুধ মুছে ফেলুন"
+      },
+      "descriptionCard": {
+        "title": "বিবরণ",
+        "noDescription": "কোনো বিবরণ দেওয়া হয়নি।"
+      },
+      "filesCard": {
+        "title": "ওষুধের ছবি",
+        "noFiles": "কোনো ফাইল আপলোড করা হয়নি।",
+        "file": "ফাইল",
+        "closePreview": "প্রিভিউ বন্ধ করুন"
+      },
+      "inventoryCard": {
+        "title": "ইনভেন্টরি",
+        "totalQuantity": "মোট পরিমাণ",
+        "unitPrice": "একক মূল্য",
+        "notSpecified": "উল্লেখ করা হয়নি"
+      },
+      "overviewCard": {
+        "power": "শক্তি:",
+        "notSpecified": "উল্লেখ করা হয়নি",
+        "manufacturer": "প্রস্তুতকারক",
+        "batchNumber": "ব্যাচ নম্বর"
+      }
+    }
+  },
+  "organizations": {
+    "list": {
+      "title": "প্রতিষ্ঠানসমূহ",
+      "subtitle": "প্ল্যাটফর্মের সকল প্রতিষ্ঠান পরিচালনা ও দেখুন।",
+      "addOrganization": "প্রতিষ্ঠান যোগ করুন",
+      "emptyTitle": "এখনো কোনো প্রতিষ্ঠান নেই",
+      "emptyDescription": "কেউ যোগ দিলে বা তৈরি করলে প্রতিষ্ঠান এখানে দেখা যাবে।",
+      "notProvided": "প্রদান করা হয়নি",
+      "joinedPrefix": "যোগদান করেছেন",
+      "showingRange": "{total} টি প্রতিষ্ঠানের মধ্যে {from} থেকে {to} দেখানো হচ্ছে"
+    },
+    "ownerCard": {
+      "owner": "মালিক",
+      "email": "ইমেইল",
+      "phone": "ফোন",
+      "bloodGroup": "রক্তের গ্রুপ",
+      "nid": "এনআইডি",
+      "gender": "লিঙ্গ",
+      "dateOfBirth": "জন্ম তারিখ"
+    },
+    "socialCard": {
+      "title": "সামাজিক যোগাযোগ মাধ্যম লিংক"
+    },
+    "detail": {
+      "breadcrumb": "প্রতিষ্ঠানের বিস্তারিত",
+      "errorTitle": "প্রতিষ্ঠান লোড করতে ব্যর্থ হয়েছে",
+      "updateOrganization": "প্রতিষ্ঠান হালনাগাদ করুন",
+      "aboutCard": {
+        "title": "সম্পর্কে",
+        "email": "ইমেইল",
+        "phone": "ফোন",
+        "website": "ওয়েবসাইট",
+        "address": "ঠিকানা",
+        "notProvided": "প্রদান করা হয়নি",
+        "noDescription": "কোনো বিবরণ দেওয়া হয়নি।"
+      }
+    },
+    "deleteCard": {
+      "warningPrefix": "এটি স্থায়ীভাবে সরিয়ে দেবে",
+      "warningSuffix": "এবং এর সকল তথ্য। এটি আর ফিরিয়ে আনা যাবে না।"
+    },
+    "dialogs": {
+      "tabs": {
+        "organization": "প্রতিষ্ঠান",
+        "owner": "মালিক",
+        "socialLinks": "সামাজিক লিংক"
+      },
+      "fields": {
+        "organizationName": "প্রতিষ্ঠানের নাম",
+        "organizationType": "প্রতিষ্ঠানের ধরন",
+        "subdomain": "সাবডোমেইন",
+        "description": "বিবরণ",
+        "address": "ঠিকানা",
+        "website": "ওয়েবসাইট",
+        "status": "অবস্থা",
+        "firstName": "নামের প্রথম অংশ",
+        "lastName": "নামের শেষ অংশ",
+        "email": "ইমেইল",
+        "phone": "ফোন",
+        "gender": "লিঙ্গ",
+        "dateOfBirth": "জন্ম তারিখ",
+        "nid": "এনআইডি",
+        "bloodGroup": "রক্তের গ্রুপ",
+        "facebook": "ফেসবুক",
+        "twitter": "টুইটার / এক্স",
+        "linkedin": "লিংকডইন",
+        "youtube": "ইউটিউব"
+      },
+      "placeholders": {
+        "organizationEmail": "organization@example.com",
+        "subdomain": "যেমন: acme",
+        "description": "এই প্রতিষ্ঠান সম্পর্কে সংক্ষেপে লিখুন",
+        "address": "যেমন: ঢাকা, বাংলাদেশ",
+        "website": "https://example.com",
+        "selectType": "প্রতিষ্ঠানের ধরন নির্বাচন করুন",
+        "selectStatus": "অবস্থা নির্বাচন করুন",
+        "firstName": "নামের প্রথম অংশ",
+        "lastName": "নামের শেষ অংশ",
+        "userEmail": "name@example.com",
+        "nid": "এনআইডি নম্বর",
+        "selectGender": "লিঙ্গ নির্বাচন করুন",
+        "selectBloodGroup": "রক্তের গ্রুপ নির্বাচন করুন"
+      },
+      "validation": {
+        "orgNameRequired": "প্রতিষ্ঠানের নাম আবশ্যক।",
+        "orgTypeRequired": "প্রতিষ্ঠানের ধরন আবশ্যক।",
+        "firstNameRequired": "নামের প্রথম অংশ আবশ্যক।",
+        "lastNameRequired": "নামের শেষ অংশ আবশ্যক।",
+        "emailRequired": "ইমেইল আবশ্যক।",
+        "emailInvalid": "একটি সঠিক ইমেইল ঠিকানা দিন।",
+        "phoneRequired": "ফোন নম্বর আবশ্যক।",
+        "phoneInvalid": "একটি সঠিক ফোন নম্বর দিন।",
+        "genderRequired": "লিঙ্গ আবশ্যক।",
+        "genericSubmitError": "কিছু একটা ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।"
+      },
+      "addOrganization": {
+        "checking": "যাচাই করা হচ্ছে...",
+        "adding": "যোগ করা হচ্ছে...",
+        "submit": "প্রতিষ্ঠান যোগ করুন"
+      },
+      "updateOrganization": {
+        "title": "প্রতিষ্ঠান হালনাগাদ করুন",
+        "descriptionPrefix": "এর বিবরণ হালনাগাদ করুন",
+        "descriptionSuffix": "।",
+        "fallbackName": "এই প্রতিষ্ঠান",
+        "saving": "সংরক্ষণ করা হচ্ছে...",
+        "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
+      },
+      "deleteOrganization": {
+        "trigger": "প্রতিষ্ঠান মুছুন",
+        "title": "{name} মুছবেন?",
+        "description": "এই কাজটি স্থায়ী এবং ফিরিয়ে আনা যাবে না।",
+        "consequencesTitle": "এই প্রতিষ্ঠান মুছে ফেললে যা ঘটবে:",
+        "consequence1": "প্রতিষ্ঠানের রেকর্ড স্থায়ীভাবে সরিয়ে ফেলা হবে",
+        "consequence2": "সংশ্লিষ্ট সকল তথ্য ও ফাইল সরিয়ে ফেলা হবে",
+        "consequence3": "এই কাজটি ফিরিয়ে আনা যাবে না",
+        "confirmPrefix": "নিশ্চিত করতে লিখুন",
+        "confirmSuffix": "",
+        "deleting": "মুছে ফেলা হচ্ছে...",
+        "confirmButton": "হ্যাঁ, প্রতিষ্ঠান মুছুন"
+      }
+    }
+  },
+  "patients": {
+    "breadcrumbs": {
+      "patientDetails": "রোগীর বিবরণ"
+    },
+    "list": {
+      "title": "রোগী",
+      "subtitle": "আপনার প্রতিষ্ঠানের সকল রোগীর রেকর্ড পরিচালনা ও দেখুন।",
+      "addPatient": "রোগী যোগ করুন",
+      "searchPlaceholder": "নাম, সিরিয়াল নম্বর, ফোন দিয়ে খুঁজুন...",
+      "allStatus": "সকল অবস্থা",
+      "statusPlaceholder": "অবস্থা",
+      "allMiasm": "সকল মায়াজম",
+      "miasmPlaceholder": "মায়াজমের ধরন",
+      "clearFilters": "ফিল্টার মুছুন",
+      "failedToLoad": "রোগীদের তথ্য লোড করতে ব্যর্থ হয়েছে",
+      "failedToLoadDescription": "রোগীর তালিকা লোড করার সময় কিছু ভুল হয়েছে।",
+      "noMatchingPatients": "কোনো মিলে যাওয়া রোগী নেই",
+      "noPatientsYet": "এখনো কোনো রোগী নেই",
+      "adjustFilters": "আপনার অনুসন্ধান বা ফিল্টার সমন্বয় করে দেখুন।",
+      "emptyDescription": "সিস্টেমে যোগ করা হলে রোগীরা এখানে প্রদর্শিত হবে।",
+      "avatarAlt": "{name}-এর ছবি",
+      "oldSerialNumberShort": "পুরাতন #{number}",
+      "bloodGroupLabel": "রক্তের গ্রুপ: {value}",
+      "ageGenderLabel": "বয়স / লিঙ্গ",
+      "ageGenderValue": "{age} বছর • {gender}",
+      "miasmLabel": "মায়াজম",
+      "notSpecified": "উল্লেখ করা হয়নি",
+      "addressNotProvided": "ঠিকানা প্রদান করা হয়নি",
+      "fileCountSingular": "{count}টি ফাইল",
+      "fileCountPlural": "{count}টি ফাইল",
+      "showingRange": "{total} জন রোগীর মধ্যে {from} থেকে {to} পর্যন্ত দেখানো হচ্ছে",
+      "notAvailable": "প্রযোজ্য নয়"
+    },
+    "dialogs": {
+      "addPatient": {
+        "title": "রোগী যোগ করুন",
+        "description": "নিচে রোগীর বিবরণ প্রবেশ করান।",
+        "personalInformationSection": "ব্যক্তিগত তথ্য",
+        "contactInformationSection": "যোগাযোগের তথ্য",
+        "medicalInformationSection": "চিকিৎসা সংক্রান্ত তথ্য",
+        "firstName": "প্রথম নাম",
+        "firstNamePlaceholder": "প্রথম নাম",
+        "lastName": "শেষ নাম",
+        "lastNamePlaceholder": "শেষ নাম",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "emailPlaceholder": "name@example.com",
+        "gender": "লিঙ্গ",
+        "genderPlaceholder": "লিঙ্গ নির্বাচন করুন",
+        "age": "বয়স",
+        "agePlaceholder": "বয়স",
+        "oldSerialNumber": "পুরাতন সিরিয়াল নম্বর",
+        "oldSerialNumberPlaceholder": "পুরাতন সিরিয়াল নম্বর",
+        "address": "ঠিকানা",
+        "addressPlaceholder": "যেমন: ঢাকা, বাংলাদেশ",
+        "bloodGroup": "রক্তের গ্রুপ",
+        "bloodGroupPlaceholder": "রক্তের গ্রুপ নির্বাচন করুন",
+        "miasmType": "মায়াজমের ধরন",
+        "miasmTypePlaceholder": "মায়াজমের ধরন নির্বাচন করুন",
+        "caseHistory": "কেস হিস্ট্রি",
+        "caseHistoryPlaceholder": "কেস হিস্ট্রি লিখুন",
+        "habits": "অভ্যাস",
+        "habitsPlaceholder": "রোগীর অভ্যাস লিখুন",
+        "adding": "যোগ করা হচ্ছে...",
+        "errors": {
+          "firstNameRequired": "প্রথম নাম আবশ্যক।",
+          "lastNameRequired": "শেষ নাম আবশ্যক।",
+          "phoneRequired": "ফোন নম্বর আবশ্যক।",
+          "invalidEmail": "একটি সঠিক ইমেইল ঠিকানা লিখুন।",
+          "genericError": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।"
+        }
+      },
+      "deletePatient": {
+        "title": "{name}-কে মুছে ফেলবেন?",
+        "description": "এই কাজটি স্থায়ী এবং ফিরিয়ে আনা যাবে না।",
+        "warningTitle": "এই রোগীকে মুছে ফেললে যা ঘটবে:",
+        "warningItem1": "রোগীর রেকর্ড স্থায়ীভাবে মুছে যাবে",
+        "warningItem2": "সংশ্লিষ্ট রোগীর তথ্য মুছে যাবে",
+        "warningItem3": "এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না",
+        "deleting": "মুছে ফেলা হচ্ছে...",
+        "confirmDelete": "হ্যাঁ, রোগী মুছে ফেলুন",
+        "successToast": "রোগী সফলভাবে মুছে ফেলা হয়েছে",
+        "errorToast": "রোগী মুছে ফেলতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+      },
+      "editMedicalHistory": {
+        "title": "চিকিৎসার ইতিহাস সম্পাদনা করুন",
+        "description": "রোগীর কেস হিস্ট্রি আপডেট করুন।",
+        "caseHistory": "কেস হিস্ট্রি",
+        "successToast": "চিকিৎসার ইতিহাস সফলভাবে আপডেট হয়েছে",
+        "errorToast": "চিকিৎসার ইতিহাস আপডেট করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।"
+      },
+      "editContactDetails": {
+        "title": "রোগীর যোগাযোগের তথ্য সম্পাদনা করুন",
+        "description": "রোগীর যোগাযোগের তথ্য আপডেট করুন।",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "address": "ঠিকানা",
+        "successToast": "রোগী সফলভাবে সম্পাদনা হয়েছে",
+        "errorToast": "রোগী সম্পাদনা করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।"
+      },
+      "editFiles": {
+        "title": "রোগীর ফাইল সম্পাদনা করুন",
+        "description": "এই রোগীর জন্য ফাইল পরিচালনা ও আপলোড করুন।",
+        "existingFiles": "বিদ্যমান ফাইল",
+        "uploadFiles": "ফাইল আপলোড করুন",
+        "chooseFiles": "ফাইল নির্বাচন করুন",
+        "selectedFiles": "নির্বাচিত ফাইল ({count})",
+        "upload": "আপলোড",
+        "fileRemovedToast": "ফাইল মুছে ফেলা হয়েছে",
+        "fileRemoveErrorToast": "ফাইল মুছতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+        "filesUploadedToast": "ফাইল সফলভাবে আপলোড হয়েছে",
+        "filesUploadErrorToast": "ফাইল আপলোড করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+      },
+      "editIdentity": {
+        "title": "রোগীর পরিচয় সম্পাদনা করুন",
+        "description": "রোগীর নাম ও প্রোফাইল ছবি সম্পাদনা করুন।",
+        "changePhoto": "ছবি পরিবর্তন করুন",
+        "firstName": "প্রথম নাম",
+        "lastName": "শেষ নাম",
+        "successToast": "রোগী সফলভাবে সম্পাদনা হয়েছে",
+        "errorToast": "রোগী সম্পাদনা করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।"
+      },
+      "editMedicalInfo": {
+        "title": "রোগীর চিকিৎসা তথ্য সম্পাদনা করুন",
+        "description": "রোগীর মায়াজমের ধরন ও অভ্যাস আপডেট করুন।",
+        "miasmType": "মায়াজমের ধরন",
+        "miasmTypePlaceholder": "মায়াজমের ধরন নির্বাচন করুন",
+        "habits": "অভ্যাস",
+        "successToast": "চিকিৎসা তথ্য সফলভাবে আপডেট হয়েছে",
+        "errorToast": "চিকিৎসা তথ্য আপডেট করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।"
+      },
+      "editPersonalInfo": {
+        "title": "রোগীর পরিচয় সম্পাদনা করুন",
+        "description": "রোগীর নাম ও প্রোফাইল ছবি সম্পাদনা করুন।",
+        "age": "বয়স",
+        "gender": "লিঙ্গ",
+        "genderPlaceholder": "একটি লিঙ্গ নির্বাচন করুন",
+        "bloodGroup": "রক্তের গ্রুপ",
+        "bloodGroupPlaceholder": "রক্তের গ্রুপ নির্বাচন করুন",
+        "successToast": "রোগী সফলভাবে সম্পাদনা হয়েছে",
+        "errorToast": "রোগী সম্পাদনা করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।"
+      },
+      "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
+    },
+    "detail": {
+      "failedToLoad": "রোগীর তথ্য লোড করতে ব্যর্থ হয়েছে",
+      "failedToLoadDescription": "এই রোগীর বিবরণ লোড করার সময় কিছু ভুল হয়েছে।",
+      "caseHistoryCard": {
+        "title": "কেস হিস্ট্রি",
+        "empty": "কোনো কেস হিস্ট্রি রেকর্ড করা হয়নি।"
+      },
+      "contactCard": {
+        "title": "যোগাযোগের তথ্য",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "address": "ঠিকানা",
+        "notProvided": "প্রদান করা হয়নি"
+      },
+      "deleteCard": {
+        "description": "এটি স্থায়ীভাবে {name} এবং এর সকল তথ্য মুছে ফেলবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।",
+        "deletePatient": "রোগী মুছে ফেলুন"
+      },
+      "filesCard": {
+        "title": "ফাইল ({count})",
+        "empty": "কোনো ফাইল আপলোড করা হয়নি।",
+        "removedSuccessToast": "ফাইল সফলভাবে মুছে ফেলা হয়েছে!",
+        "removeErrorToast": "ফাইল মুছতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+      },
+      "identityCard": {
+        "serialNo": "সিরিয়াল নং: {number}",
+        "oldSerial": "পুরাতন সিরিয়াল: {number}",
+        "created": "তৈরি হয়েছে: {date}",
+        "updated": "আপডেট হয়েছে: {date}"
+      },
+      "medicalInfoCard": {
+        "title": "চিকিৎসা সংক্রান্ত তথ্য",
+        "miasmType": "মায়াজমের ধরন",
+        "notSpecified": "উল্লেখ করা হয়নি",
+        "habits": "অভ্যাস",
+        "notAvailable": "প্রযোজ্য নয়"
+      },
+      "personalInfoCard": {
+        "title": "ব্যক্তিগত তথ্য",
+        "ageGenderLabel": "বয়স / লিঙ্গ",
+        "ageGenderValue": "{age} বছর • {gender}",
+        "bloodGroup": "রক্তের গ্রুপ",
+        "notAvailable": "প্রযোজ্য নয়"
+      }
+    }
+  },
+  "profileSettings": {
+    "pageTitle": "প্রোফাইল সেটিংস",
+    "pageDescription": "আপনার ব্যক্তিগত তথ্য, যোগাযোগের বিবরণ এবং অ্যাকাউন্ট নিরাপত্তা পরিচালনা করুন।",
+    "loadError": "প্রোফাইল তথ্য লোড করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+    "updateSuccess": "প্রোফাইল সফলভাবে আপডেট হয়েছে",
+    "updateError": "প্রোফাইল আপডেট করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।",
+    "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
+    "personalInfo": {
+      "title": "ব্যক্তিগত তথ্য ও পরিচয়",
+      "description": "প্ল্যাটফর্ম জুড়ে আপনার নাম যেভাবে প্রদর্শিত হবে।",
+      "firstName": "নামের প্রথম অংশ",
+      "lastName": "নামের শেষ অংশ",
+      "phone": "ফোন",
+      "email": "ইমেইল",
+      "gender": "লিঙ্গ",
+      "selectGender": "একটি লিঙ্গ নির্বাচন করুন",
+      "bloodGroup": "রক্তের গ্রুপ",
+      "selectBloodGroup": "রক্তের গ্রুপ নির্বাচন করুন",
+      "dateOfBirth": "জন্ম তারিখ",
+      "nidNumber": "এনআইডি নম্বর"
+    },
+    "overview": {
+      "photoUpdateSuccess": "প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে",
+      "photoUpdateError": "প্রোফাইল ছবি আপডেট করতে ব্যর্থ হয়েছে",
+      "owner": "মালিক",
+      "admin": "অ্যাডমিন"
+    },
+    "security": {
+      "title": "নিরাপত্তা",
+      "description": "নিয়মিত পাসওয়ার্ড পরিবর্তন করে আপনার অ্যাকাউন্ট নিরাপদ রাখুন। অক্ষর, সংখ্যা এবং প্রতীকের সংমিশ্রণ ব্যবহার করুন এবং অন্য সাইটের পাসওয়ার্ড পুনরায় ব্যবহার করা থেকে বিরত থাকুন।",
+      "resetPassword": "পাসওয়ার্ড রিসেট করুন"
+    },
+    "resetPassword": {
+      "title": "পাসওয়ার্ড রিসেট করুন",
+      "description": "আপনার বর্তমান পাসওয়ার্ড লিখুন এবং একটি নতুন পাসওয়ার্ড নির্বাচন করুন।",
+      "currentPassword": "বর্তমান পাসওয়ার্ড",
+      "newPassword": "নতুন পাসওয়ার্ড",
+      "confirmNewPassword": "নতুন পাসওয়ার্ড নিশ্চিত করুন",
+      "showPassword": "পাসওয়ার্ড দেখান",
+      "hidePassword": "পাসওয়ার্ড লুকান",
+      "passwordMismatch": "পাসওয়ার্ড মিলছে না",
+      "updateSuccess": "পাসওয়ার্ড সফলভাবে আপডেট হয়েছে",
+      "updateError": "পাসওয়ার্ড আপডেট করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।",
+      "cancel": "বাতিল করুন",
+      "saveChanges": "পরিবর্তন সংরক্ষণ করুন"
+    }
+  },
+  "authPages": {
+    "accessDenied": {
+      "title": "প্রবেশাধিকার প্রত্যাখ্যাত",
+      "description": "আপনার অ্যাকাউন্টটি কোনো প্রতিষ্ঠানের সাথে যুক্ত নয়, অথবা এই পৃষ্ঠাটি দেখার অনুমতি নেই।",
+      "wrongAccount": "ভুল অ্যাকাউন্টে সাইন ইন করেছেন, নাকি মনে করছেন এটি একটি ভুল?",
+      "signOutButton": "সাইন আউট করে অন্য অ্যাকাউন্ট ব্যবহার করুন"
+    },
+    "setPassword": {
+      "eyebrow": "পাসওয়ার্ড সেট করুন",
+      "heading": "আপনার অ্যাকাউন্ট সুরক্ষিত করুন",
+      "subheading": "চালিয়ে যাওয়ার আগে অনুগ্রহ করে একটি পাসওয়ার্ড সেট করুন।",
+      "newPassword": "নতুন পাসওয়ার্ড",
+      "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
+      "enterPrefix": "লিখুন",
+      "showPassword": "পাসওয়ার্ড দেখান",
+      "hidePassword": "পাসওয়ার্ড লুকান",
+      "passwordMismatch": "পাসওয়ার্ড মিলছে না",
+      "setSuccess": "পাসওয়ার্ড সফলভাবে সেট করা হয়েছে।",
+      "setError": "পাসওয়ার্ড সেট করতে ব্যর্থ হয়েছে। ফর্মটি পরীক্ষা করুন।",
+      "submitButton": "পাসওয়ার্ড সেট করুন",
+      "signOutInstead": "পরিবর্তে সাইন আউট করুন"
+    },
+    "signIn": {
+      "eyebrow": "সাইন ইন",
+      "heading": "আপনার অ্যাকাউন্ট অ্যাক্সেস করুন",
+      "phoneNumber": "ফোন নম্বর",
+      "countryCode": "(+৮৮) বিডি",
+      "phonePlaceholder": "ফোন নম্বর লিখুন",
+      "password": "পাসওয়ার্ড",
+      "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+      "passwordPlaceholder": "আপনার পাসওয়ার্ড লিখুন",
+      "showPassword": "পাসওয়ার্ড দেখান",
+      "hidePassword": "পাসওয়ার্ড লুকান",
+      "submitButton": "সাইন ইন",
+      "subdomainForcedSignout": "সাবডোমেইন পরিবর্তনের কারণে জোরপূর্বক সাইন আউট করা হয়েছে",
+      "invalidCredentials": "ফোন নম্বর বা পাসওয়ার্ড ভুল। আবার চেষ্টা করুন।",
+      "loginSuccess": "আপনি সফলভাবে লগ ইন করেছেন।"
+    },
+    "sidePanel": {
+      "eyebrow": "আবার স্বাগতম",
+      "heading": "এক জায়গা থেকে আপনার কার্যক্রম পরিচালনা করুন।",
+      "description": "প্রতিটি গ্রাহকের যোগাযোগ, প্রতিটি অর্ডার এবং প্রতিটি আপডেট একটি কেন্দ্রীভূত কর্মক্ষেত্রে।"
+    }
+  }
+}

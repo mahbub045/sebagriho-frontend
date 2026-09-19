@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 
 import { useGetMedicineDetailsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import MedicineDeleteCard from './MedicineDeleteCard/MedicineDeleteCard';
 import MedicineDescriptionCard from './MedicineDescriptionCard/MedicineDescriptionCard';
 import MedicineDetailsSkeleton from './MedicineDetailsSkeleton/MedicineDetailsSkeleton';
@@ -12,6 +13,7 @@ import MedicineOverviewCard from './MedicineOverviewCard/MedicineOverviewCard';
 
 const MedicineDetailsContents: React.FC = () => {
   const { medicineuid } = useParams();
+  const { dict } = useTranslation();
 
   const {
     data: medicine,
@@ -27,7 +29,7 @@ const MedicineDetailsContents: React.FC = () => {
     return (
       <div className='flex h-64 items-center justify-center'>
         <p className='text-danger text-sm'>
-          Failed to load medicine details. Please try again.
+          {dict.medicines.details.loadError}
         </p>
       </div>
     );

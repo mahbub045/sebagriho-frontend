@@ -42,6 +42,7 @@ import {
 import { useCreateAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import { useGetPatientsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   AppointmentStatus,
   CreateAppointmentDialogProps,
@@ -58,6 +59,8 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { dict } = useTranslation();
+
   // Patient select state
   const [patientPopoverOpen, setPatientPopoverOpen] = useState(false);
   const [patientSearchInput, setPatientSearchInput] = useState('');
@@ -193,11 +196,11 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
           instructions: medicine.instructions || undefined,
         })),
       }).unwrap();
-      toast.success('Appointment created successfully!');
+      toast.success(dict.appointments.createDialog.createSuccess);
       handleClose();
     } catch {
       // Surface via toast/notification system — swap in your existing error handler
-      toast.error('Failed to create appointment. Please try again.');
+      toast.error(dict.appointments.createDialog.createError);
     }
   };
 
@@ -206,11 +209,11 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
       <DialogContent className='max-h-[90vh] max-w-3xl overflow-y-auto'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Create Appointment
+            {dict.appointments.createDialog.title}
           </DialogTitle>
 
           <DialogDescription>
-            Select a patient, add medicines, and record the visit details.
+            {dict.appointments.createDialog.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -218,7 +221,8 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
           {/* PATIENT SEARCH & SELECT */}
           <div className='flex flex-col gap-1.5'>
             <Label>
-              Patient <span className='text-red-500'>*</span>
+              {dict.appointments.createDialog.patientLabel}{' '}
+              <span className='text-red-500'>*</span>
             </Label>
 
             <Popover
@@ -247,7 +251,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                   </span>
                 ) : (
                   <span className='text-muted-foreground'>
-                    Search patient by name, serial number...
+                    {dict.appointments.createDialog.searchPatientPlaceholder}
                   </span>
                 )}
 
@@ -257,7 +261,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
               <PopoverContent className='w-full p-0' align='start'>
                 <Command shouldFilter={false}>
                   <CommandInput
-                    placeholder='Search patients...'
+                    placeholder={
+                      dict.appointments.createDialog.searchPatientsPlaceholder
+                    }
                     value={patientSearchInput}
                     onValueChange={setPatientSearchInput}
                     className='m-1! h-6! focus:ring-0!'
@@ -266,12 +272,14 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                   <CommandList className='max-h-70 overflow-y-auto'>
                     {isLoading && (
                       <div className='text-muted-foreground p-4 text-center text-sm'>
-                        Searching...
+                        {dict.appointments.createDialog.searching}
                       </div>
                     )}
 
                     {!isLoading && (
-                      <CommandEmpty>No patients found.</CommandEmpty>
+                      <CommandEmpty>
+                        {dict.appointments.createDialog.noPatientsFound}
+                      </CommandEmpty>
                     )}
 
                     <CommandGroup>
@@ -319,7 +327,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
           {/* MEDICINE SEARCH & MULTI-SELECT */}
           <div className='flex flex-col gap-1.5'>
-            <Label>Medicines</Label>
+            <Label>{dict.appointments.createDialog.medicinesLabel}</Label>
 
             <Popover
               open={medicinePopoverOpen}
@@ -338,10 +346,11 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                 <span className='text-muted-foreground flex items-center gap-2'>
                   <Pill className='h-4 w-4' />
                   {selectedMedicines.length > 0
-                    ? `${selectedMedicines.length} medicine${
-                        selectedMedicines.length > 1 ? 's' : ''
-                      } selected`
-                    : 'Search and add medicines...'}
+                    ? (selectedMedicines.length > 1
+                        ? dict.appointments.createDialog.medicinesSelected
+                        : dict.appointments.createDialog.medicineSelected
+                      ).replace('{count}', String(selectedMedicines.length))
+                    : dict.appointments.createDialog.searchAndAddMedicines}
                 </span>
 
                 <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
@@ -353,7 +362,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
               >
                 <Command shouldFilter={false}>
                   <CommandInput
-                    placeholder='Search medicines...'
+                    placeholder={
+                      dict.appointments.createDialog.searchMedicinesPlaceholder
+                    }
                     value={medicineSearchInput}
                     onValueChange={setMedicineSearchInput}
                     className='m-1! h-6! focus:ring-0!'
@@ -362,12 +373,14 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                   <CommandList className='max-h-70 overflow-y-auto'>
                     {isLoadingMedicines && (
                       <div className='text-muted-foreground p-4 text-center text-sm'>
-                        Searching...
+                        {dict.appointments.createDialog.searching}
                       </div>
                     )}
 
                     {!isLoadingMedicines && (
-                      <CommandEmpty>No medicines found.</CommandEmpty>
+                      <CommandEmpty>
+                        {dict.appointments.createDialog.noMedicinesFound}
+                      </CommandEmpty>
                     )}
 
                     <CommandGroup>
@@ -442,7 +455,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                     <div className='grid grid-cols-2 gap-2'>
                       <Input
                         type='text'
-                        placeholder='Dosage'
+                        placeholder={dict.appointments.createDialog.dosagePlaceholder}
                         value={medicine.dosage}
                         onChange={(event) =>
                           updateMedicineField(
@@ -455,7 +468,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
                       <Input
                         type='text'
-                        placeholder='Frequency'
+                        placeholder={
+                          dict.appointments.createDialog.frequencyPlaceholder
+                        }
                         value={medicine.frequency}
                         onChange={(event) =>
                           updateMedicineField(
@@ -471,7 +486,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                       <Input
                         type='number'
                         min={0}
-                        placeholder='Duration (days)'
+                        placeholder={
+                          dict.appointments.createDialog.durationPlaceholder
+                        }
                         value={medicine.duration}
                         onChange={(event) =>
                           updateMedicineField(
@@ -494,7 +511,11 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
                         }
                       >
                         <SelectTrigger className='w-full'>
-                          <SelectValue placeholder='Meal timing' />
+                          <SelectValue
+                            placeholder={
+                              dict.appointments.createDialog.mealTimingPlaceholder
+                            }
+                          />
                         </SelectTrigger>
 
                         <SelectContent>
@@ -509,7 +530,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
                     <Input
                       type='text'
-                      placeholder='Instructions (e.g. Take with water)'
+                      placeholder={
+                        dict.appointments.createDialog.instructionsPlaceholder
+                      }
                       value={medicine.instructions}
                       onChange={(event) =>
                         updateMedicineField(
@@ -527,7 +550,7 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
           {/* STATUS */}
           <div className='flex flex-col gap-1.5'>
-            <Label>Status</Label>
+            <Label>{dict.appointments.createDialog.statusLabel}</Label>
 
             <Select
               items={HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS}
@@ -537,7 +560,9 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
               }
             >
               <SelectTrigger className='w-full'>
-                <SelectValue placeholder='Select status' />
+                <SelectValue
+                  placeholder={dict.appointments.createDialog.statusPlaceholder}
+                />
               </SelectTrigger>
 
               <SelectContent>
@@ -552,11 +577,13 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
           {/* SYMPTOMS */}
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='symptoms'>Symptoms</Label>
+            <Label htmlFor='symptoms'>
+              {dict.appointments.createDialog.symptomsLabel}
+            </Label>
 
             <Textarea
               id='symptoms'
-              placeholder='Describe the symptoms...'
+              placeholder={dict.appointments.createDialog.symptomsPlaceholder}
               value={symptoms}
               onChange={(event) => setSymptoms(event.target.value)}
               rows={3}
@@ -566,12 +593,15 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
           {/* TREATMENT EFFECTIVENESS */}
           <div className='flex flex-col gap-1.5'>
             <Label htmlFor='treatment_effectiveness'>
-              Treatment Effectiveness
+              {dict.appointments.createDialog.treatmentEffectivenessLabel}
             </Label>
 
             <Textarea
               id='treatment_effectiveness'
-              placeholder='Notes on how prior treatment is working...'
+              placeholder={
+                dict.appointments.createDialog
+                  .treatmentEffectivenessPlaceholder
+              }
               value={treatmentEffectiveness}
               onChange={(event) =>
                 setTreatmentEffectiveness(event.target.value)
@@ -583,12 +613,12 @@ const CreateAppointmentDialog: React.FC<CreateAppointmentDialogProps> = ({
 
         <DialogFooter>
           <Button variant='outline' onClick={handleClose} disabled={isCreating}>
-            Cancel
+            {dict.common.cancel}
           </Button>
 
           <Button onClick={handleSubmit} disabled={!isFormValid || isCreating}>
             {isCreating ? <Loading className='text-white!' /> : ''}
-            Create Appointment
+            {dict.appointments.createDialog.title}
           </Button>
         </DialogFooter>
       </DialogContent>

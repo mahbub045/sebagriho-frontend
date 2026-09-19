@@ -1,4 +1,7 @@
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { DashboardSummary } from '@/types/Organization/Homeopathy/Dashboard/DashboardType';
 import {
   Activity,
@@ -19,36 +22,38 @@ interface StatCardData {
 }
 
 const StatCards: React.FC<{ summary: DashboardSummary }> = ({ summary }) => {
+  const { dict } = useTranslation();
+
   const statCards: StatCardData[] = [
     {
-      label: 'Total Patients',
+      label: dict.dashboard.statCards.totalPatients,
       value: summary.total_patients,
-      subLabel: 'All registered patients',
+      subLabel: dict.dashboard.statCards.totalPatientsSubLabel,
       icon: Users,
       accent: 'text-primary',
       iconBg: 'bg-primary/10',
     },
 
     {
-      label: 'Total Appointments',
+      label: dict.dashboard.statCards.totalAppointments,
       value: summary.total_appointments,
-      subLabel: 'All appointments',
+      subLabel: dict.dashboard.statCards.totalAppointmentsSubLabel,
       icon: CalendarDays,
       accent: 'text-secondary',
       iconBg: 'bg-secondary/10',
     },
     {
-      label: "Today's Appointments",
+      label: dict.dashboard.statCards.todaysAppointments,
       value: summary.today_appointments,
-      subLabel: 'Scheduled today',
+      subLabel: dict.dashboard.statCards.todaysAppointmentsSubLabel,
       icon: CalendarCheck,
       accent: 'text-secondary',
       iconBg: 'bg-secondary/10',
     },
     {
-      label: 'Total Medicines',
+      label: dict.dashboard.statCards.totalMedicines,
       value: summary.total_medicines,
-      subLabel: 'All medicines',
+      subLabel: dict.dashboard.statCards.totalMedicinesSubLabel,
       icon: Pill,
       accent: 'text-success',
       iconBg: 'bg-success/10',

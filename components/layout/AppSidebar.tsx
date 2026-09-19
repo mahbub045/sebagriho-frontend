@@ -35,6 +35,7 @@ import {
   SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { buildItems, type NavItem } from '@/lib/navigation';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useGetProfileInfoQuery } from '@/lib/services/endpoints/common/ProfileInfoApi';
 import { cn } from '@/lib/utils';
 import { getInitials } from '@/utils/formatters';
@@ -299,6 +300,7 @@ function MobileBottomNav({
   const MAX_TABS = 4;
   const tabItems = items.slice(0, MAX_TABS);
   const [sheetOpen, setSheetOpen] = React.useState(false);
+  const { dict } = useTranslation();
 
   return (
     <nav className='bg-background/95 supports-backdrop-blur:bg-background/80 fixed inset-x-0 bottom-0 z-50 flex h-14 items-stretch border-t pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden'>
@@ -339,7 +341,7 @@ function MobileBottomNav({
           style={{ color: getIconColor('Menu') }}
         />
         <span className='text-muted-foreground text-[10px] leading-none font-medium'>
-          Menu
+          {dict.nav.menu}
         </span>
       </button>
 
@@ -350,7 +352,7 @@ function MobileBottomNav({
               <Avatar size='lg'>
                 <AvatarImage
                   src={profileData?.profile_image ?? undefined}
-                  alt='User profile picture'
+                  alt={dict.sidebar.userProfilePicture}
                 />
                 <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
                   {getInitials(profileData?.name) ?? 'U'}
@@ -358,7 +360,7 @@ function MobileBottomNav({
               </Avatar>
               <div className='min-w-0'>
                 <p className='truncate text-sm font-semibold'>
-                  {profileData?.name ?? 'User'}
+                  {profileData?.name ?? dict.sidebar.defaultUserName}
                 </p>
                 <p className='text-muted-foreground truncate text-xs font-normal'>
                   {profileData?.phone}
@@ -380,7 +382,7 @@ function MobileBottomNav({
               className='hover:bg-accent flex items-center gap-2 rounded-lg px-3 py-2 text-sm'
             >
               <User className='size-4' />
-              Profile Settings
+              {dict.nav.profileSettings}
             </Link>
             <button
               type='button'
@@ -391,7 +393,7 @@ function MobileBottomNav({
               className='hover:bg-accent text-destructive flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm'
             >
               <LogOut className='size-4' />
-              Sign out
+              {dict.sidebar.signOut}
             </button>
           </div>
         </SheetContent>
@@ -403,10 +405,12 @@ function MobileBottomNav({
 const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { dict } = useTranslation();
 
   const navItems = buildItems(
     Boolean(session?.user.is_admin),
     session?.user.organization_type,
+    dict.nav,
   );
 
   const { data: profileData, isLoading } = useGetProfileInfoQuery(undefined);
@@ -483,7 +487,7 @@ const AppSidebar: React.FC = () => {
         <SidebarContent className='gap-1 px-2 py-2'>
           <SidebarGroup className='p-0'>
             <SidebarGroupLabel className='px-3 text-[11px] font-semibold tracking-wider uppercase'>
-              Menu
+              {dict.nav.menu}
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <NavMenu items={navItems} pathname={pathname} />
@@ -499,7 +503,7 @@ const AppSidebar: React.FC = () => {
               <Avatar size='lg'>
                 <AvatarImage
                   src={profileData?.profile_image ?? undefined}
-                  alt='User profile picture'
+                  alt={dict.sidebar.userProfilePicture}
                 />
                 <AvatarFallback className='bg-primary text-xs font-semibold text-white'>
                   {getInitials(profileData?.name) ?? 'U'}
@@ -507,7 +511,7 @@ const AppSidebar: React.FC = () => {
               </Avatar>
               <div className='min-w-0 group-data-[collapsible=icon]:hidden'>
                 <p className='truncate text-sm font-semibold'>
-                  {profileData?.name ?? 'User'}
+                  {profileData?.name ?? dict.sidebar.defaultUserName}
                 </p>
                 <p className='text-muted-foreground truncate text-xs font-normal'>
                   {profileData?.phone}
@@ -531,7 +535,7 @@ const AppSidebar: React.FC = () => {
               <Link href={getProfilePath()} passHref>
                 <DropdownMenuItem className='cursor-pointer'>
                   <User className='size-4' />
-                  Profile Settings
+                  {dict.nav.profileSettings}
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
@@ -541,7 +545,7 @@ const AppSidebar: React.FC = () => {
                 className='cursor-pointer'
               >
                 <LogOut className='size-4' />
-                Sign out
+                {dict.sidebar.signOut}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

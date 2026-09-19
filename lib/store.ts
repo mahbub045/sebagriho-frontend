@@ -1,17 +1,27 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appointmentsReducer from './features/appointments/appointmentsSlice';
 import authReducer from './features/auth/authSlice';
+import localeReducer, {
+  type LocaleState,
+} from './features/locale/localeSlice';
 import { authApi } from './services/authApi';
 import { baseApi } from './services/baseApi';
 
-export const makeStore = () => {
+// No module-level store instance is exported: Next.js App Router reuses the
+// same server process (and this module) across requests from different
+// users, so a shared store would leak one user's state (e.g. locale) into
+// another's response. `StoreProvider` calls this to create a fresh store
+// per request/session instead.
+export const makeStore = (preloadedState?: { locale: LocaleState }) => {
   return configureStore({
     reducer: {
       auth: authReducer,
       appointments: appointmentsReducer,
+      locale: localeReducer,
       [baseApi.reducerPath]: baseApi.reducer,
       [authApi.reducerPath]: authApi.reducer,
     },
+    preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
@@ -28,8 +38,6 @@ export const makeStore = () => {
       }).concat(baseApi.middleware, authApi.middleware),
   });
 };
-
-export const store = makeStore();
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore['getState']>;

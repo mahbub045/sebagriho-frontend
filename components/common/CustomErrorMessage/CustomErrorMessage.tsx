@@ -1,4 +1,7 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { AlertCircle, RefreshCcw } from 'lucide-react';
 
 interface CustomErrorMessageProps {
@@ -6,6 +9,8 @@ interface CustomErrorMessageProps {
 }
 
 const CustomErrorMessage: React.FC<CustomErrorMessageProps> = ({ title }) => {
+  const { dict } = useTranslation();
+
   return (
     <div className='border-danger flex flex-col items-center justify-center gap-3 rounded-md border border-dashed py-12 text-center'>
       <div className='bg-danger/10 flex h-12 w-12 items-center justify-center rounded-full'>
@@ -13,10 +18,10 @@ const CustomErrorMessage: React.FC<CustomErrorMessageProps> = ({ title }) => {
       </div>
       <div className='space-y-1'>
         <p className='text-danger/80 text-sm font-medium'>
-          Failed to load {title}
+          {dict.errorState.failedToLoad.replace('{title}', title)}
         </p>
         <p className='text-muted-foreground text-sm'>
-          Something went wrong while fetching the {title}. Please try again.
+          {dict.errorState.fetchErrorDescription.replace('{title}', title)}
         </p>
       </div>
       <Button
@@ -26,7 +31,7 @@ const CustomErrorMessage: React.FC<CustomErrorMessageProps> = ({ title }) => {
         className='mt-1'
       >
         <RefreshCcw />
-        Retry
+        {dict.errorState.retry}
       </Button>
     </div>
   );

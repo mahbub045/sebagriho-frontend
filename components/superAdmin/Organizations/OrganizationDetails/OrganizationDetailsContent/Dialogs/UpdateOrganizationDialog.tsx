@@ -29,6 +29,7 @@ import {
 } from '@/data/common/ChoiceFields';
 import { INITIAL_FORM } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useUpdateOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   OrganizationDetail,
   OrganizationOwner,
@@ -144,6 +145,7 @@ const FieldError = ({ message }: { message?: string }) =>
 const UpdateOrganizationDialogContent: React.FC<
   UpdateOrganizationDialogProps
 > = ({ isOpen, onClose, organizationDetails }) => {
+  const { dict } = useTranslation();
   const [updateOrganization, { isLoading }] = useUpdateOrganizationMutation();
 
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
@@ -199,19 +201,20 @@ const UpdateOrganizationDialogContent: React.FC<
     const errors: OrgErrors = {};
 
     if (!orgForm.name.trim()) {
-      errors.name = 'Organization name is required.';
+      errors.name = dict.organizations.dialogs.validation.orgNameRequired;
     }
 
     if (!orgForm.organization_type) {
-      errors.organization_type = 'Organization type is required.';
+      errors.organization_type =
+        dict.organizations.dialogs.validation.orgTypeRequired;
     }
 
     if (orgForm.email && !EMAIL_REGEX.test(orgForm.email)) {
-      errors.email = 'Enter a valid email address.';
+      errors.email = dict.organizations.dialogs.validation.emailInvalid;
     }
 
     if (orgForm.phone && !BD_PHONE_REGEX.test(orgForm.phone)) {
-      errors.phone = 'Enter a valid 11-digit BD phone number.';
+      errors.phone = dict.organizations.dialogs.validation.phoneInvalid;
     }
 
     setOrgErrors(errors);
@@ -223,27 +226,27 @@ const UpdateOrganizationDialogContent: React.FC<
     const errors: UserErrors = {};
 
     if (!userForm.first_name.trim()) {
-      errors.first_name = 'First name is required.';
+      errors.first_name = dict.organizations.dialogs.validation.firstNameRequired;
     }
 
     if (!userForm.last_name.trim()) {
-      errors.last_name = 'Last name is required.';
+      errors.last_name = dict.organizations.dialogs.validation.lastNameRequired;
     }
 
     if (!userForm.email.trim()) {
-      errors.email = 'Email is required.';
+      errors.email = dict.organizations.dialogs.validation.emailRequired;
     } else if (!EMAIL_REGEX.test(userForm.email)) {
-      errors.email = 'Enter a valid email address.';
+      errors.email = dict.organizations.dialogs.validation.emailInvalid;
     }
 
     if (!userForm.phone.trim()) {
-      errors.phone = 'Phone number is required.';
+      errors.phone = dict.organizations.dialogs.validation.phoneRequired;
     } else if (!BD_PHONE_REGEX.test(userForm.phone)) {
-      errors.phone = 'Enter a valid 11-digit BD phone number.';
+      errors.phone = dict.organizations.dialogs.validation.phoneInvalid;
     }
 
     if (!userForm.gender) {
-      errors.gender = 'Gender is required.';
+      errors.gender = dict.organizations.dialogs.validation.genderRequired;
     }
 
     setUserErrors(errors);
@@ -325,9 +328,7 @@ const UpdateOrganizationDialogContent: React.FC<
       Object.keys(apiOrgErrors).length === 0 &&
       Object.keys(apiUserErrors).length === 0
     ) {
-      setSubmitError(
-        'Something went wrong. Please check your input and try again.',
-      );
+      setSubmitError(dict.organizations.dialogs.validation.genericSubmitError);
     } else if (Object.keys(apiOrgErrors).length > 0) {
       setActiveTab('organization');
     } else {
@@ -385,12 +386,13 @@ const UpdateOrganizationDialogContent: React.FC<
       <DialogContent className='max-h-[90vh] overflow-hidden p-4 sm:max-w-185'>
         <DialogHeader className='text-lg font-semibold'>
           <DialogTitle className='text-primary -mb-3 text-2xl'>
-            Edit Organization
+            {dict.organizations.dialogs.updateOrganization.title}
           </DialogTitle>
           <DialogDescription className='text-muted-foreground text-sm'>
-            Update{' '}
-            {organizationDetails?.organization?.name ?? 'this organization'}
-            &apos;s details.
+            {dict.organizations.dialogs.updateOrganization.descriptionPrefix}{' '}
+            {organizationDetails?.organization?.name ??
+              dict.organizations.dialogs.updateOrganization.fallbackName}
+            {dict.organizations.dialogs.updateOrganization.descriptionSuffix}
           </DialogDescription>
         </DialogHeader>
         <div className='max-h-[calc(90vh-2rem)] overflow-y-auto'>
@@ -401,13 +403,13 @@ const UpdateOrganizationDialogContent: React.FC<
           >
             <TabsList className='grid w-full grid-cols-3'>
               <TabsTrigger value='organization' className='cursor-pointer'>
-                Organization
+                {dict.organizations.dialogs.tabs.organization}
               </TabsTrigger>
               <TabsTrigger value='owner' className='cursor-pointer'>
-                Owner
+                {dict.organizations.dialogs.tabs.owner}
               </TabsTrigger>
               <TabsTrigger value='social' className='cursor-pointer'>
-                Social Links
+                {dict.organizations.dialogs.tabs.socialLinks}
               </TabsTrigger>
             </TabsList>
 
@@ -417,7 +419,8 @@ const UpdateOrganizationDialogContent: React.FC<
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='org-name'>
-                      Organization Name <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.organizationName}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='org-name'
@@ -431,7 +434,8 @@ const UpdateOrganizationDialogContent: React.FC<
 
                   <div className='space-y-1.5'>
                     <Label htmlFor='org-type'>
-                      Organization Type <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.organizationType}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Select
                       items={ORGANIZATION_TYPE_OPTIONS}
@@ -445,7 +449,11 @@ const UpdateOrganizationDialogContent: React.FC<
                         className='w-full'
                         aria-invalid={!!orgErrors.organization_type}
                       >
-                        <SelectValue placeholder='Select type' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders.selectType
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {ORGANIZATION_TYPE_OPTIONS.map((option) => (
@@ -461,13 +469,16 @@ const UpdateOrganizationDialogContent: React.FC<
 
                 <div className='space-y-1.5'>
                   <Label htmlFor='org-subdomain'>
-                    Subdomain <span className='text-danger'>*</span>
+                    {dict.organizations.dialogs.fields.subdomain}{' '}
+                    <span className='text-danger'>*</span>
                   </Label>
                   <div className='gap-1d flex items-center'>
                     <Input
                       id='org-subdomain'
                       type='text'
-                      placeholder='e.g. abc-chamber'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.subdomain
+                      }
                       value={orgForm.subdomain}
                       onChange={(e) =>
                         updateOrg('subdomain', e.target.value.toLowerCase())
@@ -483,7 +494,9 @@ const UpdateOrganizationDialogContent: React.FC<
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='org-description'>Description</Label>
+                  <Label htmlFor='org-description'>
+                    {dict.organizations.dialogs.fields.description}
+                  </Label>
                   <Textarea
                     id='org-description'
                     className='field-sizing-fixed'
@@ -496,7 +509,9 @@ const UpdateOrganizationDialogContent: React.FC<
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-email'>Email</Label>
+                    <Label htmlFor='org-email'>
+                      {dict.organizations.dialogs.fields.email}
+                    </Label>
                     <Input
                       id='org-email'
                       type='email'
@@ -508,7 +523,9 @@ const UpdateOrganizationDialogContent: React.FC<
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-phone'>Phone</Label>
+                    <Label htmlFor='org-phone'>
+                      {dict.organizations.dialogs.fields.phone}
+                    </Label>
                     <BdPhoneInput
                       id='org-phone'
                       value={orgForm.phone || ''}
@@ -520,7 +537,9 @@ const UpdateOrganizationDialogContent: React.FC<
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-website'>Website</Label>
+                    <Label htmlFor='org-website'>
+                      {dict.organizations.dialogs.fields.website}
+                    </Label>
                     <Input
                       id='org-website'
                       type='url'
@@ -532,14 +551,20 @@ const UpdateOrganizationDialogContent: React.FC<
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-status'>Status</Label>
+                    <Label htmlFor='org-status'>
+                      {dict.organizations.dialogs.fields.status}
+                    </Label>
                     <Select
                       items={ORGANIZATION_STATUS_OPTIONS}
                       value={orgForm.status}
                       onValueChange={(value) => updateOrg('status', value)}
                     >
                       <SelectTrigger id='org-status' className='w-full'>
-                        <SelectValue placeholder='Select status' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders.selectStatus
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {ORGANIZATION_STATUS_OPTIONS.map((option) => (
@@ -554,7 +579,9 @@ const UpdateOrganizationDialogContent: React.FC<
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='org-address'>Address</Label>
+                  <Label htmlFor='org-address'>
+                    {dict.organizations.dialogs.fields.address}
+                  </Label>
                   <Input
                     id='org-address'
                     type='text'
@@ -571,7 +598,8 @@ const UpdateOrganizationDialogContent: React.FC<
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-first-name'>
-                      First Name <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.firstName}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='user-first-name'
@@ -585,7 +613,8 @@ const UpdateOrganizationDialogContent: React.FC<
 
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-last-name'>
-                      Last Name <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.lastName}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='user-last-name'
@@ -601,7 +630,8 @@ const UpdateOrganizationDialogContent: React.FC<
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-email'>
-                      Email <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.email}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='user-email'
@@ -615,7 +645,8 @@ const UpdateOrganizationDialogContent: React.FC<
 
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-phone'>
-                      Phone <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.phone}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <BdPhoneInput
                       id='user-phone'
@@ -629,7 +660,8 @@ const UpdateOrganizationDialogContent: React.FC<
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-gender'>
-                      Gender <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.gender}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Select
                       items={GENDER_OPTIONS}
@@ -641,7 +673,11 @@ const UpdateOrganizationDialogContent: React.FC<
                         className='w-full'
                         aria-invalid={!!userErrors.gender}
                       >
-                        <SelectValue placeholder='Select gender' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders.selectGender
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {GENDER_OPTIONS.map((option) => (
@@ -655,7 +691,9 @@ const UpdateOrganizationDialogContent: React.FC<
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='user-blood-group'>Blood Group</Label>
+                    <Label htmlFor='user-blood-group'>
+                      {dict.organizations.dialogs.fields.bloodGroup}
+                    </Label>
                     <Select
                       items={BLOOD_GROUP_OPTIONS}
                       value={userForm.blood_group}
@@ -664,7 +702,12 @@ const UpdateOrganizationDialogContent: React.FC<
                       }
                     >
                       <SelectTrigger id='user-blood-group' className='w-full'>
-                        <SelectValue placeholder='Select blood group' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders
+                              .selectBloodGroup
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {BLOOD_GROUP_OPTIONS.map((option) => (
@@ -680,7 +723,9 @@ const UpdateOrganizationDialogContent: React.FC<
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='user-nid'>NID</Label>
+                    <Label htmlFor='user-nid'>
+                      {dict.organizations.dialogs.fields.nid}
+                    </Label>
                     <Input
                       id='user-nid'
                       type='text'
@@ -692,7 +737,9 @@ const UpdateOrganizationDialogContent: React.FC<
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='user-dob'>Date of Birth</Label>
+                    <Label htmlFor='user-dob'>
+                      {dict.organizations.dialogs.fields.dateOfBirth}
+                    </Label>
                     <Input
                       id='user-dob'
                       type='date'
@@ -711,7 +758,9 @@ const UpdateOrganizationDialogContent: React.FC<
               <TabsContent value='social' className='mt-4 space-y-4'>
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-facebook'>Facebook</Label>
+                    <Label htmlFor='org-facebook'>
+                      {dict.organizations.dialogs.fields.facebook}
+                    </Label>
                     <Input
                       id='org-facebook'
                       type='url'
@@ -723,7 +772,9 @@ const UpdateOrganizationDialogContent: React.FC<
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-twitter'>Twitter / X</Label>
+                    <Label htmlFor='org-twitter'>
+                      {dict.organizations.dialogs.fields.twitter}
+                    </Label>
                     <Input
                       id='org-twitter'
                       type='url'
@@ -737,7 +788,9 @@ const UpdateOrganizationDialogContent: React.FC<
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-linkedin'>LinkedIn</Label>
+                    <Label htmlFor='org-linkedin'>
+                      {dict.organizations.dialogs.fields.linkedin}
+                    </Label>
                     <Input
                       id='org-linkedin'
                       type='url'
@@ -749,7 +802,9 @@ const UpdateOrganizationDialogContent: React.FC<
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-youtube'>YouTube</Label>
+                    <Label htmlFor='org-youtube'>
+                      {dict.organizations.dialogs.fields.youtube}
+                    </Label>
                     <Input
                       id='org-youtube'
                       type='url'
@@ -770,12 +825,14 @@ const UpdateOrganizationDialogContent: React.FC<
 
           <DialogFooter className='mt-2'>
             <Button variant='outline' onClick={onClose} disabled={isLoading}>
-              Cancel
+              {dict.common.cancel}
             </Button>
 
             <Button onClick={handleSubmit} disabled={isLoading || !hasChanges}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              {isLoading ? 'Saving...' : 'Save changes'}
+              {isLoading
+                ? dict.organizations.dialogs.updateOrganization.saving
+                : dict.organizations.dialogs.updateOrganization.saveChanges}
             </Button>
           </DialogFooter>
         </div>

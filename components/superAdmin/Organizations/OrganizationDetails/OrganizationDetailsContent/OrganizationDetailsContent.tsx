@@ -4,6 +4,7 @@ import CustomErrorMessage from '@/components/common/CustomErrorMessage/CustomErr
 import Loading from '@/components/common/CustomLoader/Loading';
 import { Button } from '@/components/ui/button';
 import { useGetOrganizationDetailsQuery } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Edit } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React from 'react';
@@ -15,6 +16,7 @@ import OrganizationOwnerCard from './OrganizationOwnerCard/OrganizationOwnerCard
 import OrganizationSocialCard from './OrganizationSocialCard/OrganizationSocialCard';
 
 const OrganizationDetailsContent: React.FC = () => {
+  const { dict } = useTranslation();
   const { organizationuid } = useParams();
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = React.useState(false);
 
@@ -37,7 +39,9 @@ const OrganizationDetailsContent: React.FC = () => {
   }
 
   if (isError || !details) {
-    return <CustomErrorMessage title='organization details' />;
+    return (
+      <CustomErrorMessage title={dict.organizations.detail.errorTitle} />
+    );
   }
 
   return (
@@ -45,7 +49,7 @@ const OrganizationDetailsContent: React.FC = () => {
       <div className='flex items-center justify-end gap-4'>
         <Button variant='default' onClick={handleUpdateDialogOpen}>
           <Edit />
-          Update Organization
+          {dict.organizations.detail.updateOrganization}
         </Button>
       </div>
       <OrganizationHeroCard

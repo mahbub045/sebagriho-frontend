@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useResetPasswordMutation } from '@/lib/services/endpoints/common/ProfileInfoApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   ResetPasswordDialogProps,
   ResetPasswordFieldErrors,
@@ -31,6 +32,7 @@ const ResetPasswordDialog: React.FC<ResetPasswordDialogProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { dict } = useTranslation();
   const [resetPassword, { isLoading, isError, error }] =
     useResetPasswordMutation();
 
@@ -71,7 +73,7 @@ const ResetPasswordDialog: React.FC<ResetPasswordDialogProps> = ({
     e.preventDefault();
 
     if (formData.new_password !== formData.confirm_password) {
-      setMismatchError('Passwords do not match');
+      setMismatchError(dict.profileSettings.resetPassword.passwordMismatch);
       return;
     }
 
@@ -82,10 +84,10 @@ const ResetPasswordDialog: React.FC<ResetPasswordDialogProps> = ({
 
     try {
       await resetPassword({ payload }).unwrap();
-      toast.success('Password updated successfully');
+      toast.success(dict.profileSettings.resetPassword.updateSuccess);
       handleClose();
     } catch {
-      toast.error('Failed to update password. Please check the form.');
+      toast.error(dict.profileSettings.resetPassword.updateError);
     }
   };
 
@@ -110,7 +112,11 @@ const ResetPasswordDialog: React.FC<ResetPasswordDialogProps> = ({
           type='button'
           onClick={() => toggleVisibility(field)}
           className='text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition'
-          aria-label={visibility[field] ? 'Hide password' : 'Show password'}
+          aria-label={
+            visibility[field]
+              ? dict.profileSettings.resetPassword.hidePassword
+              : dict.profileSettings.resetPassword.showPassword
+          }
         >
           {visibility[field] ? (
             <EyeOff className='h-4 w-4' />
@@ -130,16 +136,25 @@ const ResetPasswordDialog: React.FC<ResetPasswordDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Reset Password
+            {dict.profileSettings.resetPassword.title}
           </DialogTitle>
           <DialogDescription>
-            Enter your current password and choose a new one.
+            {dict.profileSettings.resetPassword.description}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className='flex flex-col gap-5 p-1'>
-          {renderPasswordField('old_password', 'Current Password')}
-          {renderPasswordField('new_password', 'New Password')}
-          {renderPasswordField('confirm_password', 'Confirm New Password')}
+          {renderPasswordField(
+            'old_password',
+            dict.profileSettings.resetPassword.currentPassword,
+          )}
+          {renderPasswordField(
+            'new_password',
+            dict.profileSettings.resetPassword.newPassword,
+          )}
+          {renderPasswordField(
+            'confirm_password',
+            dict.profileSettings.resetPassword.confirmNewPassword,
+          )}
 
           {(mismatchError ||
             (isError &&
@@ -159,11 +174,11 @@ const ResetPasswordDialog: React.FC<ResetPasswordDialogProps> = ({
               onClick={handleClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.profileSettings.resetPassword.cancel}
             </Button>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Save Changes
+              {dict.profileSettings.resetPassword.saveChanges}
             </Button>
           </div>
         </form>

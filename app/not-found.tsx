@@ -3,10 +3,13 @@
 import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { ArrowLeft, Home, LogOut, MapPinned } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NotFound() {
+  const { dict } = useTranslation();
+
   return (
     <div className='bg-background relative flex min-h-screen items-center justify-center overflow-hidden px-6'>
       <div className='fixed top-4 right-4 z-50'>
@@ -39,13 +42,12 @@ export default function NotFound() {
 
         {/* Heading */}
         <h2 className='mt-4 text-3xl font-bold tracking-tight'>
-          This Page Is Not Found
+          {dict.errorState.pageNotFound}
         </h2>
 
         {/* Description */}
         <p className='text-muted-foreground mx-auto mt-4 max-w-lg text-lg'>
-          The page you&rsquo;re looking for may have been moved, deleted, or
-          never existed. Let&rsquo;s help you get back on track.
+          {dict.errorState.pageNotFoundDescription}
         </p>
 
         {/* Actions */}
@@ -53,7 +55,7 @@ export default function NotFound() {
           <Button asChild size='lg'>
             <Link href='/'>
               <Home />
-              Back to Dashboard
+              {dict.errorState.backToDashboard}
             </Link>
           </Button>
 
@@ -63,7 +65,7 @@ export default function NotFound() {
             onClick={() => window.history.back()}
           >
             <ArrowLeft />
-            Go Back
+            {dict.errorState.goBack}
           </Button>
           <Button
             variant='destructive'
@@ -73,15 +75,14 @@ export default function NotFound() {
             }}
           >
             <LogOut className='size-4' />
-            Force Sign Out
+            {dict.errorState.forceSignOut}
           </Button>
         </div>
 
         {/* Footer Text */}
         <div className='mt-12 border-t pt-6'>
           <p className='text-muted-foreground text-sm'>
-            Lost in the map? Try navigating from the dashboard or contact
-            support if the issue persists.
+            {dict.errorState.lostInMapDescription}
           </p>
         </div>
       </div>

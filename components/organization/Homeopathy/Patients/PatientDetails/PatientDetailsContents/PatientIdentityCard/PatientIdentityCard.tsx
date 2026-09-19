@@ -1,7 +1,10 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { STATUS_STYLES } from '@/data/Organization/Homeopathy/PatientsData';
 import { PatientDetailsCardProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 import {
@@ -16,6 +19,7 @@ import UpdatePatientIdentityDailog from '../../Dialogs/EditPatientIdentityDailog
 const PatientIdentityCard: React.FC<PatientDetailsCardProps> = ({
   patient,
 }) => {
+  const { dict } = useTranslation();
   const statusClass = STATUS_STYLES[patient.status] ?? STATUS_STYLES.INACTIVE;
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
 
@@ -52,16 +56,24 @@ const PatientIdentityCard: React.FC<PatientDetailsCardProps> = ({
               onClick={() => setIsOpenEditPatientDialog(true)}
             >
               <Edit />
-              Edit
+              {dict.common.edit}
             </Button>
           </div>
           <div className='text-muted-foreground mt-1 flex flex-wrap items-center gap-2 text-sm'>
-            <Badge>Serial No: {patient.serial_number}</Badge>
+            <Badge>
+              {dict.patients.detail.identityCard.serialNo.replace(
+                '{number}',
+                String(patient.serial_number),
+              )}
+            </Badge>
             {patient.old_serial_number && (
               <>
                 <span className='text-muted-foreground/50'>•</span>
                 <Badge variant='secondary'>
-                  Old Serial: {patient.old_serial_number}
+                  {dict.patients.detail.identityCard.oldSerial.replace(
+                    '{number}',
+                    String(patient.old_serial_number),
+                  )}
                 </Badge>
               </>
             )}
@@ -72,13 +84,19 @@ const PatientIdentityCard: React.FC<PatientDetailsCardProps> = ({
         <div className='flex items-center gap-2'>
           <CalendarDays className='text-muted-foreground h-3.5 w-3.5' />
           <span className='text-muted-foreground'>
-            Created: {formatDateAndTime(patient.created_at)}
+            {dict.patients.detail.identityCard.created.replace(
+              '{date}',
+              formatDateAndTime(patient.created_at),
+            )}
           </span>
         </div>
         <div className='flex items-center gap-2'>
           <CalendarDays className='text-muted-foreground h-3.5 w-3.5' />
           <span className='text-muted-foreground'>
-            Updated: {formatDateAndTime(patient.updated_at)}
+            {dict.patients.detail.identityCard.updated.replace(
+              '{date}',
+              formatDateAndTime(patient.updated_at),
+            )}
           </span>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { useUpdateProfileInfoMutation } from '@/lib/services/endpoints/common/ProfileInfoApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { ProfileInfo } from '@/types/common/CommonTypes';
 import { getInitials } from '@/utils/formatters';
 import { Camera } from 'lucide-react';
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const ProfileOverviewCard: React.FC<Props> = ({ profile }) => {
+  const { dict } = useTranslation();
   const [updateProfileInfo, { isLoading }] = useUpdateProfileInfoMutation();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,9 +33,9 @@ const ProfileOverviewCard: React.FC<Props> = ({ profile }) => {
 
     try {
       await updateProfileInfo(payload).unwrap();
-      toast.success('Profile photo updated successfully');
+      toast.success(dict.profileSettings.overview.photoUpdateSuccess);
     } catch {
-      toast.error('Failed to update profile photo');
+      toast.error(dict.profileSettings.overview.photoUpdateError);
     } finally {
       e.target.value = '';
     }
@@ -79,12 +81,12 @@ const ProfileOverviewCard: React.FC<Props> = ({ profile }) => {
         <div className='mt-2 flex items-center justify-center gap-1.5'>
           {profile.is_owner && (
             <Badge variant='outline' className='text-[11px] font-medium'>
-              Owner
+              {dict.profileSettings.overview.owner}
             </Badge>
           )}
           {profile.is_admin && (
             <Badge variant='outline' className='text-[11px] font-medium'>
-              Admin
+              {dict.profileSettings.overview.admin}
             </Badge>
           )}
         </div>
