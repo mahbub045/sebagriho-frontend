@@ -31,6 +31,7 @@ import {
   INITIAL_FORM,
   TAB_ORDER,
 } from '@/data/superAdmin/Organizations/OrganizationsData';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useAddOrganizationMutation } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
 import {
   AddOrganizationDialogProps,
@@ -111,6 +112,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { dict } = useTranslation();
   const [addOrganization, { isLoading }] = useAddOrganizationMutation();
   const [form, setForm] = useState(INITIAL_FORM);
   const [activeTab, setActiveTab] = useState<TabKey>('organization');
@@ -389,13 +391,16 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
                 <div className='space-y-1.5'>
                   <Label htmlFor='org-subdomain'>
-                    Subdomain <span className='text-danger'>*</span>
+                    {dict.organizations.dialogs.fields.subdomain}{' '}
+                    <span className='text-danger'>*</span>
                   </Label>
                   <div className='gap-1d flex items-center'>
                     <Input
                       id='org-subdomain'
                       type='text'
-                      placeholder='e.g. abc-chamber'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.subdomain
+                      }
                       value={form.organization.subdomain}
                       onChange={(e) =>
                         updateOrg('subdomain', e.target.value.toLowerCase())
@@ -411,10 +416,14 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='org-description'>Description</Label>
+                  <Label htmlFor='org-description'>
+                    {dict.organizations.dialogs.fields.description}
+                  </Label>
                   <Textarea
                     id='org-description'
-                    placeholder='Brief description of the organization'
+                    placeholder={
+                      dict.organizations.dialogs.placeholders.description
+                    }
                     className='field-sizing-fixed'
                     value={form.organization.description}
                     onChange={(e) => updateOrg('description', e.target.value)}
@@ -425,11 +434,15 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-email'>Email</Label>
+                    <Label htmlFor='org-email'>
+                      {dict.organizations.dialogs.fields.email}
+                    </Label>
                     <Input
                       id='org-email'
                       type='email'
-                      placeholder='info@organization.com'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.organizationEmail
+                      }
                       value={form.organization.email}
                       onChange={(e) => updateOrg('email', e.target.value)}
                       aria-invalid={!!orgErrors.email}
@@ -438,7 +451,9 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-phone'>Phone</Label>
+                    <Label htmlFor='org-phone'>
+                      {dict.organizations.dialogs.fields.phone}
+                    </Label>
                     <BdPhoneInput
                       id='org-phone'
                       value={form.organization.phone}
@@ -450,11 +465,15 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-website'>Website</Label>
+                    <Label htmlFor='org-website'>
+                      {dict.organizations.dialogs.fields.website}
+                    </Label>
                     <Input
                       id='org-website'
                       type='url'
-                      placeholder='https://organization.com'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.website
+                      }
                       value={form.organization.website}
                       onChange={(e) => updateOrg('website', e.target.value)}
                       aria-invalid={!!orgErrors.website}
@@ -463,14 +482,20 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='org-status'>Status</Label>
+                    <Label htmlFor='org-status'>
+                      {dict.organizations.dialogs.fields.status}
+                    </Label>
                     <Select
                       items={ORGANIZATION_STATUS_OPTIONS}
                       value={form.organization.status}
                       onValueChange={(value) => updateOrg('status', value)}
                     >
                       <SelectTrigger id='org-status' className='w-full'>
-                        <SelectValue placeholder='Select status' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders.selectStatus
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {ORGANIZATION_STATUS_OPTIONS.map((option) => (
@@ -485,11 +510,13 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 </div>
 
                 <div className='space-y-1.5'>
-                  <Label htmlFor='org-address'>Address</Label>
+                  <Label htmlFor='org-address'>
+                    {dict.organizations.dialogs.fields.address}
+                  </Label>
                   <Input
                     id='org-address'
                     type='text'
-                    placeholder='e.g. Dhaka, Bangladesh'
+                    placeholder={dict.organizations.dialogs.placeholders.address}
                     value={form.organization.address}
                     onChange={(e) => updateOrg('address', e.target.value)}
                     aria-invalid={!!orgErrors.address}
@@ -503,12 +530,15 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-first-name'>
-                      First Name <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.firstName}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='user-first-name'
                       type='text'
-                      placeholder='First name'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.firstName
+                      }
                       value={form.user.first_name}
                       onChange={(e) => updateUser('first_name', e.target.value)}
                       aria-invalid={!!userErrors.first_name}
@@ -518,12 +548,15 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-last-name'>
-                      Last Name <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.lastName}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='user-last-name'
                       type='text'
-                      placeholder='Last name'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.lastName
+                      }
                       value={form.user.last_name}
                       onChange={(e) => updateUser('last_name', e.target.value)}
                       aria-invalid={!!userErrors.last_name}
@@ -535,12 +568,15 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-email'>
-                      Email <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.email}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Input
                       id='user-email'
                       type='email'
-                      placeholder='name@example.com'
+                      placeholder={
+                        dict.organizations.dialogs.placeholders.userEmail
+                      }
                       value={form.user.email}
                       onChange={(e) => updateUser('email', e.target.value)}
                       aria-invalid={!!userErrors.email}
@@ -550,7 +586,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-phone'>
-                      Phone <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.phone}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <BdPhoneInput
                       id='user-phone'
@@ -564,7 +601,8 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
                     <Label htmlFor='user-gender'>
-                      Gender <span className='text-danger'>*</span>
+                      {dict.organizations.dialogs.fields.gender}{' '}
+                      <span className='text-danger'>*</span>
                     </Label>
                     <Select
                       items={GENDER_OPTIONS}
@@ -576,7 +614,11 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                         className='w-full'
                         aria-invalid={!!userErrors.gender}
                       >
-                        <SelectValue placeholder='Select gender' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders.selectGender
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {GENDER_OPTIONS.map((option) => (
@@ -590,7 +632,9 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='user-blood-group'>Blood Group</Label>
+                    <Label htmlFor='user-blood-group'>
+                      {dict.organizations.dialogs.fields.bloodGroup}
+                    </Label>
                     <Select
                       items={BLOOD_GROUP_OPTIONS}
                       value={form.user.blood_group}
@@ -599,7 +643,12 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                       }
                     >
                       <SelectTrigger id='user-blood-group' className='w-full'>
-                        <SelectValue placeholder='Select blood group' />
+                        <SelectValue
+                          placeholder={
+                            dict.organizations.dialogs.placeholders
+                              .selectBloodGroup
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {BLOOD_GROUP_OPTIONS.map((option) => (
@@ -615,11 +664,13 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
 
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='user-nid'>NID</Label>
+                    <Label htmlFor='user-nid'>
+                      {dict.organizations.dialogs.fields.nid}
+                    </Label>
                     <Input
                       id='user-nid'
                       type='text'
-                      placeholder='National ID number'
+                      placeholder={dict.organizations.dialogs.placeholders.nid}
                       value={form.user.nid}
                       onChange={(e) => updateUser('nid', e.target.value)}
                       aria-invalid={!!userErrors.nid}
@@ -628,7 +679,9 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='user-dob'>Date of Birth</Label>
+                    <Label htmlFor='user-dob'>
+                      {dict.organizations.dialogs.fields.dateOfBirth}
+                    </Label>
                     <Input
                       id='user-dob'
                       type='date'
@@ -656,7 +709,7 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
               disabled={isLoading}
             >
               <X className='h-4 w-4' />
-              Cancel
+              {dict.common.cancel}
             </Button>
 
             <div className='flex items-center gap-2'>
@@ -668,20 +721,24 @@ const AddOrganizationDialog: React.FC<AddOrganizationDialogProps> = ({
                   disabled={isLoading}
                 >
                   <ChevronLeft className='h-4 w-4' />
-                  Back
+                  {dict.common.back}
                 </Button>
               )}
 
               {activeTab !== 'owner' ? (
                 <Button onClick={handleNext} disabled={isLoading}>
                   {isLoading && <Loading className='h-4 w-4 text-white!' />}
-                  {isLoading ? 'Checking...' : 'Next'}{' '}
+                  {isLoading
+                    ? dict.organizations.dialogs.addOrganization.checking
+                    : dict.common.next}{' '}
                   <ChevronRight className='h-4 w-4' />
                 </Button>
               ) : (
                 <Button onClick={handleSubmit} disabled={isLoading}>
                   {isLoading && <Loading className='h-4 w-4 text-white!' />}
-                  {isLoading ? 'Adding...' : 'Add Organization'}
+                  {isLoading
+                    ? dict.organizations.dialogs.addOrganization.adding
+                    : dict.organizations.dialogs.addOrganization.submit}
                 </Button>
               )}
             </div>

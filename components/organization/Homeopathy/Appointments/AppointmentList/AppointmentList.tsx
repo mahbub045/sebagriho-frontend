@@ -35,6 +35,7 @@ import {
 import { STATUS_DOT_COLOR } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
 import { setAppointmentStatusFilter } from '@/lib/features/appointments/appointmentsSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useGetAppointmentsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import {
   Appointment,
@@ -64,6 +65,7 @@ const toApiDate = (date?: Date) =>
   date ? format(date, 'yyyy-MM-dd') : undefined;
 
 const AppointmentList: React.FC = () => {
+  const { dict } = useTranslation();
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
@@ -151,7 +153,7 @@ const AppointmentList: React.FC = () => {
     ? dateRange.to
       ? `${format(dateRange.from, 'MMM d, yyyy')} - ${format(dateRange.to, 'MMM d, yyyy')}`
       : format(dateRange.from, 'MMM d, yyyy')
-    : 'Appointment date';
+    : dict.appointments.list.appointmentDateDefault;
 
   return (
     <div className='flex flex-col gap-4'>
@@ -159,15 +161,17 @@ const AppointmentList: React.FC = () => {
 
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <h1 className='text-xl font-semibold tracking-tight'>Appointments</h1>
+          <h1 className='text-xl font-semibold tracking-tight'>
+            {dict.appointments.list.title}
+          </h1>
 
           <p className='text-muted-foreground mt-1 text-sm'>
-            View and manage all patient appointments in your organization.
+            {dict.appointments.list.subtitle}
           </p>
         </div>
         <Button variant='default' onClick={() => setIsOpenCreateDialog(true)}>
           <Plus />
-          Create Appointment
+          {dict.appointments.list.createAppointment}
         </Button>
       </div>
 
@@ -186,7 +190,7 @@ const AppointmentList: React.FC = () => {
             type='text'
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
-            placeholder='Search by patient name, symptoms...'
+            placeholder={dict.appointments.list.searchPlaceholder}
             className='pl-9!'
           />
         </div>
@@ -228,11 +232,11 @@ const AppointmentList: React.FC = () => {
           }}
         >
           <SelectTrigger className='w-full cursor-pointer sm:w-40'>
-            <SelectValue placeholder='Miasm Type' />
+            <SelectValue placeholder={dict.appointments.list.miasmTypePlaceholder} />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value='ALL'>All Miasm</SelectItem>
+            <SelectItem value='ALL'>{dict.appointments.list.allMiasm}</SelectItem>
 
             {MIASM_TYPE_OPTIONS.map((item) => (
               <SelectItem key={item.value} value={item.value}>
@@ -249,7 +253,7 @@ const AppointmentList: React.FC = () => {
             className='border-danger/40 text-danger hover:bg-danger/10 flex cursor-pointer items-center justify-center gap-1.5 rounded-md border px-3 py-2 text-sm font-medium transition-colors'
           >
             <X className='h-3.5 w-3.5' />
-            Clear filters
+            {dict.appointments.list.clearFilters}
           </button>
         )}
       </Card>
@@ -300,11 +304,11 @@ const AppointmentList: React.FC = () => {
           <Stethoscope className='text-danger/50 h-10 w-10' />
 
           <p className='mt-3 text-sm font-medium'>
-            Failed to load appointments
+            {dict.appointments.list.failedToLoad}
           </p>
 
           <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-            Something went wrong while loading the appointment list.
+            {dict.appointments.list.failedToLoadDescription}
           </p>
         </div>
       )}
@@ -317,14 +321,14 @@ const AppointmentList: React.FC = () => {
 
           <p className='mt-3 text-sm font-medium'>
             {hasActiveFilters
-              ? 'No matching appointments'
-              : 'No appointments yet'}
+              ? dict.appointments.list.noMatching
+              : dict.appointments.list.noAppointmentsYet}
           </p>
 
           <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
             {hasActiveFilters
-              ? 'Try adjusting your search or filters.'
-              : 'Appointments will appear here once they are created.'}
+              ? dict.appointments.list.tryAdjusting
+              : dict.appointments.list.appearHere}
           </p>
         </div>
       )}
@@ -383,7 +387,7 @@ const AppointmentList: React.FC = () => {
                               appointment?.patient?.user?.phone
                             ) : (
                               <small className='text-muted-foreground italic'>
-                                No phone number available
+                                {dict.appointments.list.noPhoneNumber}
                               </small>
                             )}
                           </p>
@@ -394,12 +398,14 @@ const AppointmentList: React.FC = () => {
                           variant='success'
                           className={`shrink-0 text-[11px] font-medium`}
                         >
-                          Patient SL -{' '}
                           {appointment?.patient?.serial_number ? (
-                            appointment?.patient?.serial_number
+                            dict.appointments.list.patientSerial.replace(
+                              '{value}',
+                              String(appointment.patient.serial_number),
+                            )
                           ) : (
                             <small className='text-muted-foreground italic'>
-                              No serial number available
+                              {dict.appointments.list.noSerialNumber}
                             </small>
                           )}
                         </Badge>
@@ -412,10 +418,13 @@ const AppointmentList: React.FC = () => {
                           <Stethoscope className='text-secondary mt-0.5 h-3.5 w-3.5 shrink-0' />
 
                           <div className='min-w-0'>
-                            <p className='text-muted-foreground'>Symptoms</p>
+                            <p className='text-muted-foreground'>
+                              {dict.appointments.list.symptoms}
+                            </p>
 
                             <p className='line-clamp-2 font-medium'>
-                              {appointment.symptoms || 'Not recorded'}
+                              {appointment.symptoms ||
+                                dict.appointments.list.notRecorded}
                             </p>
                           </div>
                         </div>
@@ -426,12 +435,12 @@ const AppointmentList: React.FC = () => {
 
                           <div className='min-w-0'>
                             <p className='text-muted-foreground'>
-                              Treatment Effectiveness
+                              {dict.appointments.list.treatmentEffectiveness}
                             </p>
 
                             <p className='line-clamp-2 font-medium'>
                               {appointment.treatment_effectiveness ||
-                                'Not recorded'}
+                                dict.appointments.list.notRecorded}
                             </p>
                           </div>
                         </div>
@@ -444,7 +453,9 @@ const AppointmentList: React.FC = () => {
 
                           <span className='font-medium'>
                             {appointment.files?.length ?? 0}{' '}
-                            {appointment.files?.length === 1 ? 'File' : 'Files'}
+                            {appointment.files?.length === 1
+                              ? dict.appointments.list.file
+                              : dict.appointments.list.files}
                           </span>
                         </div>
 
@@ -466,9 +477,15 @@ const AppointmentList: React.FC = () => {
             <div className='flex items-center justify-between'>
               {(appointments?.count ?? 0) > 0 && (
                 <p className='text-muted-foreground text-sm whitespace-nowrap'>
-                  Showing {(page - 1) * PAGE_LIMIT + 1} to{' '}
-                  {Math.min(page * PAGE_LIMIT, appointments?.count ?? 0)} of{' '}
-                  {appointments?.count ?? 0} Appointments
+                  {dict.appointments.list.showing
+                    .replace('{from}', String((page - 1) * PAGE_LIMIT + 1))
+                    .replace(
+                      '{to}',
+                      String(
+                        Math.min(page * PAGE_LIMIT, appointments?.count ?? 0),
+                      ),
+                    )
+                    .replace('{total}', String(appointments?.count ?? 0))}
                 </p>
               )}
 

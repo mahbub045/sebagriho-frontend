@@ -16,6 +16,7 @@ import {
   STATUS_DOT_COLOR,
 } from '@/data/Organization/Homeopathy/Appointments/AppointmentsData';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   AppointmentInfoCardProps,
   AppointmentStatus,
@@ -36,6 +37,7 @@ import EditAppointmentInfoDialog from '../../Dialogs/EditAppointmentInfoDialog';
 const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
   appointment,
 }) => {
+  const { dict } = useTranslation();
   const [isOpenAppointmentEditDialog, setIsOpenAppointmentEditDialog] =
     useState(false);
 
@@ -53,9 +55,9 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
         appointmentData: { status: value as AppointmentStatus },
       }).unwrap();
 
-      toast.success('Appointment status updated successfully!');
+      toast.success(dict.appointments.infoCard.statusUpdateSuccess);
     } catch {
-      toast.error('Failed to update status. Please try again.');
+      toast.error(dict.appointments.infoCard.statusUpdateError);
     }
   };
 
@@ -63,7 +65,9 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
     <Card className='border-border/60 flex flex-col gap-0 overflow-hidden p-0 shadow-sm'>
       <div className='border-border/60 flex items-center justify-between border-b p-4'>
         <div className='flex items-center gap-2'>
-          <p className='text-sm font-semibold'>Appointment Overview</p>
+          <p className='text-sm font-semibold'>
+            {dict.appointments.infoCard.overview}
+          </p>
 
           <Select
             items={HOMEOPATHIC_APPOINTMENT_STATUS_OPTIONS}
@@ -109,7 +113,7 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
           onClick={() => setIsOpenAppointmentEditDialog(true)}
         >
           <Edit />
-          Edit
+          {dict.appointments.infoCard.edit}
         </Button>
       </div>
 
@@ -119,14 +123,16 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
           <Stethoscope className='text-secondary mt-0.5 h-4 w-4 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground text-xs'>Symptoms</p>
+            <p className='text-muted-foreground text-xs'>
+              {dict.appointments.infoCard.symptoms}
+            </p>
 
             <p className='font-medium'>
               {appointment.symptoms ? (
                 appointment.symptoms
               ) : (
                 <small className='text-muted-foreground truncate italic'>
-                  Not recorded
+                  {dict.appointments.infoCard.notRecorded}
                 </small>
               )}
             </p>
@@ -139,7 +145,7 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
 
           <div className='min-w-0'>
             <p className='text-muted-foreground text-xs'>
-              Treatment Effectiveness
+              {dict.appointments.infoCard.treatmentEffectiveness}
             </p>
 
             <p className='font-medium'>
@@ -147,7 +153,7 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
                 appointment.treatment_effectiveness
               ) : (
                 <small className='text-muted-foreground truncate italic'>
-                  Not recorded
+                  {dict.appointments.infoCard.notRecorded}
                 </small>
               )}
             </p>
@@ -161,7 +167,9 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
           <CalendarDays className='text-muted-foreground h-3.5 w-3.5' />
 
           <div>
-            <p className='text-muted-foreground'>Created</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.infoCard.created}
+            </p>
 
             <p className='font-medium'>
               {formatDateAndTime(appointment.created_at)}
@@ -174,7 +182,9 @@ const AppointmentInfoCard: React.FC<AppointmentInfoCardProps> = ({
           <RefreshCcw className='text-muted-foreground h-3.5 w-3.5' />
 
           <div>
-            <p className='text-muted-foreground'>Last Updated</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.infoCard.lastUpdated}
+            </p>
 
             <p className='font-medium'>
               {formatDateAndTime(appointment.updated_at)}

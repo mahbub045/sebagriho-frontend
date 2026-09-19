@@ -1,9 +1,10 @@
 import Providers from '@/components/Providers';
 import PWARegister from '@/components/PWARegister';
 import { Toaster } from '@/components/ui/sonner';
+import { getLocale } from '@/lib/i18n/getDictionary';
 import type { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
-import { Outfit, Ovo } from 'next/font/google';
+import { Noto_Sans_Bengali, Outfit, Ovo } from 'next/font/google';
 import './globals.css';
 
 const outfit = Outfit({
@@ -16,6 +17,15 @@ const ovo = Ovo({
   subsets: ['latin'],
   variable: '--font-ovo',
   weight: ['400'],
+});
+
+// Outfit/Ovo only cover Latin script; Bangla text falls back to this font
+// (wired in as a fallback in globals.css) so it renders with proper glyphs
+// instead of the browser's default serif fallback.
+const notoSansBengali = Noto_Sans_Bengali({
+  subsets: ['bengali'],
+  variable: '--font-bengali',
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -32,12 +42,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export default async function RootLayout({ children }: LayoutProps<'/'>) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang='en'
+      lang={locale}
       suppressHydrationWarning
-      className={`${outfit.variable} ${ovo.variable} h-full antialiased`}
+      className={`${outfit.variable} ${ovo.variable} ${notoSansBengali.variable} h-full antialiased`}
     >
       <body className='flex min-h-full flex-col' suppressHydrationWarning>
         <ThemeProvider
@@ -46,7 +58,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           enableSystem
           disableTransitionOnChange
         >
-          <Providers>
+          <Providers locale={locale}>
             <PWARegister />
             {children}
             <Toaster />

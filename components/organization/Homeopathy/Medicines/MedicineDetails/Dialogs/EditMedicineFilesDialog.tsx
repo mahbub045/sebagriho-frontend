@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useEditMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   ApiValidationError,
@@ -26,6 +27,8 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
   onClose,
   medicine,
 }) => {
+  const { dict } = useTranslation();
+
   // Upload mutation
   const [uploadMedicine, { isLoading: isUploading, error: uploadError }] =
     useEditMedicineMutation();
@@ -118,11 +121,11 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
         payload,
       }).unwrap();
 
-      toast.success('File removed successfully');
+      toast.success(dict.medicines.dialogs.editFiles.removeSuccessToast);
     } catch (error) {
       console.error('Failed to remove medicine file:', error);
 
-      toast.error('Failed to remove file. Please try again.');
+      toast.error(dict.medicines.dialogs.editFiles.removeErrorToast);
     } finally {
       setDeletingFileUid(null);
     }
@@ -169,13 +172,13 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
         payload,
       }).unwrap();
 
-      toast.success('Files uploaded successfully');
+      toast.success(dict.medicines.dialogs.editFiles.uploadSuccessToast);
 
       handleClose();
     } catch (error) {
       console.error('Failed to upload medicine files:', error);
 
-      toast.error('Failed to upload files. Please try again.');
+      toast.error(dict.medicines.dialogs.editFiles.uploadErrorToast);
     }
   };
 
@@ -184,11 +187,11 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
       <DialogContent className='w-[calc(100%-2rem)] max-w-md overflow-x-hidden overflow-y-auto p-4'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Medicine Files
+            {dict.medicines.dialogs.editFiles.title}
           </DialogTitle>
 
           <DialogDescription>
-            Manage and upload files for this medicine.
+            {dict.medicines.dialogs.editFiles.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -200,7 +203,7 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
           {/* Existing Files */}
           {medicine.files && medicine.files.length > 0 && (
             <div className='flex min-w-0 flex-col gap-1.5'>
-              <Label>Existing Files</Label>
+              <Label>{dict.medicines.dialogs.editFiles.existingFiles}</Label>
 
               <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
                 {medicine.files.map((file) => {
@@ -257,7 +260,9 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
 
           {/* Upload Files */}
           <div className='flex min-w-0 flex-col gap-1.5'>
-            <Label htmlFor='medicine-upload-files'>Upload Files</Label>
+            <Label htmlFor='medicine-upload-files'>
+              {dict.medicines.dialogs.editFiles.uploadFiles}
+            </Label>
 
             <input
               ref={fileInputRef}
@@ -277,7 +282,7 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
               className='w-full justify-center'
             >
               <Upload className='h-4 w-4' />
-              Choose Files
+              {dict.medicines.dialogs.editFiles.chooseFiles}
             </Button>
 
             {getUploadFieldError('upload_files') && (
@@ -290,7 +295,12 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
           {/* Selected Files */}
           {formData.files.length > 0 && (
             <div className='flex min-w-0 flex-col gap-1.5'>
-              <Label>Selected Files ({formData.files.length})</Label>
+              <Label>
+                {dict.medicines.dialogs.editFiles.selectedFiles.replace(
+                  '{count}',
+                  String(formData.files.length),
+                )}
+              </Label>
 
               <div className='flex min-w-0 flex-col gap-2'>
                 {formData.files.map((file, index) => (
@@ -327,7 +337,7 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
               onClick={handleClose}
               disabled={isUploading || isRemoving}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
 
             <Button
@@ -335,7 +345,7 @@ const EditMedicineFilesDialog: React.FC<EditMedicineOverviewDialogProps> = ({
               disabled={isUploading || formData.files.length === 0}
             >
               {isUploading && <Loading className='h-4 w-4 text-white!' />}
-              Upload
+              {dict.medicines.dialogs.editFiles.upload}
             </Button>
           </div>
         </form>

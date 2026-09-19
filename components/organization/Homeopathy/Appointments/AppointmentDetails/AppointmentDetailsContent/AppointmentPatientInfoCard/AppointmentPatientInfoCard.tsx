@@ -1,6 +1,9 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { PatientInfoCardProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import {
   calculateAge,
@@ -22,6 +25,7 @@ import Link from 'next/link';
 const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
   patient,
 }) => {
+  const { dict } = useTranslation();
   const fullName =
     `${patient?.user?.first_name} ${patient?.user?.last_name}`.trim();
 
@@ -49,7 +53,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
             href={`/organization/homeopathy/patients/${patient.uid}`}
             className='text-primary text_decoration_underline text-xs font-medium'
           >
-            View patient profile
+            {dict.appointments.patientInfoCard.viewProfile}
           </Link>
         </div>
       </div>
@@ -60,15 +64,23 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <User className='text-primary h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Age / Gender</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.ageGender}
+            </p>
 
             <p className='truncate font-medium'>
-              {age !== null ? `${age} years` : 'N/A'} •{' '}
+              {age !== null
+                ? dict.appointments.patientInfoCard.years.replace(
+                    '{age}',
+                    String(age),
+                  )
+                : dict.appointments.patientInfoCard.notAvailable}{' '}
+              •{' '}
               {patient?.user?.gender ? (
                 formatChoiceFieldValue(patient?.user?.gender)
               ) : (
                 <small className='text-muted-foreground truncate italic'>
-                  Not recorded
+                  {dict.appointments.patientInfoCard.notRecorded}
                 </small>
               )}
             </p>
@@ -80,14 +92,16 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <Calendar className='text-secondary h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Date of Birth</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.dateOfBirth}
+            </p>
 
             <p className='truncate font-medium'>
               {patient?.user?.date_of_birth ? (
                 formatDate(patient?.user?.date_of_birth)
               ) : (
                 <small className='text-muted-foreground truncate italic'>
-                  Not recorded
+                  {dict.appointments.patientInfoCard.notRecorded}
                 </small>
               )}
             </p>
@@ -99,14 +113,16 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <Phone className='text-info h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Phone</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.phone}
+            </p>
 
             <p className='truncate font-medium'>
               {patient?.user?.phone ? (
                 patient?.user?.phone
               ) : (
                 <small className='text-muted-foreground truncate italic'>
-                  Not provided
+                  {dict.appointments.patientInfoCard.notProvided}
                 </small>
               )}
             </p>
@@ -118,14 +134,16 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <Mail className='text-warning h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Email</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.email}
+            </p>
 
             <p className='truncate font-medium'>
               {patient?.user?.email ? (
                 patient?.user?.email
               ) : (
                 <small className='text-muted-foreground truncate italic'>
-                  Not provided
+                  {dict.appointments.patientInfoCard.notProvided}
                 </small>
               )}
             </p>
@@ -137,7 +155,9 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <Droplet className='text-danger h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Blood Group</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.bloodGroup}
+            </p>
 
             {patient?.user?.blood_group ? (
               <Badge
@@ -148,7 +168,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
               </Badge>
             ) : (
               <p className='text-muted-foreground truncate italic'>
-                Not recorded
+                {dict.appointments.patientInfoCard.notRecorded}
               </p>
             )}
           </div>
@@ -159,7 +179,9 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <Stethoscope className='text-danger h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Miasm Type</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.miasmType}
+            </p>
 
             {patient?.miasm_type ? (
               <span className='mt-0.5 text-[10px] font-medium'>
@@ -167,7 +189,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
               </span>
             ) : (
               <p className='text-muted-foreground truncate italic'>
-                Not recorded
+                {dict.appointments.patientInfoCard.notRecorded}
               </p>
             )}
           </div>
@@ -178,7 +200,9 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <Map className='text-danger h-3.5 w-3.5 shrink-0' />
 
           <div className='min-w-0'>
-            <p className='text-muted-foreground'>Address</p>
+            <p className='text-muted-foreground'>
+              {dict.appointments.patientInfoCard.address}
+            </p>
 
             {patient?.address ? (
               <span className='mt-0.5 truncate text-[10px] font-medium'>
@@ -186,7 +210,7 @@ const AppointmentPatientInfoCard: React.FC<PatientInfoCardProps> = ({
               </span>
             ) : (
               <p className='text-muted-foreground truncate italic'>
-                Not recorded
+                {dict.appointments.patientInfoCard.notRecorded}
               </p>
             )}
           </div>

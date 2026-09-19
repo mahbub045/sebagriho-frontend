@@ -6,6 +6,7 @@ import {
   Users,
   type LucideIcon,
 } from 'lucide-react';
+import type en from '@/lib/i18n/dictionaries/en.json';
 
 export type NavItem = {
   label: string;
@@ -15,24 +16,27 @@ export type NavItem = {
   children?: NavItem[];
 };
 
+type NavDict = (typeof en)['nav'];
+
 export const buildItems = (
   isAdmin = false,
-  organizationType?: string,
+  organizationType: string | undefined,
+  nav: NavDict,
 ): NavItem[] => {
   if (isAdmin) {
     return [
       {
-        label: 'Dashboard',
+        label: nav.dashboard,
         href: '/super-admin/dashboard',
         icon: LayoutDashboard,
       },
       {
-        label: 'Organizations',
+        label: nav.organizations,
         href: '/super-admin/organizations',
         icon: Building2,
       },
       {
-        label: 'Users',
+        label: nav.users,
         href: '/super-admin/users',
         icon: Users,
       },
@@ -42,22 +46,22 @@ export const buildItems = (
   if (!isAdmin && organizationType === 'HOMEOPATHY') {
     return [
       {
-        label: 'Dashboard',
+        label: nav.dashboard,
         href: '/organization/homeopathy/dashboard',
         icon: LayoutDashboard,
       },
       {
-        label: 'Patients',
+        label: nav.patients,
         href: '/organization/homeopathy/patients',
         icon: Users,
       },
       {
-        label: 'Appointments',
+        label: nav.appointments,
         href: '/organization/homeopathy/appointments',
         icon: Stethoscope,
       },
       {
-        label: 'Medicines',
+        label: nav.medicines,
         href: '/organization/homeopathy/medicines',
         icon: Pill,
       },
@@ -67,7 +71,7 @@ export const buildItems = (
   if (!isAdmin && organizationType === 'AYURVEDIC') {
     return [
       {
-        label: 'Dashboard',
+        label: nav.dashboard,
         href: '/organization/ayurvedic/dashboard',
         icon: LayoutDashboard,
       },

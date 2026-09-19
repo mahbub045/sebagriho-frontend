@@ -10,6 +10,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useEditPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   EditMedicalHistoryDialogProps,
   FieldErrorMap,
@@ -22,6 +23,7 @@ const EditMedicalHistoryDialog: React.FC<EditMedicalHistoryDialogProps> = ({
   onClose,
   patientInfo,
 }) => {
+  const { dict } = useTranslation();
   const [editPatient, { isLoading, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState({
@@ -63,9 +65,9 @@ const EditMedicalHistoryDialog: React.FC<EditMedicalHistoryDialogProps> = ({
         payload,
       }).unwrap();
       onClose();
-      toast.success('Medical history updated successfully');
+      toast.success(dict.patients.dialogs.editMedicalHistory.successToast);
     } catch {
-      toast.error('Failed to update medical history. Please check the form.');
+      toast.error(dict.patients.dialogs.editMedicalHistory.errorToast);
     }
   };
 
@@ -74,10 +76,10 @@ const EditMedicalHistoryDialog: React.FC<EditMedicalHistoryDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Medical History
+            {dict.patients.dialogs.editMedicalHistory.title}
           </DialogTitle>
           <DialogDescription>
-            Update the patient&apos;s case history.
+            {dict.patients.dialogs.editMedicalHistory.description}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -86,7 +88,9 @@ const EditMedicalHistoryDialog: React.FC<EditMedicalHistoryDialogProps> = ({
           className='flex flex-col gap-5 p-1'
         >
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='case_history'>Case History</Label>
+            <Label htmlFor='case_history'>
+              {dict.patients.dialogs.editMedicalHistory.caseHistory}
+            </Label>
             <Textarea
               id='case_history'
               name='case_history'
@@ -108,11 +112,11 @@ const EditMedicalHistoryDialog: React.FC<EditMedicalHistoryDialogProps> = ({
               onClick={onClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Save Changes
+              {dict.patients.dialogs.saveChanges}
             </Button>
           </div>
         </form>

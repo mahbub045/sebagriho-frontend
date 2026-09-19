@@ -23,6 +23,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { MEAL_TIMING_OPTIONS } from '@/data/common/ChoiceFields';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   AppointmentPrescription,
   EditPrescriptionDialogProps,
@@ -54,6 +55,7 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
   prescription,
   appointmentUid,
 }) => {
+  const { dict } = useTranslation();
   const [drafts, setDrafts] = useState<PrescriptionDraft[]>([]);
 
   // Tracks the prescription set/open state we last synced from, so the form
@@ -104,10 +106,10 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
         },
       }).unwrap();
 
-      toast.success('Prescriptions updated successfully!');
+      toast.success(dict.appointments.editPrescriptionDialog.updateSuccess);
       handleClose();
     } catch {
-      toast.error('Failed to update prescriptions. Please try again.');
+      toast.error(dict.appointments.editPrescriptionDialog.updateError);
     }
   };
 
@@ -116,19 +118,18 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
       <DialogContent className='max-h-[90vh] max-w-2xl overflow-y-auto'>
         <DialogHeader>
           <DialogTitle className='text-primary text-lg font-semibold'>
-            Edit Prescriptions
+            {dict.appointments.editPrescriptionDialog.title}
           </DialogTitle>
 
           <DialogDescription>
-            Update dosage, timing, and instructions for each medicine, or remove
-            a medicine entirely.
+            {dict.appointments.editPrescriptionDialog.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className='flex flex-col gap-2 py-2'>
           {drafts.length === 0 && (
             <p className='text-muted-foreground py-6 text-center text-sm'>
-              No medicines left in this prescription.
+              {dict.appointments.editPrescriptionDialog.noMedicinesLeft}
             </p>
           )}
 
@@ -152,12 +153,17 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
 
                 <div className='grid grid-cols-2 gap-2'>
                   <div className='flex flex-col gap-1'>
-                    <Label htmlFor={`dosage-${draft.uid}`}>Dosage</Label>
+                    <Label htmlFor={`dosage-${draft.uid}`}>
+                      {dict.appointments.editPrescriptionDialog.dosageLabel}
+                    </Label>
 
                     <Input
                       id={`dosage-${draft.uid}`}
                       type='text'
-                      placeholder='e.g. 3 pills'
+                      placeholder={
+                        dict.appointments.editPrescriptionDialog
+                          .dosagePlaceholder
+                      }
                       value={draft.dosage}
                       onChange={(event) =>
                         updateDraftField(
@@ -170,12 +176,17 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
                   </div>
 
                   <div className='flex flex-col gap-1'>
-                    <Label htmlFor={`frequency-${draft.uid}`}>Frequency</Label>
+                    <Label htmlFor={`frequency-${draft.uid}`}>
+                      {dict.appointments.editPrescriptionDialog.frequencyLabel}
+                    </Label>
 
                     <Input
                       id={`frequency-${draft.uid}`}
                       type='text'
-                      placeholder='e.g. 3 times daily'
+                      placeholder={
+                        dict.appointments.editPrescriptionDialog
+                          .frequencyPlaceholder
+                      }
                       value={draft.frequency}
                       onChange={(event) =>
                         updateDraftField(
@@ -190,12 +201,17 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
 
                 <div className='grid grid-cols-2 gap-2'>
                   <div className='flex flex-col gap-1'>
-                    <Label htmlFor={`duration-${draft.uid}`}>Duration</Label>
+                    <Label htmlFor={`duration-${draft.uid}`}>
+                      {dict.appointments.editPrescriptionDialog.durationLabel}
+                    </Label>
 
                     <Input
                       id={`duration-${draft.uid}`}
                       type='text'
-                      placeholder='e.g. 7 days'
+                      placeholder={
+                        dict.appointments.editPrescriptionDialog
+                          .durationPlaceholder
+                      }
                       value={draft.duration}
                       onChange={(event) =>
                         updateDraftField(
@@ -209,7 +225,7 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
 
                   <div className='flex flex-col gap-1'>
                     <Label htmlFor={`meal-timing-${draft.uid}`}>
-                      Meal Timing
+                      {dict.appointments.editPrescriptionDialog.mealTimingLabel}
                     </Label>
 
                     <Select
@@ -223,7 +239,12 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
                         id={`meal-timing-${draft.uid}`}
                         className='w-full'
                       >
-                        <SelectValue placeholder='Meal timing' />
+                        <SelectValue
+                          placeholder={
+                            dict.appointments.editPrescriptionDialog
+                              .mealTimingPlaceholder
+                          }
+                        />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -239,12 +260,15 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
 
                 <div className='flex flex-col gap-1'>
                   <Label htmlFor={`instructions-${draft.uid}`}>
-                    Instructions
+                    {dict.appointments.editPrescriptionDialog.instructionsLabel}
                   </Label>
 
                   <Textarea
                     id={`instructions-${draft.uid}`}
-                    placeholder='e.g. Take with water'
+                    placeholder={
+                      dict.appointments.editPrescriptionDialog
+                        .instructionsPlaceholder
+                    }
                     value={draft.instructions}
                     onChange={(event) =>
                       updateDraftField(
@@ -264,12 +288,12 @@ const EditPrescriptionDialog: React.FC<EditPrescriptionDialogProps> = ({
 
         <DialogFooter>
           <Button variant='outline' onClick={handleClose} disabled={isLoading}>
-            Cancel
+            {dict.common.cancel}
           </Button>
 
           <Button onClick={handleSubmit} disabled={isLoading}>
             {isLoading ? <Loading className='text-white!' /> : ''}
-            Save Changes
+            {dict.appointments.editPrescriptionDialog.saveChanges}
           </Button>
         </DialogFooter>
       </DialogContent>

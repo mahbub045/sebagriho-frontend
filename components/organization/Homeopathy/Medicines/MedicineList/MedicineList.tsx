@@ -23,6 +23,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import { Medicine } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
 import { getCurrencySymbol, PAGE_LIMIT } from '@/utils/constants';
@@ -47,6 +48,7 @@ const toApiDate = (date?: Date) =>
   date ? format(date, 'yyyy-MM-dd') : undefined;
 
 const MedicineList: React.FC = () => {
+  const { dict } = useTranslation();
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
@@ -118,7 +120,7 @@ const MedicineList: React.FC = () => {
     ? dateRange.to
       ? `${format(dateRange.from, 'MMM d, yyyy')} - ${format(dateRange.to, 'MMM d, yyyy')}`
       : format(dateRange.from, 'MMM d, yyyy')
-    : 'Expiration date';
+    : dict.medicines.list.expirationDate;
 
   return (
     <div className='flex flex-col gap-4'>
@@ -126,16 +128,18 @@ const MedicineList: React.FC = () => {
 
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <h1 className='text-xl font-semibold tracking-tight'>Medicines</h1>
+          <h1 className='text-xl font-semibold tracking-tight'>
+            {dict.medicines.list.title}
+          </h1>
 
           <p className='text-muted-foreground mt-1 text-sm'>
-            Manage and view all medicines in your inventory.
+            {dict.medicines.list.subtitle}
           </p>
         </div>
 
         <Button onClick={() => setIsOpenAddingMedicineDialog(true)}>
           <Plus className='h-4 w-4' />
-          Add Medicine
+          {dict.medicines.list.addMedicine}
         </Button>
       </div>
 
@@ -154,7 +158,7 @@ const MedicineList: React.FC = () => {
             type='text'
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
-            placeholder='Search by name, manufacturer, batch number...'
+            placeholder={dict.medicines.list.searchPlaceholder}
             className='pl-9!'
           />
         </div>
@@ -195,7 +199,7 @@ const MedicineList: React.FC = () => {
             onClick={clearFilters}
           >
             <X className='h-3.5 w-3.5' />
-            Clear filters
+            {dict.medicines.list.clearFilters}
           </Button>
         )}
       </Card>
@@ -217,10 +221,12 @@ const MedicineList: React.FC = () => {
         <div className='border-danger/40 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center'>
           <Pill className='text-danger/50 h-10 w-10' />
 
-          <p className='mt-3 text-sm font-medium'>Failed to load medicines</p>
+          <p className='mt-3 text-sm font-medium'>
+            {dict.medicines.list.errorTitle}
+          </p>
 
           <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-            Something went wrong while loading the medicine list.
+            {dict.medicines.list.errorDescription}
           </p>
         </div>
       )}
@@ -232,13 +238,15 @@ const MedicineList: React.FC = () => {
           <Package className='text-muted-foreground/40 h-10 w-10' />
 
           <p className='mt-3 text-sm font-medium'>
-            {hasActiveFilters ? 'No matching medicines' : 'No medicines yet'}
+            {hasActiveFilters
+              ? dict.medicines.list.noMatchingTitle
+              : dict.medicines.list.noMedicinesTitle}
           </p>
 
           <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
             {hasActiveFilters
-              ? 'Try adjusting your search or filters.'
-              : 'Medicines will appear here once they are added to the inventory.'}
+              ? dict.medicines.list.noMatchingDescription
+              : dict.medicines.list.noMedicinesDescription}
           </p>
         </div>
       )}
@@ -287,22 +295,26 @@ const MedicineList: React.FC = () => {
 
                           <div className='mt-1 flex items-center gap-2'>
                             <span className='text-muted-foreground text-xs'>
-                              Power:{' '}
+                              {dict.medicines.list.power}{' '}
                               {medicine.power ? (
                                 medicine.power
                               ) : (
-                                <small className='italic'>Not Specified</small>
+                                <small className='italic'>
+                                  {dict.medicines.list.notSpecified}
+                                </small>
                               )}
                             </span>
 
                             <span className='text-muted-foreground/50'>•</span>
 
                             <span className='text-muted-foreground text-xs'>
-                              Manufacturer:{' '}
+                              {dict.medicines.list.manufacturer}{' '}
                               {medicine.manufacturer ? (
                                 medicine.manufacturer
                               ) : (
-                                <small className='italic'>Not Specified</small>
+                                <small className='italic'>
+                                  {dict.medicines.list.notSpecified}
+                                </small>
                               )}
                             </span>
                           </div>
@@ -317,10 +329,13 @@ const MedicineList: React.FC = () => {
                           <Boxes className='text-primary h-3.5 w-3.5 shrink-0' />
 
                           <div className='min-w-0'>
-                            <p className='text-muted-foreground'>Quantity</p>
+                            <p className='text-muted-foreground'>
+                              {dict.medicines.list.quantity}
+                            </p>
 
                             <p className='truncate font-medium'>
-                              {medicine.total_quantity || '0'} units
+                              {medicine.total_quantity || '0'}{' '}
+                              {dict.medicines.list.units}
                             </p>
                           </div>
                         </div>
@@ -330,7 +345,9 @@ const MedicineList: React.FC = () => {
                           <Tag className='text-secondary h-3.5 w-3.5 shrink-0' />
 
                           <div className='min-w-0'>
-                            <p className='text-muted-foreground'>Unit Price</p>
+                            <p className='text-muted-foreground'>
+                              {dict.medicines.list.unitPrice}
+                            </p>
 
                             <p className='truncate font-medium'>
                               {getCurrencySymbol()}{' '}
@@ -345,14 +362,16 @@ const MedicineList: React.FC = () => {
 
                           <div className='min-w-0'>
                             <p className='text-muted-foreground'>
-                              Batch Number
+                              {dict.medicines.list.batchNumber}
                             </p>
 
                             <p className='truncate font-medium'>
                               {medicine.batch_number ? (
                                 medicine.batch_number
                               ) : (
-                                <small className='italic'>Not Specified</small>
+                                <small className='italic'>
+                                  {dict.medicines.list.notSpecified}
+                                </small>
                               )}
                             </p>
                           </div>
@@ -364,14 +383,16 @@ const MedicineList: React.FC = () => {
 
                           <div className='min-w-0'>
                             <p className='text-muted-foreground'>
-                              Expiration Date
+                              {dict.medicines.list.expirationDateLabel}
                             </p>
 
                             <p className='truncate font-medium'>
                               {formatDate(medicine.expiration_date) ? (
                                 formatDate(medicine.expiration_date)
                               ) : (
-                                <small className='italic'>Not Specified</small>
+                                <small className='italic'>
+                                  {dict.medicines.list.notSpecified}
+                                </small>
                               )}
                             </p>
                           </div>
@@ -384,7 +405,9 @@ const MedicineList: React.FC = () => {
 
                           <span className='font-medium'>
                             {medicine.files?.length ?? 0}{' '}
-                            {medicine.files?.length === 1 ? 'File' : 'Files'}
+                            {medicine.files?.length === 1
+                              ? dict.medicines.list.file
+                              : dict.medicines.list.files}
                           </span>
                         </div>
 
@@ -401,9 +424,13 @@ const MedicineList: React.FC = () => {
             <div className='flex items-center justify-between'>
               {(medicines?.count ?? 0) > 0 && (
                 <p className='text-muted-foreground text-sm whitespace-nowrap'>
-                  Showing {(page - 1) * PAGE_LIMIT + 1} to{' '}
-                  {Math.min(page * PAGE_LIMIT, medicines?.count ?? 0)} of{' '}
-                  {medicines?.count ?? 0} Medicines
+                  {dict.medicines.list.showingResults
+                    .replace('{from}', String((page - 1) * PAGE_LIMIT + 1))
+                    .replace(
+                      '{to}',
+                      String(Math.min(page * PAGE_LIMIT, medicines?.count ?? 0)),
+                    )
+                    .replace('{total}', String(medicines?.count ?? 0))}
                 </p>
               )}
 

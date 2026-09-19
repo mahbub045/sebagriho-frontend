@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -5,6 +7,7 @@ import {
   BLOOD_GROUP_OPTIONS,
   GENDER_OPTIONS,
 } from '@/data/common/ChoiceFields';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { OrganizationOwner } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
 import { CreditCard, Droplet, Mail, Phone } from 'lucide-react';
@@ -38,6 +41,7 @@ const DetailRow = ({
 );
 
 const OrganizationOwnerCard: React.FC<Props> = ({ user }) => {
+  const { dict } = useTranslation();
   const fullName = `${user.first_name} ${user.last_name}`.trim();
   const genderLabel =
     GENDER_OPTIONS.find((option) => option.value === user.gender)?.label ??
@@ -60,7 +64,7 @@ const OrganizationOwnerCard: React.FC<Props> = ({ user }) => {
         <div className='min-w-0'>
           <p className='truncate text-sm font-semibold'>{fullName}</p>
           <Badge variant='outline' className='mt-1 text-[11px] font-medium'>
-            Owner
+            {dict.organizations.ownerCard.owner}
           </Badge>
         </div>
       </div>
@@ -71,36 +75,40 @@ const OrganizationOwnerCard: React.FC<Props> = ({ user }) => {
         <DetailRow
           icon={<Mail className='h-4 w-4' />}
           iconClassName='text-primary'
-          label='Email'
+          label={dict.organizations.ownerCard.email}
           value={user.email}
         />
         <DetailRow
           icon={<Phone className='h-4 w-4' />}
           iconClassName='text-secondary'
-          label='Phone'
+          label={dict.organizations.ownerCard.phone}
           value={user.phone}
         />
         <DetailRow
           icon={<Droplet className='h-4 w-4' />}
           iconClassName='text-danger'
-          label='Blood group'
+          label={dict.organizations.ownerCard.bloodGroup}
           value={bloodGroupLabel}
         />
         <DetailRow
           icon={<CreditCard className='h-4 w-4' />}
           iconClassName='text-info'
-          label='NID'
+          label={dict.organizations.ownerCard.nid}
           value={user.nid}
         />
       </div>
 
       <div className='border-border/60 mt-4 grid grid-cols-2 gap-3 border-t pt-4 text-xs'>
         <div>
-          <p className='text-muted-foreground'>Gender</p>
+          <p className='text-muted-foreground'>
+            {dict.organizations.ownerCard.gender}
+          </p>
           <p className='mt-1'>{genderLabel}</p>
         </div>
         <div>
-          <p className='text-muted-foreground'>Date of birth</p>
+          <p className='text-muted-foreground'>
+            {dict.organizations.ownerCard.dateOfBirth}
+          </p>
           <p className='mt-0.5'>
             {user.date_of_birth ? formatDateAndTime(user.date_of_birth) : '—'}
           </p>

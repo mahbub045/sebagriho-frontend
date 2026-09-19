@@ -1,14 +1,20 @@
 import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
+import { getDictionary } from '@/lib/i18n/getDictionary';
 import AppointmentList from './AppointmentList/AppointmentList';
 
-const HomeopathyAppointmentsContainer: React.FC = () => {
+const HomeopathyAppointmentsContainer = async () => {
+  const dict = await getDictionary();
+
   return (
     <div>
       <Breadcrumbs
         items={[
-          { label: 'Dashboard', href: `/organization/homeopathy/dashboard` },
           {
-            label: 'Appointments',
+            label: dict.nav.dashboard,
+            href: `/organization/homeopathy/dashboard`,
+          },
+          {
+            label: dict.nav.appointments,
             href: `/organization/homeopathy/appointments`,
           },
         ]}

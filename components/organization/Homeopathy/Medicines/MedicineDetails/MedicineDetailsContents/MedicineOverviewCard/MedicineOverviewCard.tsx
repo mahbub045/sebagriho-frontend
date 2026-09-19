@@ -1,6 +1,9 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Edit } from 'lucide-react';
 import { useState } from 'react';
 import EditMedicineOverviewDialog from '../../Dialogs/EditMedicineOverviewDialog';
@@ -8,6 +11,7 @@ import EditMedicineOverviewDialog from '../../Dialogs/EditMedicineOverviewDialog
 const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
   medicine,
 }) => {
+  const { dict } = useTranslation();
   const [isOpenMedicineEditDialog, setIsOpenMedicineEditDialog] =
     useState(false);
 
@@ -19,11 +23,13 @@ const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
             <span>{medicine.name}</span>
           </CardTitle>
           <p className='text-muted-foreground text-sm'>
-            Power:{' '}
+            {dict.medicines.details.overviewCard.power}{' '}
             {medicine.power ? (
               medicine.power
             ) : (
-              <span className='italic'>Not specified</span>
+              <span className='italic'>
+                {dict.medicines.details.overviewCard.notSpecified}
+              </span>
             )}
           </p>
         </div>
@@ -34,28 +40,36 @@ const MedicineOverviewCard: React.FC<MedicineDetailsCardProps> = ({
           onClick={() => setIsOpenMedicineEditDialog(true)}
         >
           <Edit />
-          Edit
+          {dict.common.edit}
         </Button>
       </CardHeader>
 
       <CardContent className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
         <div>
-          <p className='text-muted-foreground text-xs'>Manufacturer</p>
+          <p className='text-muted-foreground text-xs'>
+            {dict.medicines.details.overviewCard.manufacturer}
+          </p>
           <p className='text-sm font-medium'>
             {medicine.manufacturer ? (
               medicine.manufacturer
             ) : (
-              <span className='italic'>Not specified</span>
+              <span className='italic'>
+                {dict.medicines.details.overviewCard.notSpecified}
+              </span>
             )}
           </p>
         </div>
         <div>
-          <p className='text-muted-foreground text-xs'>Batch Number</p>
+          <p className='text-muted-foreground text-xs'>
+            {dict.medicines.details.overviewCard.batchNumber}
+          </p>
           <p className='text-sm font-medium'>
             {medicine.batch_number ? (
               medicine.batch_number
             ) : (
-              <span className='italic'>Not specified</span>
+              <span className='italic'>
+                {dict.medicines.details.overviewCard.notSpecified}
+              </span>
             )}
           </p>
         </div>

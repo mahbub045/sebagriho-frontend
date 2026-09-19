@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useEditMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   EditMedicineOverviewDialogProps,
@@ -40,20 +41,21 @@ const getFieldError = (
   return String(fieldError);
 };
 
-const getGeneralError = (error: unknown): string | undefined => {
-  if (!error || typeof error !== 'object') return undefined;
-  const data = (error as { data?: unknown }).data;
-  if (data && typeof data === 'object') {
-    const dataObj = data as Record<string, unknown>;
-    if (typeof dataObj.message === 'string') return dataObj.message;
-  }
-  return 'Something went wrong while updating the inventory.';
-};
-
 const EditMedicineInventoryDialog: React.FC<
   EditMedicineOverviewDialogProps
 > = ({ isOpen, onClose, medicine }) => {
+  const { dict } = useTranslation();
   const [editMedicine, { isLoading, error }] = useEditMedicineMutation();
+
+  const getGeneralError = (error: unknown): string | undefined => {
+    if (!error || typeof error !== 'object') return undefined;
+    const data = (error as { data?: unknown }).data;
+    if (data && typeof data === 'object') {
+      const dataObj = data as Record<string, unknown>;
+      if (typeof dataObj.message === 'string') return dataObj.message;
+    }
+    return dict.medicines.dialogs.editInventory.genericError;
+  };
 
   const getInitialData = (): MedicineInventoryFormData => ({
     total_quantity: medicine?.total_quantity?.toString() ?? '',
@@ -86,12 +88,12 @@ const EditMedicineInventoryDialog: React.FC<
         medicineUid: medicine.uid,
         payload: changedFields,
       }).unwrap();
-      toast.success('Inventory updated successfully');
+      toast.success(dict.medicines.dialogs.editInventory.successToast);
       onClose();
     } catch (err) {
       console.error('Failed to update inventory:', err);
       toast.error(
-        getGeneralError(err) ?? 'Failed to update inventory. Please try again.',
+        getGeneralError(err) ?? dict.medicines.dialogs.editInventory.errorToast,
       );
     }
   };
@@ -101,16 +103,18 @@ const EditMedicineInventoryDialog: React.FC<
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Inventory
+            {dict.medicines.dialogs.editInventory.title}
           </DialogTitle>
           <DialogDescription>
-            Update the inventory details of the medicine.
+            {dict.medicines.dialogs.editInventory.description}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='total_quantity'>Total Quantity</Label>
+            <Label htmlFor='total_quantity'>
+              {dict.medicines.dialogs.editInventory.totalQuantity}
+            </Label>
             <Input
               type='number'
               id='total_quantity'
@@ -127,7 +131,9 @@ const EditMedicineInventoryDialog: React.FC<
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='unit_price'>Unit Price</Label>
+            <Label htmlFor='unit_price'>
+              {dict.medicines.dialogs.editInventory.unitPrice}
+            </Label>
             <Input
               type='number'
               id='unit_price'
@@ -145,7 +151,9 @@ const EditMedicineInventoryDialog: React.FC<
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='expiration_date'>Expiration Date</Label>
+            <Label htmlFor='expiration_date'>
+              {dict.medicines.dialogs.editInventory.expirationDate}
+            </Label>
             <Input
               type='date'
               id='expiration_date'
@@ -162,10 +170,12 @@ const EditMedicineInventoryDialog: React.FC<
 
           <DialogFooter>
             <Button type='button' variant='outline' onClick={onClose}>
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isUnchanged || isLoading}>
-              {isLoading ? 'Saving...' : 'Save Changes'}
+              {isLoading
+                ? dict.medicines.dialogs.editInventory.saving
+                : dict.medicines.dialogs.editInventory.saveChanges}
             </Button>
           </DialogFooter>
         </form>

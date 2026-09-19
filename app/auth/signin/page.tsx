@@ -6,6 +6,7 @@ import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
@@ -43,6 +44,7 @@ function getSubdomainFromHost(): string {
 function SigninForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { dict } = useTranslation();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -60,7 +62,7 @@ function SigninForm() {
       // concurrently — two overlapping client-side navigations to the same
       // route can otherwise corrupt the RSC stream on the second resolution.
       hasHandledSubdomainMismatch.current = true;
-      toast.error('For Changing Subdomain Forced Signout');
+      toast.error(dict.authPages.signIn.subdomainForcedSignout);
       // The middleware already dropped the session cookie server-side, but we
       // still run the real sign-out flow (backend token invalidation, local
       // storage cleanup, next-auth signOut) so client state is fully reset.
@@ -71,7 +73,7 @@ function SigninForm() {
         router.replace('/auth/signin');
       });
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, dict.authPages.signIn.subdomainForcedSignout]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,9 +91,9 @@ function SigninForm() {
     setIsLoading(false);
 
     if (result?.error) {
-      toast.error('Invalid phone or password. Please try again.');
+      toast.error(dict.authPages.signIn.invalidCredentials);
     } else {
-      toast.success('You have successfully logged in.');
+      toast.success(dict.authPages.signIn.loginSuccess);
       router.push('/');
     }
   };
@@ -153,11 +155,11 @@ function SigninForm() {
             {/* Header */}
             <div className='mb-5'>
               <p className='text-primary text-[11px] font-semibold tracking-[0.3em] uppercase'>
-                Sign in
+                {dict.authPages.signIn.eyebrow}
               </p>
 
               <h2 className='mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100'>
-                Access your account
+                {dict.authPages.signIn.heading}
               </h2>
             </div>
 
@@ -169,19 +171,19 @@ function SigninForm() {
                   htmlFor='phone'
                   className='text-xs font-medium text-slate-700 dark:text-slate-300'
                 >
-                  Phone Number
+                  {dict.authPages.signIn.phoneNumber}
                 </label>
 
                 <div className='flex'>
                   <span className='bg-primary flex shrink-0 items-center rounded-l-lg border border-r-0 border-slate-300 px-3 text-xs font-medium text-white dark:border-slate-700'>
-                    (+88) BD
+                    {dict.authPages.signIn.countryCode}
                   </span>
 
                   <Input
                     id='phone'
                     type='tel'
                     inputMode='numeric'
-                    placeholder='Enter phone number'
+                    placeholder={dict.authPages.signIn.phonePlaceholder}
                     value={phone}
                     onChange={(e) => {
                       const digitsOnly = e.target.value
@@ -202,14 +204,14 @@ function SigninForm() {
                     htmlFor='password'
                     className='text-xs font-medium text-slate-700 dark:text-slate-300'
                   >
-                    Password
+                    {dict.authPages.signIn.password}
                   </label>
 
                   <Link
                     href='/auth/forgot-password'
                     className='text-primary text-xs font-medium hover:underline'
                   >
-                    Forgot password?
+                    {dict.authPages.signIn.forgotPassword}
                   </Link>
                 </div>
 
@@ -217,7 +219,7 @@ function SigninForm() {
                   <Input
                     id='password'
                     type={showPassword ? 'text' : 'password'}
-                    placeholder='Enter your password'
+                    placeholder={dict.authPages.signIn.passwordPlaceholder}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className='h-10 border-slate-200 bg-slate-50 pr-10 text-sm dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:placeholder:text-slate-500'
@@ -228,7 +230,9 @@ function SigninForm() {
                     onClick={() => setShowPassword((prev) => !prev)}
                     className='text-primary/70 hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition'
                     aria-label={
-                      showPassword ? 'Hide password' : 'Show password'
+                      showPassword
+                        ? dict.authPages.signIn.hidePassword
+                        : dict.authPages.signIn.showPassword
                     }
                   >
                     {showPassword ? (
@@ -246,7 +250,11 @@ function SigninForm() {
                 disabled={isLoading || isGoogleLoading}
                 className='bg-primary hover:bg-primary/85 mt-2 h-10 w-full rounded-lg text-sm font-medium text-white'
               >
-                {isLoading ? <Loading className='text-white!' /> : 'Sign in'}
+                {isLoading ? (
+                  <Loading className='text-white!' />
+                ) : (
+                  dict.authPages.signIn.submitButton
+                )}
               </Button>
             </form>
           </div>

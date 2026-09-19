@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/pagination';
 import { statusStyles } from '@/data/superAdmin/Organizations/OrganizationsData';
 import { useGetOrganizationsQuery } from '@/lib/services/endpoints/superAdmin/Organizations/OrganizationsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { OrganizationCardProps } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { PAGE_LIMIT } from '@/utils/constants';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
@@ -22,6 +23,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 const OrganizationList: React.FC = () => {
+  const { dict } = useTranslation();
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isFetching } = useGetOrganizationsQuery({
@@ -66,9 +68,11 @@ const OrganizationList: React.FC = () => {
     return (
       <div className='border-danger mt-2 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center'>
         <Building2 className='text-muted-foreground/40 h-10 w-10' />
-        <p className='mt-3 text-sm font-medium'>No organizations yet</p>
+        <p className='mt-3 text-sm font-medium'>
+          {dict.organizations.list.emptyTitle}
+        </p>
         <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-          Organizations will show up here once someone joins or creates one.
+          {dict.organizations.list.emptyDescription}
         </p>
       </div>
     );
@@ -135,7 +139,9 @@ const OrganizationList: React.FC = () => {
                     {organization.email ? (
                       <span className='truncate'>{organization.email}</span>
                     ) : (
-                      <span className='truncate italic'>Not provided</span>
+                      <span className='truncate italic'>
+                        {dict.organizations.list.notProvided}
+                      </span>
                     )}
                   </div>
                   <div className='text-muted-foreground flex items-center gap-2'>
@@ -143,7 +149,9 @@ const OrganizationList: React.FC = () => {
                     {organization.phone ? (
                       <span className='truncate'>{organization.phone}</span>
                     ) : (
-                      <span className='truncate italic'>Not provided</span>
+                      <span className='truncate italic'>
+                        {dict.organizations.list.notProvided}
+                      </span>
                     )}
                   </div>
 
@@ -152,7 +160,9 @@ const OrganizationList: React.FC = () => {
                     {organization.website ? (
                       <span className='truncate'>{organization.website}</span>
                     ) : (
-                      <span className='truncate italic'>Not provided</span>
+                      <span className='truncate italic'>
+                        {dict.organizations.list.notProvided}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -165,7 +175,8 @@ const OrganizationList: React.FC = () => {
                     </span>
                   </div>
                   <span className='text-muted-foreground text-xs'>
-                    Joined {formatDateAndTime(joined_at)}
+                    {dict.organizations.list.joinedPrefix}{' '}
+                    {formatDateAndTime(joined_at)}
                   </span>
                 </div>
               </Card>
@@ -177,9 +188,13 @@ const OrganizationList: React.FC = () => {
       <div className='flex items-center justify-between'>
         {(data?.count ?? 0) > 0 && (
           <p className='text-muted-foreground text-sm whitespace-nowrap'>
-            Showing {(page - 1) * PAGE_LIMIT + 1} to{' '}
-            {Math.min(page * PAGE_LIMIT, data?.count ?? 0)} of{' '}
-            {data?.count ?? 0} Organizations
+            {dict.organizations.list.showingRange
+              .replace('{from}', String((page - 1) * PAGE_LIMIT + 1))
+              .replace(
+                '{to}',
+                String(Math.min(page * PAGE_LIMIT, data?.count ?? 0)),
+              )
+              .replace('{total}', String(data?.count ?? 0))}
           </p>
         )}
         {totalPages > 1 && (

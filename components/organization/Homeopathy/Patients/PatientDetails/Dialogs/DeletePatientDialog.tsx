@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 
 import { useDeletePatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { DeletePatientDialogProps } from '@/types/Organization/Homeopathy/Patients/PatientsType';
 
 import { ShieldAlert } from 'lucide-react';
@@ -27,6 +28,7 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
   patientUid,
   patientName,
 }) => {
+  const { dict } = useTranslation();
   const router = useRouter();
   const [deletePatient, { isLoading }] = useDeletePatientMutation();
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,13 +40,13 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
       await deletePatient({
         patientUid: patientUid,
       }).unwrap();
-      toast.success('Patient deleted successfully');
+      toast.success(dict.patients.dialogs.deletePatient.successToast);
       onClose();
       router.back();
     } catch (error) {
       console.error('Failed to delete patient:', error);
-      toast.error('Failed to delete patient. Please try again.');
-      setErrorMessage('Failed to delete patient. Please try again.');
+      toast.error(dict.patients.dialogs.deletePatient.errorToast);
+      setErrorMessage(dict.patients.dialogs.deletePatient.errorToast);
     }
   };
 
@@ -57,31 +59,36 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
           </div>
 
           <DialogTitle className='mt-3 text-center sm:text-left'>
-            Delete {patientName}?
+            {dict.patients.dialogs.deletePatient.title.replace(
+              '{name}',
+              patientName,
+            )}
           </DialogTitle>
 
           <DialogDescription className='text-center sm:text-left'>
-            This action is permanent and can&apos;t be reversed.
+            {dict.patients.dialogs.deletePatient.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className='border-danger/20 bg-danger/5 rounded-lg border p-3'>
-          <p className='text-sm font-medium'>Deleting this patient will:</p>
+          <p className='text-sm font-medium'>
+            {dict.patients.dialogs.deletePatient.warningTitle}
+          </p>
 
           <ul className='text-muted-foreground mt-2 space-y-1.5 text-sm'>
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Permanently remove the patient record
+              {dict.patients.dialogs.deletePatient.warningItem1}
             </li>
 
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              Remove associated patient information
+              {dict.patients.dialogs.deletePatient.warningItem2}
             </li>
 
             <li className='flex gap-2'>
               <span className='text-danger'>•</span>
-              This action cannot be undone
+              {dict.patients.dialogs.deletePatient.warningItem3}
             </li>
           </ul>
         </div>
@@ -94,7 +101,7 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
 
         <DialogFooter className='mt-2'>
           <Button variant='outline' disabled={isLoading} asChild>
-            <DialogClose>Cancel</DialogClose>
+            <DialogClose>{dict.common.cancel}</DialogClose>
           </Button>
 
           <Button
@@ -104,7 +111,9 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
           >
             {isLoading && <Loading className='text-danger! h-4 w-4' />}
 
-            {isLoading ? 'Deleting...' : 'Yes, delete patient'}
+            {isLoading
+              ? dict.patients.dialogs.deletePatient.deleting
+              : dict.patients.dialogs.deletePatient.confirmDelete}
           </Button>
         </DialogFooter>
       </DialogContent>

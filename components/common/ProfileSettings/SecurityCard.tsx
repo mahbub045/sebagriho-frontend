@@ -2,11 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { KeyRound, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 import ResetPasswordDialog from './Dialogs/ResetPasswordDialog';
 
 const SecurityCard: React.FC = () => {
+  const { dict } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -15,11 +17,11 @@ const SecurityCard: React.FC = () => {
         <ShieldCheck className='text-destructive h-5 w-5' />
       </div>
 
-      <h3 className='text-sm font-semibold'>Security</h3>
+      <h3 className='text-sm font-semibold'>
+        {dict.profileSettings.security.title}
+      </h3>
       <p className='text-muted-foreground text-xs leading-5'>
-        Keep your account secure by updating your password regularly. Use a mix
-        of letters, numbers, and symbols, and avoid reusing passwords from other
-        sites.
+        {dict.profileSettings.security.description}
       </p>
 
       <Button
@@ -28,7 +30,7 @@ const SecurityCard: React.FC = () => {
         onClick={() => setIsDialogOpen(true)}
       >
         <KeyRound />
-        Reset Password
+        {dict.profileSettings.security.resetPassword}
       </Button>
 
       <ResetPasswordDialog

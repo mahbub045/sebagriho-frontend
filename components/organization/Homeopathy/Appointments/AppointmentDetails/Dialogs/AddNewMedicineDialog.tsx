@@ -36,6 +36,7 @@ import {
 import { MEAL_TIMING_OPTIONS } from '@/data/common/ChoiceFields';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { MedicineOption } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 import { Check, ChevronsUpDown, Pill, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -63,6 +64,7 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
   onClose,
   appointmentUid,
 }) => {
+  const { dict } = useTranslation();
   const [medicinePopoverOpen, setMedicinePopoverOpen] = useState(false);
   const [medicineSearchInput, setMedicineSearchInput] = useState('');
   const [selectedMedicines, setSelectedMedicines] = useState<
@@ -133,7 +135,7 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
 
   const handleSubmit = async () => {
     if (selectedMedicines.length === 0) {
-      toast.error('Select at least one medicine to add.');
+      toast.error(dict.appointments.addMedicineDialog.selectAtLeastOne);
       return;
     }
 
@@ -152,10 +154,10 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
         },
       }).unwrap();
 
-      toast.success('Medicine(s) added successfully!');
+      toast.success(dict.appointments.addMedicineDialog.addSuccess);
       handleClose();
     } catch {
-      toast.error('Failed to add medicine(s). Please try again.');
+      toast.error(dict.appointments.addMedicineDialog.addError);
     }
   };
 
@@ -164,16 +166,16 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
       <DialogContent className='max-h-[90vh] max-w-2xl overflow-y-auto'>
         <DialogHeader>
           <DialogTitle className='text-primary text-lg font-semibold'>
-            Add Medicine
+            {dict.appointments.addMedicineDialog.title}
           </DialogTitle>
 
           <DialogDescription>
-            Search and select medicines to add to this prescription.
+            {dict.appointments.addMedicineDialog.description}
           </DialogDescription>
         </DialogHeader>
 
         <div className='flex flex-col gap-1.5 py-2'>
-          <Label>Medicines</Label>
+          <Label>{dict.appointments.createDialog.medicinesLabel}</Label>
 
           <Popover
             open={medicinePopoverOpen}
@@ -192,10 +194,11 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
               <span className='text-muted-foreground flex items-center gap-2'>
                 <Pill className='h-4 w-4' />
                 {selectedMedicines.length > 0
-                  ? `${selectedMedicines.length} medicine${
-                      selectedMedicines.length > 1 ? 's' : ''
-                    } selected`
-                  : 'Search and add medicines...'}
+                  ? (selectedMedicines.length > 1
+                      ? dict.appointments.createDialog.medicinesSelected
+                      : dict.appointments.createDialog.medicineSelected
+                    ).replace('{count}', String(selectedMedicines.length))
+                  : dict.appointments.createDialog.searchAndAddMedicines}
               </span>
 
               <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
@@ -207,7 +210,9 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
             >
               <Command shouldFilter={false}>
                 <CommandInput
-                  placeholder='Search medicines...'
+                  placeholder={
+                    dict.appointments.createDialog.searchMedicinesPlaceholder
+                  }
                   value={medicineSearchInput}
                   onValueChange={setMedicineSearchInput}
                   className='m-1! h-6! focus:ring-0!'
@@ -216,12 +221,14 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
                 <CommandList className='max-h-70 overflow-y-auto'>
                   {isLoadingMedicines && (
                     <div className='text-muted-foreground p-4 text-center text-sm'>
-                      Searching...
+                      {dict.appointments.createDialog.searching}
                     </div>
                   )}
 
                   {!isLoadingMedicines && (
-                    <CommandEmpty>No medicines found.</CommandEmpty>
+                    <CommandEmpty>
+                      {dict.appointments.createDialog.noMedicinesFound}
+                    </CommandEmpty>
                   )}
 
                   <CommandGroup>
@@ -295,7 +302,7 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
                   <div className='grid grid-cols-2 gap-2'>
                     <Input
                       type='text'
-                      placeholder='Dosage'
+                      placeholder={dict.appointments.createDialog.dosagePlaceholder}
                       value={medicine.dosage}
                       onChange={(event) =>
                         updateMedicineField(
@@ -308,7 +315,9 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
 
                     <Input
                       type='text'
-                      placeholder='Frequency'
+                      placeholder={
+                        dict.appointments.createDialog.frequencyPlaceholder
+                      }
                       value={medicine.frequency}
                       onChange={(event) =>
                         updateMedicineField(
@@ -324,7 +333,9 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
                     <Input
                       type='number'
                       min={0}
-                      placeholder='Duration (days)'
+                      placeholder={
+                        dict.appointments.createDialog.durationPlaceholder
+                      }
                       value={medicine.duration}
                       onChange={(event) =>
                         updateMedicineField(
@@ -347,7 +358,11 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
                       }
                     >
                       <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Meal timing' />
+                        <SelectValue
+                          placeholder={
+                            dict.appointments.createDialog.mealTimingPlaceholder
+                          }
+                        />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -362,7 +377,9 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
 
                   <Input
                     type='text'
-                    placeholder='Instructions (e.g. Take with water)'
+                    placeholder={
+                      dict.appointments.createDialog.instructionsPlaceholder
+                    }
                     value={medicine.instructions}
                     onChange={(event) =>
                       updateMedicineField(
@@ -380,12 +397,14 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
 
         <DialogFooter>
           <Button variant='outline' onClick={handleClose} disabled={isLoading}>
-            Cancel
+            {dict.common.cancel}
           </Button>
 
           <Button onClick={handleSubmit} disabled={isLoading}>
             {isLoading ? <Loading className='text-white!' /> : ''}
-            Add Medicine{selectedMedicines.length > 1 ? 's' : ''}
+            {selectedMedicines.length > 1
+              ? dict.appointments.addMedicineDialog.addMedicines
+              : dict.appointments.addMedicineDialog.addMedicine}
           </Button>
         </DialogFooter>
       </DialogContent>

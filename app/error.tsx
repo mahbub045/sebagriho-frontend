@@ -3,6 +3,7 @@
 import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { AlertTriangle, Home, LogOut, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -12,6 +13,8 @@ interface ErrorPageProps {
 }
 
 export default function ErrorPage({ error }: ErrorPageProps) {
+  const { dict } = useTranslation();
+
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -43,31 +46,30 @@ export default function ErrorPage({ error }: ErrorPageProps) {
 
         {/* Error Code */}
         <p className='text-destructive text-lg font-semibold tracking-wide uppercase'>
-          Application Error
+          {dict.errorState.applicationError}
         </p>
 
         {/* Heading */}
         <h1 className='mt-3 text-4xl font-bold tracking-tight md:text-5xl'>
-          Something went wrong
+          {dict.errorState.somethingWentWrong}
         </h1>
 
         {/* Description */}
         <p className='text-muted-foreground mx-auto mt-4 max-w-xl text-lg'>
-          We encountered an unexpected problem while processing your request.
-          Our team has been notified and is working to resolve the issue.
+          {dict.errorState.unexpectedProblemDescription}
         </p>
 
         {/* Actions */}
         <div className='mt-10 flex flex-col justify-center gap-4 sm:flex-row'>
           <Button size='lg' onClick={() => window.location.reload()}>
             <RefreshCw />
-            Try Again
+            {dict.errorState.tryAgain}
           </Button>
 
           <Button variant='outline' size='lg' asChild>
             <Link href='/'>
               <Home />
-              Go to Dashboard
+              {dict.errorState.goToDashboard}
             </Link>
           </Button>
           <Button
@@ -78,23 +80,22 @@ export default function ErrorPage({ error }: ErrorPageProps) {
             }}
           >
             <LogOut className='size-4' />
-            Force Sign Out
+            {dict.errorState.forceSignOut}
           </Button>
         </div>
 
         {/* Support Message */}
         <div className='bg-card mt-12 rounded-xl border p-4 text-left'>
-          <p className='font-medium'>Need help?</p>
+          <p className='font-medium'>{dict.errorState.needHelp}</p>
           <p className='text-muted-foreground mt-1 text-sm'>
-            If this problem continues, contact support and include the time the
-            error occurred along with the actions you were performing.
+            {dict.errorState.contactSupportDescription}
           </p>
         </div>
 
         {/* Error Digest (Development Only) */}
         {process.env.NODE_ENV === 'development' && (
           <div className='bg-muted mt-6 overflow-auto rounded-lg p-4 text-left text-sm'>
-            <p className='font-semibold'>Debug Information</p>
+            <p className='font-semibold'>{dict.errorState.debugInformation}</p>
             <p className='mt-2 break-all text-red-500'>{error.message}</p>
           </div>
         )}

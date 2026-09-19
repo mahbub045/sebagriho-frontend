@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useEditMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   EditMedicineOverviewDialogProps,
@@ -46,28 +47,29 @@ const getFieldError = (
   return String(fieldError);
 };
 
-const getGeneralError = (error: unknown): string => {
-  if (!error || typeof error !== 'object') {
-    return 'Something went wrong while updating the medicine description.';
-  }
-
-  const data = (error as { data?: unknown }).data;
-
-  if (data && typeof data === 'object') {
-    const dataObj = data as Record<string, unknown>;
-
-    if (typeof dataObj.message === 'string') {
-      return dataObj.message;
-    }
-  }
-
-  return 'Something went wrong while updating the medicine description.';
-};
-
 const EditMedicineDescriptionDialog: React.FC<
   EditMedicineOverviewDialogProps
 > = ({ isOpen, onClose, medicine }) => {
+  const { dict } = useTranslation();
   const [editMedicine, { isLoading, error }] = useEditMedicineMutation();
+
+  const getGeneralError = (error: unknown): string => {
+    if (!error || typeof error !== 'object') {
+      return dict.medicines.dialogs.editDescription.genericError;
+    }
+
+    const data = (error as { data?: unknown }).data;
+
+    if (data && typeof data === 'object') {
+      const dataObj = data as Record<string, unknown>;
+
+      if (typeof dataObj.message === 'string') {
+        return dataObj.message;
+      }
+    }
+
+    return dict.medicines.dialogs.editDescription.genericError;
+  };
 
   const getInitialData = (): MedicineDescriptionFormData => ({
     description: medicine?.description ?? '',
@@ -101,7 +103,7 @@ const EditMedicineDescriptionDialog: React.FC<
         payload: changedFields,
       }).unwrap();
 
-      toast.success('Medicine description updated successfully');
+      toast.success(dict.medicines.dialogs.editDescription.successToast);
 
       setInitialData(formData);
       onClose();
@@ -110,7 +112,7 @@ const EditMedicineDescriptionDialog: React.FC<
 
       toast.error(
         getGeneralError(err) ||
-          'Failed to update medicine description. Please try again.',
+          dict.medicines.dialogs.editDescription.errorToast,
       );
     }
   };
@@ -120,23 +122,27 @@ const EditMedicineDescriptionDialog: React.FC<
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Description
+            {dict.medicines.dialogs.editDescription.title}
           </DialogTitle>
 
           <DialogDescription>
-            Update the description of the medicine.
+            {dict.medicines.dialogs.editDescription.description}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='description'>Description</Label>
+            <Label htmlFor='description'>
+              {dict.medicines.dialogs.editDescription.descriptionLabel}
+            </Label>
 
             <Textarea
               id='description'
               value={formData.description ?? ''}
               onChange={(e) => handleChange(e.target.value)}
-              placeholder='Enter medicine description'
+              placeholder={
+                dict.medicines.dialogs.editDescription.descriptionPlaceholder
+              }
               rows={5}
               aria-invalid={!!getFieldError(error, 'description')}
               className='field-sizing-fixed'
@@ -156,11 +162,13 @@ const EditMedicineDescriptionDialog: React.FC<
               onClick={onClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
 
             <Button type='submit' disabled={isUnchanged || isLoading}>
-              {isLoading ? 'Saving...' : 'Save Changes'}
+              {isLoading
+                ? dict.medicines.dialogs.editDescription.saving
+                : dict.medicines.dialogs.editDescription.saveChanges}
             </Button>
           </DialogFooter>
         </form>

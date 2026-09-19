@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MedicineDetailsCardProps } from '@/types/Organization/Homeopathy/Medicines/MedicinesType';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import EditMedicineFilesDialog from '../../Dialogs/EditMedicineFilesDialog';
 
 const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)$/i.test(url);
@@ -14,6 +15,7 @@ const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)$/i.test(url);
 const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
   medicine,
 }) => {
+  const { dict } = useTranslation();
   const files = medicine.files ?? [];
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const [previewAlt, setPreviewAlt] = useState<string>('');
@@ -34,7 +36,7 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
     <Card>
       <CardHeader className='flex items-center justify-between'>
         <CardTitle className='text-base font-semibold'>
-          Medicine Images
+          {dict.medicines.details.filesCard.title}
         </CardTitle>
         <Button
           variant='default'
@@ -42,13 +44,15 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
           onClick={() => setIsOpenMedicineEditDialog(true)}
         >
           <Edit />
-          Edit
+          {dict.common.edit}
         </Button>
       </CardHeader>
 
       <CardContent>
         {files.length === 0 ? (
-          <p className='text-muted-foreground text-sm'>No files uploaded.</p>
+          <p className='text-muted-foreground text-sm'>
+            {dict.medicines.details.filesCard.noFiles}
+          </p>
         ) : (
           <div className='grid grid-cols-3 gap-2 sm:grid-cols-4'>
             {files.map((file) =>
@@ -80,7 +84,7 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
                 >
                   <FileIcon className='text-muted-foreground h-5 w-5' />
                   <span className='text-muted-foreground line-clamp-2 text-xs'>
-                    {file.name ?? 'File'}
+                    {file.name ?? dict.medicines.details.filesCard.file}
                   </span>
                 </button>
               ),
@@ -98,7 +102,7 @@ const MedicineFilesCard: React.FC<MedicineDetailsCardProps> = ({
             type='button'
             onClick={closePreview}
             className='absolute top-4 right-4 cursor-pointer rounded-full bg-white/10 p-2 text-white hover:bg-white/20'
-            aria-label='Close preview'
+            aria-label={dict.medicines.details.filesCard.closePreview}
           >
             <X className='text-danger h-6 w-6' />
           </button>

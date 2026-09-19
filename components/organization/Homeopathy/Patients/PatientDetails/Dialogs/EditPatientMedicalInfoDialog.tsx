@@ -1,4 +1,5 @@
 import Loading from '@/components/common/CustomLoader/Loading';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -30,6 +31,7 @@ import { toast } from 'sonner';
 const EditPatientMedicalInfoDialog: React.FC<
   EditPatientMedicalInfoDailogProps
 > = ({ isOpen, onClose, patientInfo }) => {
+  const { dict } = useTranslation();
   const [editPatient, { isLoading, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState<{
@@ -92,9 +94,9 @@ const EditPatientMedicalInfoDialog: React.FC<
         payload,
       }).unwrap();
       onClose();
-      toast.success('Medical info updated successfully');
+      toast.success(dict.patients.dialogs.editMedicalInfo.successToast);
     } catch {
-      toast.error('Failed to update medical info. Please check the form.');
+      toast.error(dict.patients.dialogs.editMedicalInfo.errorToast);
     }
   };
 
@@ -103,10 +105,10 @@ const EditPatientMedicalInfoDialog: React.FC<
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Patient Medical Info
+            {dict.patients.dialogs.editMedicalInfo.title}
           </DialogTitle>
           <DialogDescription>
-            Update the patient&apos;s miasm type and habits.
+            {dict.patients.dialogs.editMedicalInfo.description}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -115,14 +117,20 @@ const EditPatientMedicalInfoDialog: React.FC<
           className='flex flex-col gap-5 p-1'
         >
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='miasm_type'>Miasm Type</Label>
+            <Label htmlFor='miasm_type'>
+              {dict.patients.dialogs.editMedicalInfo.miasmType}
+            </Label>
             <Select
               items={MIASM_TYPE_OPTIONS}
               value={formData.miasm_type}
               onValueChange={handleMiasmChange}
             >
               <SelectTrigger id='miasm_type' className='w-full'>
-                <SelectValue placeholder='Select miasm type' />
+                <SelectValue
+                  placeholder={
+                    dict.patients.dialogs.editMedicalInfo.miasmTypePlaceholder
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
                 {MIASM_TYPE_OPTIONS.map((option) => (
@@ -140,7 +148,9 @@ const EditPatientMedicalInfoDialog: React.FC<
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='habits'>Habits</Label>
+            <Label htmlFor='habits'>
+              {dict.patients.dialogs.editMedicalInfo.habits}
+            </Label>
             <Textarea
               id='habits'
               name='habits'
@@ -163,11 +173,11 @@ const EditPatientMedicalInfoDialog: React.FC<
               onClick={onClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Save Changes
+              {dict.patients.dialogs.saveChanges}
             </Button>
           </div>
         </form>

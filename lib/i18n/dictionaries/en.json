@@ -1,0 +1,838 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "submit": "Submit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "actions": "Actions",
+    "status": "Status",
+    "noResults": "No results found"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "appointments": "Appointments",
+    "patients": "Patients",
+    "medicines": "Medicines",
+    "organizations": "Organizations",
+    "users": "Users",
+    "profileSettings": "Profile Settings",
+    "menu": "Menu",
+    "logout": "Log out"
+  },
+  "navbar": {
+    "joinReferral": "Join Our Referral Program",
+    "language": "Language",
+    "toggleTheme": "Toggle theme"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "setPassword": "Set Password",
+    "accessDenied": "Access Denied"
+  },
+  "appointments": {
+    "list": {
+      "title": "Appointments",
+      "subtitle": "View and manage all patient appointments in your organization.",
+      "createAppointment": "Create Appointment",
+      "searchPlaceholder": "Search by patient name, symptoms...",
+      "appointmentDateDefault": "Appointment date",
+      "miasmTypePlaceholder": "Miasm Type",
+      "allMiasm": "All Miasm",
+      "clearFilters": "Clear filters",
+      "failedToLoad": "Failed to load appointments",
+      "failedToLoadDescription": "Something went wrong while loading the appointment list.",
+      "noMatching": "No matching appointments",
+      "noAppointmentsYet": "No appointments yet",
+      "tryAdjusting": "Try adjusting your search or filters.",
+      "appearHere": "Appointments will appear here once they are created.",
+      "noPhoneNumber": "No phone number available",
+      "patientSerial": "Patient SL - {value}",
+      "noSerialNumber": "No serial number available",
+      "symptoms": "Symptoms",
+      "notRecorded": "Not recorded",
+      "treatmentEffectiveness": "Treatment Effectiveness",
+      "file": "File",
+      "files": "Files",
+      "showing": "Showing {from} to {to} of {total} Appointments"
+    },
+    "createDialog": {
+      "title": "Create Appointment",
+      "description": "Select a patient, add medicines, and record the visit details.",
+      "patientLabel": "Patient",
+      "searchPatientPlaceholder": "Search patient by name, serial number...",
+      "searchPatientsPlaceholder": "Search patients...",
+      "searching": "Searching...",
+      "noPatientsFound": "No patients found.",
+      "medicinesLabel": "Medicines",
+      "medicineSelected": "{count} medicine selected",
+      "medicinesSelected": "{count} medicines selected",
+      "searchAndAddMedicines": "Search and add medicines...",
+      "searchMedicinesPlaceholder": "Search medicines...",
+      "noMedicinesFound": "No medicines found.",
+      "dosagePlaceholder": "Dosage",
+      "frequencyPlaceholder": "Frequency",
+      "durationPlaceholder": "Duration (days)",
+      "mealTimingPlaceholder": "Meal timing",
+      "instructionsPlaceholder": "Instructions (e.g. Take with water)",
+      "statusLabel": "Status",
+      "statusPlaceholder": "Select status",
+      "symptomsLabel": "Symptoms",
+      "symptomsPlaceholder": "Describe the symptoms...",
+      "treatmentEffectivenessLabel": "Treatment Effectiveness",
+      "treatmentEffectivenessPlaceholder": "Notes on how prior treatment is working...",
+      "createSuccess": "Appointment created successfully!",
+      "createError": "Failed to create appointment. Please try again."
+    },
+    "details": {
+      "breadcrumb": "Appointment Details",
+      "title": "Appointment Details",
+      "subtitle": "Full record for this patient appointment.",
+      "failedToLoad": "Failed to load appointment",
+      "failedToLoadDescription": "Something went wrong while loading this appointment's details."
+    },
+    "addMedicineDialog": {
+      "title": "Add Medicine",
+      "description": "Search and select medicines to add to this prescription.",
+      "selectAtLeastOne": "Select at least one medicine to add.",
+      "addSuccess": "Medicine(s) added successfully!",
+      "addError": "Failed to add medicine(s). Please try again.",
+      "addMedicine": "Add Medicine",
+      "addMedicines": "Add Medicines"
+    },
+    "deleteDialog": {
+      "titlePrefix": "Delete {name}?",
+      "description": "This action is permanent and can't be reversed.",
+      "willDo": "Deleting this appointment will:",
+      "removeRecord": "Permanently remove the appointment record",
+      "removeFiles": "Remove associated files and information",
+      "cannotBeUndone": "This action cannot be undone",
+      "deleting": "Deleting...",
+      "confirmDelete": "Yes, delete appointment",
+      "deleteSuccess": "Appointment deleted successfully",
+      "deleteError": "Failed to delete appointment. Please try again."
+    },
+    "editFilesDialog": {
+      "title": "Edit Appointment Files",
+      "description": "Manage and upload files for this appointment.",
+      "existingFiles": "Existing Files",
+      "uploadFiles": "Upload Files",
+      "chooseFiles": "Choose Files",
+      "selectedFiles": "Selected Files ({count})",
+      "upload": "Upload",
+      "fileRemoved": "File removed",
+      "fileRemoveError": "Failed to remove file. Please try again.",
+      "uploadSuccess": "Files uploaded successfully",
+      "uploadError": "Failed to upload files. Please try again."
+    },
+    "editInfoDialog": {
+      "title": "Edit Appointment Info",
+      "description": "Update the symptoms and treatment effectiveness for this appointment.",
+      "symptomsLabel": "Symptoms",
+      "symptomsPlaceholder": "Describe the symptoms...",
+      "treatmentEffectivenessLabel": "Treatment Effectiveness",
+      "treatmentEffectivenessPlaceholder": "Notes on how prior treatment is working...",
+      "saveChanges": "Save Changes",
+      "updateSuccess": "Appointment updated successfully!",
+      "updateError": "Failed to update appointment. Please try again."
+    },
+    "editPrescriptionDialog": {
+      "title": "Edit Prescriptions",
+      "description": "Update dosage, timing, and instructions for each medicine, or remove a medicine entirely.",
+      "noMedicinesLeft": "No medicines left in this prescription.",
+      "dosageLabel": "Dosage",
+      "dosagePlaceholder": "e.g. 3 pills",
+      "frequencyLabel": "Frequency",
+      "frequencyPlaceholder": "e.g. 3 times daily",
+      "durationLabel": "Duration",
+      "durationPlaceholder": "e.g. 7 days",
+      "mealTimingLabel": "Meal Timing",
+      "mealTimingPlaceholder": "Meal timing",
+      "instructionsLabel": "Instructions",
+      "instructionsPlaceholder": "e.g. Take with water",
+      "saveChanges": "Save Changes",
+      "updateSuccess": "Prescriptions updated successfully!",
+      "updateError": "Failed to update prescriptions. Please try again."
+    },
+    "deleteCard": {
+      "warningPrefix": "This permanently removes",
+      "warningSuffixApostropheAppointment": "'s appointment",
+      "warningEnd": "and all its data. This can't be undone.",
+      "deleteAppointment": "Delete Appointment"
+    },
+    "filesCard": {
+      "title": "Files ({count})",
+      "edit": "Edit",
+      "noFilesUploaded": "No files uploaded.",
+      "removeSuccess": "File removed successfully!",
+      "removeError": "Failed to remove file. Please try again."
+    },
+    "infoCard": {
+      "overview": "Appointment Overview",
+      "edit": "Edit",
+      "symptoms": "Symptoms",
+      "notRecorded": "Not recorded",
+      "treatmentEffectiveness": "Treatment Effectiveness",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "statusUpdateSuccess": "Appointment status updated successfully!",
+      "statusUpdateError": "Failed to update status. Please try again."
+    },
+    "patientInfoCard": {
+      "viewProfile": "View patient profile",
+      "ageGender": "Age / Gender",
+      "years": "{age} years",
+      "notAvailable": "N/A",
+      "notRecorded": "Not recorded",
+      "dateOfBirth": "Date of Birth",
+      "phone": "Phone",
+      "notProvided": "Not provided",
+      "email": "Email",
+      "bloodGroup": "Blood Group",
+      "miasmType": "Miasm Type",
+      "address": "Address"
+    },
+    "prescriptionCard": {
+      "medicines": "Medicines {count}",
+      "addNewMedicine": "Add new medicine",
+      "noMedicinesPrescribed": "No medicines prescribed yet.",
+      "days": "{count} days",
+      "removeSuccess": "Medicine removed successfully!",
+      "removeError": "Failed to remove medicine. Please try again."
+    }
+  },
+  "dashboard": {
+    "homeopathy": {
+      "title": "Dashboard Overview",
+      "subtitle": "A quick snapshot of your homeopathy practice at a glance.",
+      "failedToLoad": "Failed to load dashboard",
+      "failedToLoadDescription": "Something went wrong while loading the dashboard overview.",
+      "patientGrowthTitle": "Patient Growth",
+      "patientGrowthDescription": "New patient registrations over time",
+      "patientGrowthEmpty": "No patient growth data yet",
+      "appointmentGrowthTitle": "Appointment Growth",
+      "appointmentGrowthDescription": "Appointments booked over time",
+      "appointmentGrowthEmpty": "No appointment growth data yet",
+      "patientsSeriesLabel": "Patients",
+      "appointmentsSeriesLabel": "Appointments"
+    },
+    "statCards": {
+      "totalPatients": "Total Patients",
+      "totalPatientsSubLabel": "All registered patients",
+      "totalAppointments": "Total Appointments",
+      "totalAppointmentsSubLabel": "All appointments",
+      "todaysAppointments": "Today's Appointments",
+      "todaysAppointmentsSubLabel": "Scheduled today",
+      "totalMedicines": "Total Medicines",
+      "totalMedicinesSubLabel": "All medicines"
+    }
+  },
+  "sidebar": {
+    "userProfilePicture": "User profile picture",
+    "defaultUserName": "User",
+    "signOut": "Sign out"
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "support": "Support"
+  },
+  "breadcrumbs": {},
+  "notification": {
+    "ariaLabel": "Notifications"
+  },
+  "loader": {},
+  "errorState": {
+    "failedToLoad": "Failed to load {title}",
+    "fetchErrorDescription": "Something went wrong while fetching the {title}. Please try again.",
+    "retry": "Retry",
+    "applicationError": "Application Error",
+    "somethingWentWrong": "Something went wrong",
+    "unexpectedProblemDescription": "We encountered an unexpected problem while processing your request. Our team has been notified and is working to resolve the issue.",
+    "tryAgain": "Try Again",
+    "goToDashboard": "Go to Dashboard",
+    "forceSignOut": "Force Sign Out",
+    "needHelp": "Need help?",
+    "contactSupportDescription": "If this problem continues, contact support and include the time the error occurred along with the actions you were performing.",
+    "debugInformation": "Debug Information",
+    "pageNotFound": "This Page Is Not Found",
+    "pageNotFoundDescription": "The page you're looking for may have been moved, deleted, or never existed. Let's help you get back on track.",
+    "backToDashboard": "Back to Dashboard",
+    "goBack": "Go Back",
+    "lostInMapDescription": "Lost in the map? Try navigating from the dashboard or contact support if the issue persists."
+  },
+  "underDevelopment": {
+    "comingSoon": "Coming Soon",
+    "heading": "This Feature Is Under Development",
+    "description": "We're working hard to bring this feature to you. It's currently under development and will be available soon.",
+    "developmentInProgress": "Development in progress",
+    "comingSoonShort": "Coming soon",
+    "thankYou": "Thank you for your patience"
+  },
+  "medicines": {
+    "breadcrumbs": {
+      "dashboard": "Dashboard",
+      "medicines": "Medicines",
+      "medicineDetails": "Medicine Details"
+    },
+    "list": {
+      "title": "Medicines",
+      "subtitle": "Manage and view all medicines in your inventory.",
+      "addMedicine": "Add Medicine",
+      "searchPlaceholder": "Search by name, manufacturer, batch number...",
+      "expirationDate": "Expiration date",
+      "clearFilters": "Clear filters",
+      "errorTitle": "Failed to load medicines",
+      "errorDescription": "Something went wrong while loading the medicine list.",
+      "noMatchingTitle": "No matching medicines",
+      "noMedicinesTitle": "No medicines yet",
+      "noMatchingDescription": "Try adjusting your search or filters.",
+      "noMedicinesDescription": "Medicines will appear here once they are added to the inventory.",
+      "notSpecified": "Not Specified",
+      "power": "Power:",
+      "manufacturer": "Manufacturer:",
+      "quantity": "Quantity",
+      "units": "units",
+      "unitPrice": "Unit Price",
+      "batchNumber": "Batch Number",
+      "expirationDateLabel": "Expiration Date",
+      "file": "File",
+      "files": "Files",
+      "showingResults": "Showing {from} to {to} of {total} Medicines"
+    },
+    "dialogs": {
+      "addMedicine": {
+        "title": "Add Medicine",
+        "description": "Fill in the details of the new medicine to add it to the inventory.",
+        "name": "Name",
+        "namePlaceholder": "e.g., Montair",
+        "power": "Power",
+        "powerPlaceholder": "e.g., 30",
+        "manufacturer": "Manufacturer",
+        "manufacturerPlaceholder": "e.g., Boiron",
+        "batchNumber": "Batch Number",
+        "batchNumberPlaceholder": "e.g., ARN-2026-001",
+        "totalQuantity": "Total Quantity",
+        "totalQuantityPlaceholder": "e.g., 100",
+        "unitPrice": "Unit Price({currency})",
+        "unitPricePlaceholder": "e.g., 25.50",
+        "expirationDate": "Expiration Date",
+        "description_field": "Description",
+        "descriptionPlaceholder": "e.g., Used for bruising and muscle soreness.",
+        "files": "Files",
+        "clearAll": "Clear all",
+        "uploadPrompt": "Click to upload images",
+        "submit": "Add Medicine",
+        "successToast": "Medicine added successfully.",
+        "errorToast": "Failed to add medicine. Please check the form and try again."
+      },
+      "deleteMedicine": {
+        "title": "Delete {medicineName}?",
+        "description": "This action is permanent and can't be reversed.",
+        "willTitle": "Deleting this medicine will:",
+        "willRemoveRecord": "Permanently remove the medicine record",
+        "willRemoveFiles": "Remove associated files and information",
+        "willCannotUndo": "This action cannot be undone",
+        "deleting": "Deleting...",
+        "confirmDelete": "Yes, delete medicine",
+        "successToast": "Medicine deleted successfully",
+        "errorToast": "Failed to delete medicine. Please try again."
+      },
+      "editDescription": {
+        "title": "Edit Description",
+        "description": "Update the description of the medicine.",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Enter medicine description",
+        "successToast": "Medicine description updated successfully",
+        "genericError": "Something went wrong while updating the medicine description.",
+        "errorToast": "Failed to update medicine description. Please try again.",
+        "saving": "Saving...",
+        "saveChanges": "Save Changes"
+      },
+      "editFiles": {
+        "title": "Edit Medicine Files",
+        "description": "Manage and upload files for this medicine.",
+        "existingFiles": "Existing Files",
+        "uploadFiles": "Upload Files",
+        "chooseFiles": "Choose Files",
+        "selectedFiles": "Selected Files ({count})",
+        "removeSuccessToast": "File removed successfully",
+        "removeErrorToast": "Failed to remove file. Please try again.",
+        "uploadSuccessToast": "Files uploaded successfully",
+        "uploadErrorToast": "Failed to upload files. Please try again.",
+        "upload": "Upload"
+      },
+      "editInventory": {
+        "title": "Edit Inventory",
+        "description": "Update the inventory details of the medicine.",
+        "totalQuantity": "Total Quantity",
+        "unitPrice": "Unit Price",
+        "expirationDate": "Expiration Date",
+        "successToast": "Inventory updated successfully",
+        "genericError": "Something went wrong while updating the inventory.",
+        "errorToast": "Failed to update inventory. Please try again.",
+        "saving": "Saving...",
+        "saveChanges": "Save Changes"
+      },
+      "editOverview": {
+        "title": "Edit Medicine",
+        "description": "Update the details of the medicine.",
+        "name": "Name",
+        "power": "Power",
+        "manufacturer": "Manufacturer",
+        "batchNumber": "Batch Number",
+        "successToast": "Medicine updated successfully",
+        "genericError": "Something went wrong while updating the medicine.",
+        "errorToast": "Failed to update medicine. Please try again.",
+        "saving": "Saving...",
+        "saveChanges": "Save Changes"
+      }
+    },
+    "details": {
+      "loadError": "Failed to load medicine details. Please try again.",
+      "deleteCard": {
+        "warning": "This permanently removes {medicineName} and all its data. This can't be undone.",
+        "deleteButton": "Delete Medicine"
+      },
+      "descriptionCard": {
+        "title": "Description",
+        "noDescription": "No description provided."
+      },
+      "filesCard": {
+        "title": "Medicine Images",
+        "noFiles": "No files uploaded.",
+        "file": "File",
+        "closePreview": "Close preview"
+      },
+      "inventoryCard": {
+        "title": "Inventory",
+        "totalQuantity": "Total Quantity",
+        "unitPrice": "Unit Price",
+        "notSpecified": "Not specified"
+      },
+      "overviewCard": {
+        "power": "Power:",
+        "notSpecified": "Not specified",
+        "manufacturer": "Manufacturer",
+        "batchNumber": "Batch Number"
+      }
+    }
+  },
+  "organizations": {
+    "list": {
+      "title": "Organizations",
+      "subtitle": "Manage and view all organizations on the platform.",
+      "addOrganization": "Add Organization",
+      "emptyTitle": "No organizations yet",
+      "emptyDescription": "Organizations will show up here once someone joins or creates one.",
+      "notProvided": "Not provided",
+      "joinedPrefix": "Joined",
+      "showingRange": "Showing {from} to {to} of {total} Organizations"
+    },
+    "ownerCard": {
+      "owner": "Owner",
+      "email": "Email",
+      "phone": "Phone",
+      "bloodGroup": "Blood group",
+      "nid": "NID",
+      "gender": "Gender",
+      "dateOfBirth": "Date of birth"
+    },
+    "socialCard": {
+      "title": "Social links"
+    },
+    "detail": {
+      "breadcrumb": "Organization Details",
+      "errorTitle": "Failed to load organization",
+      "updateOrganization": "Update Organization",
+      "aboutCard": {
+        "title": "About",
+        "email": "Email",
+        "phone": "Phone",
+        "website": "Website",
+        "address": "Address",
+        "notProvided": "Not provided",
+        "noDescription": "No description provided."
+      }
+    },
+    "deleteCard": {
+      "warningPrefix": "This permanently removes",
+      "warningSuffix": "and all its data. This can't be undone."
+    },
+    "dialogs": {
+      "tabs": {
+        "organization": "Organization",
+        "owner": "Owner",
+        "socialLinks": "Social Links"
+      },
+      "fields": {
+        "organizationName": "Organization Name",
+        "organizationType": "Organization Type",
+        "subdomain": "Subdomain",
+        "description": "Description",
+        "address": "Address",
+        "website": "Website",
+        "status": "Status",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "gender": "Gender",
+        "dateOfBirth": "Date of Birth",
+        "nid": "NID",
+        "bloodGroup": "Blood Group",
+        "facebook": "Facebook",
+        "twitter": "Twitter / X",
+        "linkedin": "LinkedIn",
+        "youtube": "YouTube"
+      },
+      "placeholders": {
+        "organizationEmail": "organization@example.com",
+        "subdomain": "e.g. acme",
+        "description": "Briefly describe this organization",
+        "address": "e.g. Dhaka, Bangladesh",
+        "website": "https://example.com",
+        "selectType": "Select organization type",
+        "selectStatus": "Select status",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "userEmail": "name@example.com",
+        "nid": "NID number",
+        "selectGender": "Select gender",
+        "selectBloodGroup": "Select blood group"
+      },
+      "validation": {
+        "orgNameRequired": "Organization name is required.",
+        "orgTypeRequired": "Organization type is required.",
+        "firstNameRequired": "First name is required.",
+        "lastNameRequired": "Last name is required.",
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "phoneRequired": "Phone number is required.",
+        "phoneInvalid": "Enter a valid phone number.",
+        "genderRequired": "Gender is required.",
+        "genericSubmitError": "Something went wrong. Please try again."
+      },
+      "addOrganization": {
+        "checking": "Checking...",
+        "adding": "Adding...",
+        "submit": "Add Organization"
+      },
+      "updateOrganization": {
+        "title": "Update Organization",
+        "descriptionPrefix": "Update the details for",
+        "descriptionSuffix": ".",
+        "fallbackName": "this organization",
+        "saving": "Saving...",
+        "saveChanges": "Save Changes"
+      },
+      "deleteOrganization": {
+        "trigger": "Delete Organization",
+        "title": "Delete {name}?",
+        "description": "This action is permanent and can't be reversed.",
+        "consequencesTitle": "Deleting this organization will:",
+        "consequence1": "Permanently remove the organization record",
+        "consequence2": "Remove all associated data and files",
+        "consequence3": "This action cannot be undone",
+        "confirmPrefix": "Type",
+        "confirmSuffix": "to confirm",
+        "deleting": "Deleting...",
+        "confirmButton": "Yes, delete organization"
+      }
+    }
+  },
+  "patients": {
+    "breadcrumbs": {
+      "patientDetails": "Patient Details"
+    },
+    "list": {
+      "title": "Patients",
+      "subtitle": "Manage and view all patient records in your organization.",
+      "addPatient": "Add Patient",
+      "searchPlaceholder": "Search by name, serial number, phone...",
+      "allStatus": "All Status",
+      "statusPlaceholder": "Status",
+      "allMiasm": "All Miasm",
+      "miasmPlaceholder": "Miasm Type",
+      "clearFilters": "Clear filters",
+      "failedToLoad": "Failed to load patients",
+      "failedToLoadDescription": "Something went wrong while loading the patient list.",
+      "noMatchingPatients": "No matching patients",
+      "noPatientsYet": "No patients yet",
+      "adjustFilters": "Try adjusting your search or filters.",
+      "emptyDescription": "Patients will appear here once they are added to the system.",
+      "avatarAlt": "Avatar of {name}",
+      "oldSerialNumberShort": "Old #{number}",
+      "bloodGroupLabel": "Blood Group: {value}",
+      "ageGenderLabel": "Age / Gender",
+      "ageGenderValue": "{age} years • {gender}",
+      "miasmLabel": "Miasm",
+      "notSpecified": "Not specified",
+      "addressNotProvided": "Address not provided",
+      "fileCountSingular": "{count} File",
+      "fileCountPlural": "{count} Files",
+      "showingRange": "Showing {from} to {to} of {total} Patients",
+      "notAvailable": "N/A"
+    },
+    "dialogs": {
+      "addPatient": {
+        "title": "Add Patient",
+        "description": "Enter the patient's details below.",
+        "personalInformationSection": "Personal Information",
+        "contactInformationSection": "Contact Information",
+        "medicalInformationSection": "Medical Information",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "First name",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "Last name",
+        "phone": "Phone",
+        "email": "Email",
+        "emailPlaceholder": "name@example.com",
+        "gender": "Gender",
+        "genderPlaceholder": "Select gender",
+        "age": "Age",
+        "agePlaceholder": "Age",
+        "oldSerialNumber": "Old Serial Number",
+        "oldSerialNumberPlaceholder": "Old serial number",
+        "address": "Address",
+        "addressPlaceholder": "e.g. Dhaka, Bangladesh",
+        "bloodGroup": "Blood Group",
+        "bloodGroupPlaceholder": "Select blood group",
+        "miasmType": "Miasm Type",
+        "miasmTypePlaceholder": "Select miasm type",
+        "caseHistory": "Case History",
+        "caseHistoryPlaceholder": "Enter case history",
+        "habits": "Habits",
+        "habitsPlaceholder": "Enter patient habits",
+        "adding": "Adding...",
+        "errors": {
+          "firstNameRequired": "First name is required.",
+          "lastNameRequired": "Last name is required.",
+          "phoneRequired": "Phone number is required.",
+          "invalidEmail": "Enter a valid email address.",
+          "genericError": "Something went wrong. Please try again."
+        }
+      },
+      "deletePatient": {
+        "title": "Delete {name}?",
+        "description": "This action is permanent and can't be reversed.",
+        "warningTitle": "Deleting this patient will:",
+        "warningItem1": "Permanently remove the patient record",
+        "warningItem2": "Remove associated patient information",
+        "warningItem3": "This action cannot be undone",
+        "deleting": "Deleting...",
+        "confirmDelete": "Yes, delete patient",
+        "successToast": "Patient deleted successfully",
+        "errorToast": "Failed to delete patient. Please try again."
+      },
+      "editMedicalHistory": {
+        "title": "Edit Medical History",
+        "description": "Update the patient's case history.",
+        "caseHistory": "Case History",
+        "successToast": "Medical history updated successfully",
+        "errorToast": "Failed to update medical history. Please check the form."
+      },
+      "editContactDetails": {
+        "title": "Edit Patient Contact Details",
+        "description": "Update the patient's contact information.",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "successToast": "Patient edited successfully",
+        "errorToast": "Failed to edit patient. Please check the form."
+      },
+      "editFiles": {
+        "title": "Edit Patient Files",
+        "description": "Manage and upload files for this patient.",
+        "existingFiles": "Existing Files",
+        "uploadFiles": "Upload Files",
+        "chooseFiles": "Choose Files",
+        "selectedFiles": "Selected Files ({count})",
+        "upload": "Upload",
+        "fileRemovedToast": "File removed",
+        "fileRemoveErrorToast": "Failed to remove file. Please try again.",
+        "filesUploadedToast": "Files uploaded successfully",
+        "filesUploadErrorToast": "Failed to upload files. Please try again."
+      },
+      "editIdentity": {
+        "title": "Edit Patient Identity",
+        "description": "Edit the patient's name and profile photo.",
+        "changePhoto": "Change photo",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "successToast": "Patient editd successfully",
+        "errorToast": "Failed to edit patient. Please check the form."
+      },
+      "editMedicalInfo": {
+        "title": "Edit Patient Medical Info",
+        "description": "Update the patient's miasm type and habits.",
+        "miasmType": "Miasm Type",
+        "miasmTypePlaceholder": "Select miasm type",
+        "habits": "Habits",
+        "successToast": "Medical info updated successfully",
+        "errorToast": "Failed to update medical info. Please check the form."
+      },
+      "editPersonalInfo": {
+        "title": "Edit Patient Identity",
+        "description": "Edit the patient's name and profile photo.",
+        "age": "Age",
+        "gender": "Gender",
+        "genderPlaceholder": "Select a gender",
+        "bloodGroup": "Blood Group",
+        "bloodGroupPlaceholder": "Select blood group",
+        "successToast": "Patient editd successfully",
+        "errorToast": "Failed to edit patient. Please check the form."
+      },
+      "saveChanges": "Save Changes"
+    },
+    "detail": {
+      "failedToLoad": "Failed to load patient",
+      "failedToLoadDescription": "Something went wrong while loading this patient's details.",
+      "caseHistoryCard": {
+        "title": "Case History",
+        "empty": "No case history recorded."
+      },
+      "contactCard": {
+        "title": "Contact Details",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "notProvided": "Not provided"
+      },
+      "deleteCard": {
+        "description": "This permanently removes {name} and all its data. This can't be undone.",
+        "deletePatient": "Delete Patient"
+      },
+      "filesCard": {
+        "title": "Files ({count})",
+        "empty": "No files uploaded.",
+        "removedSuccessToast": "File removed successfully!",
+        "removeErrorToast": "Failed to remove file. Please try again."
+      },
+      "identityCard": {
+        "serialNo": "Serial No: {number}",
+        "oldSerial": "Old Serial: {number}",
+        "created": "Created: {date}",
+        "updated": "Updated: {date}"
+      },
+      "medicalInfoCard": {
+        "title": "Medical Information",
+        "miasmType": "Miasm Type",
+        "notSpecified": "Not specified",
+        "habits": "Habits",
+        "notAvailable": "N/A"
+      },
+      "personalInfoCard": {
+        "title": "Personal Information",
+        "ageGenderLabel": "Age / Gender",
+        "ageGenderValue": "{age} years • {gender}",
+        "bloodGroup": "Blood Group",
+        "notAvailable": "N/A"
+      }
+    }
+  },
+  "profileSettings": {
+    "pageTitle": "Profile Settings",
+    "pageDescription": "Manage your personal details, contact information, and account security.",
+    "loadError": "Failed to load profile information. Please try again.",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile. Please check the form.",
+    "saveChanges": "Save Changes",
+    "personalInfo": {
+      "title": "Personal Information & Identification",
+      "description": "Your name as it will appear across the platform.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone",
+      "email": "Email",
+      "gender": "Gender",
+      "selectGender": "Select a gender",
+      "bloodGroup": "Blood Group",
+      "selectBloodGroup": "Select blood group",
+      "dateOfBirth": "Date of Birth",
+      "nidNumber": "NID Number"
+    },
+    "overview": {
+      "photoUpdateSuccess": "Profile photo updated successfully",
+      "photoUpdateError": "Failed to update profile photo",
+      "owner": "Owner",
+      "admin": "Admin"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Keep your account secure by updating your password regularly. Use a mix of letters, numbers, and symbols, and avoid reusing passwords from other sites.",
+      "resetPassword": "Reset Password"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Enter your current password and choose a new one.",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "passwordMismatch": "Passwords do not match",
+      "updateSuccess": "Password updated successfully",
+      "updateError": "Failed to update password. Please check the form.",
+      "cancel": "Cancel",
+      "saveChanges": "Save Changes"
+    }
+  },
+  "authPages": {
+    "accessDenied": {
+      "title": "Access denied",
+      "description": "Your account isn’t assigned to an organization, or doesn’t have permission to view this page.",
+      "wrongAccount": "Signed in to the wrong account, or think this is a mistake?",
+      "signOutButton": "Sign out and try a different account"
+    },
+    "setPassword": {
+      "eyebrow": "Set password",
+      "heading": "Secure your account",
+      "subheading": "Please set a password before you continue.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "enterPrefix": "Enter",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "passwordMismatch": "Passwords do not match",
+      "setSuccess": "Password set successfully.",
+      "setError": "Failed to set password. Please check the form.",
+      "submitButton": "Set password",
+      "signOutInstead": "Sign out instead"
+    },
+    "signIn": {
+      "eyebrow": "Sign in",
+      "heading": "Access your account",
+      "phoneNumber": "Phone Number",
+      "countryCode": "(+88) BD",
+      "phonePlaceholder": "Enter phone number",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "passwordPlaceholder": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "submitButton": "Sign in",
+      "subdomainForcedSignout": "For Changing Subdomain Forced Signout",
+      "invalidCredentials": "Invalid phone or password. Please try again.",
+      "loginSuccess": "You have successfully logged in."
+    },
+    "sidePanel": {
+      "eyebrow": "Welcome back",
+      "heading": "Manage your operations from one place.",
+      "description": "Every customer interaction, every order, and every update in one centralized workspace."
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import Loading from '@/components/common/CustomLoader/Loading';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -31,6 +32,7 @@ import { toast } from 'sonner';
 const EditPatientPersonalInfoDialog: React.FC<
   EditPatientPersonalInfoDailogProps
 > = ({ isOpen, onClose, patientInfo }) => {
+  const { dict } = useTranslation();
   const [editPatient, { isLoading, isError, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState({
@@ -71,9 +73,9 @@ const EditPatientPersonalInfoDialog: React.FC<
         payload,
       }).unwrap();
       onClose();
-      toast.success('Patient editd successfully');
+      toast.success(dict.patients.dialogs.editPersonalInfo.successToast);
     } catch {
-      toast.error('Failed to edit patient. Please check the form.');
+      toast.error(dict.patients.dialogs.editPersonalInfo.errorToast);
     }
   };
 
@@ -82,10 +84,10 @@ const EditPatientPersonalInfoDialog: React.FC<
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Patient Identity
+            {dict.patients.dialogs.editPersonalInfo.title}
           </DialogTitle>
           <DialogDescription>
-            Edit the patient&apos;s name and profile photo.
+            {dict.patients.dialogs.editPersonalInfo.description}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -95,7 +97,9 @@ const EditPatientPersonalInfoDialog: React.FC<
         >
           <div className='grid grid-cols-2 gap-4'>
             <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='age'>Age</Label>
+              <Label htmlFor='age'>
+                {dict.patients.dialogs.editPersonalInfo.age}
+              </Label>
               <Input
                 type='text'
                 id='age'
@@ -110,7 +114,9 @@ const EditPatientPersonalInfoDialog: React.FC<
               )}
             </div>
             <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='gender'>Gender</Label>
+              <Label htmlFor='gender'>
+                {dict.patients.dialogs.editPersonalInfo.gender}
+              </Label>
               <Select
                 items={GENDER_OPTIONS}
                 id='gender'
@@ -125,7 +131,11 @@ const EditPatientPersonalInfoDialog: React.FC<
                   className='w-full'
                   aria-invalid={!!getFieldError('gender')}
                 >
-                  <SelectValue placeholder='Select a gender' />
+                  <SelectValue
+                    placeholder={
+                      dict.patients.dialogs.editPersonalInfo.genderPlaceholder
+                    }
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {GENDER_OPTIONS.map((option) => (
@@ -145,7 +155,9 @@ const EditPatientPersonalInfoDialog: React.FC<
 
           <div className='flex flex-col gap-1.5'>
             <div className='space-y-1.5'>
-              <Label htmlFor='blood_group'>Blood Group</Label>
+              <Label htmlFor='blood_group'>
+                {dict.patients.dialogs.editPersonalInfo.bloodGroup}
+              </Label>
 
               <Select
                 items={BLOOD_GROUP_OPTIONS}
@@ -159,7 +171,12 @@ const EditPatientPersonalInfoDialog: React.FC<
                   className='w-full'
                   aria-invalid={!!getFieldError('user.blood_group')}
                 >
-                  <SelectValue placeholder='Select blood group' />
+                  <SelectValue
+                    placeholder={
+                      dict.patients.dialogs.editPersonalInfo
+                        .bloodGroupPlaceholder
+                    }
+                  />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -192,11 +209,11 @@ const EditPatientPersonalInfoDialog: React.FC<
               onClick={onClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Save Changes
+              {dict.patients.dialogs.saveChanges}
             </Button>
           </div>
         </form>

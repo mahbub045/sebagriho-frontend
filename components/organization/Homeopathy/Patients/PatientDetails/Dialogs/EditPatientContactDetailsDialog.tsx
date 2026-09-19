@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEditPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   EditPatientContactDetailsDailogProps,
   FieldErrorMap,
@@ -22,6 +23,7 @@ import { toast } from 'sonner';
 const EditPatientContactDetailsDialog: React.FC<
   EditPatientContactDetailsDailogProps
 > = ({ isOpen, onClose, patientInfo }) => {
+  const { dict } = useTranslation();
   const [editPatient, { isLoading, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState({
@@ -97,9 +99,9 @@ const EditPatientContactDetailsDialog: React.FC<
         payload,
       }).unwrap();
       onClose();
-      toast.success('Patient edited successfully');
+      toast.success(dict.patients.dialogs.editContactDetails.successToast);
     } catch {
-      toast.error('Failed to edit patient. Please check the form.');
+      toast.error(dict.patients.dialogs.editContactDetails.errorToast);
     }
   };
 
@@ -108,10 +110,10 @@ const EditPatientContactDetailsDialog: React.FC<
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Patient Contact Details
+            {dict.patients.dialogs.editContactDetails.title}
           </DialogTitle>
           <DialogDescription>
-            Update the patient&apos;s contact information.
+            {dict.patients.dialogs.editContactDetails.description}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -120,7 +122,9 @@ const EditPatientContactDetailsDialog: React.FC<
           className='flex flex-col gap-5 p-1'
         >
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='phone'>Phone</Label>
+            <Label htmlFor='phone'>
+              {dict.patients.dialogs.editContactDetails.phone}
+            </Label>
             <BdPhoneInput
               id='phone'
               value={formData.phone}
@@ -137,7 +141,9 @@ const EditPatientContactDetailsDialog: React.FC<
           </div>
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='email'>Email</Label>
+            <Label htmlFor='email'>
+              {dict.patients.dialogs.editContactDetails.email}
+            </Label>
             <Input
               type='email'
               id='email'
@@ -152,7 +158,9 @@ const EditPatientContactDetailsDialog: React.FC<
             )}
           </div>
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='address'>Address</Label>
+            <Label htmlFor='address'>
+              {dict.patients.dialogs.editContactDetails.address}
+            </Label>
             <Input
               type='text'
               id='address'
@@ -173,11 +181,11 @@ const EditPatientContactDetailsDialog: React.FC<
               onClick={onClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Save Changes
+              {dict.patients.dialogs.saveChanges}
             </Button>
           </div>
         </form>

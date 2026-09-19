@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import {
@@ -5,6 +7,7 @@ import {
   ORGANIZATION_TYPE_OPTIONS,
 } from '@/data/common/ChoiceFields';
 import { statusStyles } from '@/data/superAdmin/Organizations/OrganizationsData';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { OrganizationDetail } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { formatDateAndTime, getInitials } from '@/utils/formatters';
 import { Building2, Globe } from 'lucide-react';
@@ -22,6 +25,7 @@ const OrganizationHeroCard: React.FC<Props> = ({
   status,
   joinedAt,
 }) => {
+  const { dict } = useTranslation();
   const statusClass = statusStyles[status] ?? statusStyles.INACTIVE;
   const typeLabel =
     ORGANIZATION_TYPE_OPTIONS.find(
@@ -70,7 +74,7 @@ const OrganizationHeroCard: React.FC<Props> = ({
 
       <div className='border-border/60 bg-muted/30 flex flex-wrap items-center justify-between gap-2 border-t px-5 py-3 text-xs'>
         <span className='text-muted-foreground'>
-          Joined {formatDateAndTime(joinedAt)}
+          {dict.organizations.list.joinedPrefix} {formatDateAndTime(joinedAt)}
         </span>
         <span className='flex items-center'>
           <Globe className='text-primary h-3.5 w-3.5' />

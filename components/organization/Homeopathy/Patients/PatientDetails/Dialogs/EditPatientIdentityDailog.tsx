@@ -1,4 +1,5 @@
 import Loading from '@/components/common/CustomLoader/Loading';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,6 +25,7 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
   onClose,
   patientInfo,
 }) => {
+  const { dict } = useTranslation();
   const [editPatient, { isLoading, isError, error }] = useEditPatientMutation();
 
   const [formData, setFormData] = useState({
@@ -75,9 +77,9 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
         payload,
       }).unwrap();
       onClose();
-      toast.success('Patient editd successfully');
+      toast.success(dict.patients.dialogs.editIdentity.successToast);
     } catch {
-      toast.error('Failed to edit patient. Please check the form.');
+      toast.error(dict.patients.dialogs.editIdentity.errorToast);
     }
   };
 
@@ -86,10 +88,10 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Patient Identity
+            {dict.patients.dialogs.editIdentity.title}
           </DialogTitle>
           <DialogDescription>
-            Edit the patient&apos;s name and profile photo.
+            {dict.patients.dialogs.editIdentity.description}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -109,7 +111,7 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
                 htmlFor='avatar-upload'
                 className='text-primary cursor-pointer text-sm font-medium hover:underline'
               >
-                Change photo
+                {dict.patients.dialogs.editIdentity.changePhoto}
               </Label>
               <Input
                 id='avatar-upload'
@@ -128,7 +130,9 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
 
           <div className='grid grid-cols-2 gap-4'>
             <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='first_name'>First Name</Label>
+              <Label htmlFor='first_name'>
+                {dict.patients.dialogs.editIdentity.firstName}
+              </Label>
               <Input
                 type='text'
                 id='first_name'
@@ -144,7 +148,9 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
               )}
             </div>
             <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='last_name'>Last Name</Label>
+              <Label htmlFor='last_name'>
+                {dict.patients.dialogs.editIdentity.lastName}
+              </Label>
               <Input
                 type='text'
                 id='last_name'
@@ -174,11 +180,11 @@ const EditPatientIdentityDailog: React.FC<EditPatientIdentityDailogProps> = ({
               onClick={onClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loading className='h-4 w-4 text-white!' />}
-              Save Changes
+              {dict.patients.dialogs.saveChanges}
             </Button>
           </div>
         </form>

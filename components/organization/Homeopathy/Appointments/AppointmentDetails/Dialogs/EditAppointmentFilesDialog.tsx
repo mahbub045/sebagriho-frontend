@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { EditAppointmentFilesDialogProps } from '@/types/Organization/Homeopathy/Appointments/AppointmentsType';
 
 import { FileText, Upload, X } from 'lucide-react';
@@ -22,6 +23,7 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
   onClose,
   appointment,
 }) => {
+  const { dict } = useTranslation();
   const [uploadFiles, { isLoading: isUploading }] =
     useEditAppointmentMutation();
   const [deleteFile] = useEditAppointmentMutation();
@@ -54,9 +56,9 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
         appointmentUid: appointment.uid,
         appointmentData: formData,
       }).unwrap();
-      toast.success('File removed');
+      toast.success(dict.appointments.editFilesDialog.fileRemoved);
     } catch {
-      toast.error('Failed to remove file. Please try again.');
+      toast.error(dict.appointments.editFilesDialog.fileRemoveError);
     } finally {
       setDeletingFileUid(null);
     }
@@ -85,10 +87,10 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
         appointmentUid: appointment.uid,
         appointmentData: payload,
       }).unwrap();
-      toast.success('Files uploaded successfully');
+      toast.success(dict.appointments.editFilesDialog.uploadSuccess);
       handleClose();
     } catch {
-      toast.error('Failed to upload files. Please try again.');
+      toast.error(dict.appointments.editFilesDialog.uploadError);
     }
   };
 
@@ -97,10 +99,10 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto p-4 sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Edit Appointment Files
+            {dict.appointments.editFilesDialog.title}
           </DialogTitle>
           <DialogDescription>
-            Manage and upload files for this appointment.
+            {dict.appointments.editFilesDialog.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -111,7 +113,7 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
         >
           {appointment.files && appointment.files.length > 0 && (
             <div className='flex flex-col gap-1.5'>
-              <Label>Existing Files</Label>
+              <Label>{dict.appointments.editFilesDialog.existingFiles}</Label>
               <div className='flex flex-col gap-2'>
                 {appointment.files.map((file) => {
                   const isDeletingThis = deletingFileUid === file.uid;
@@ -144,7 +146,9 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
           )}
 
           <div className='flex flex-col gap-1.5'>
-            <Label htmlFor='upload_files'>Upload Files</Label>
+            <Label htmlFor='upload_files'>
+              {dict.appointments.editFilesDialog.uploadFiles}
+            </Label>
             <input
               ref={fileInputRef}
               id='upload_files'
@@ -161,13 +165,18 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
               className='justify-center'
             >
               <Upload className='h-4 w-4' />
-              Choose Files
+              {dict.appointments.editFilesDialog.chooseFiles}
             </Button>
           </div>
 
           {selectedFiles.length > 0 && (
             <div className='flex flex-col gap-1.5'>
-              <Label>Selected Files ({selectedFiles.length})</Label>
+              <Label>
+                {dict.appointments.editFilesDialog.selectedFiles.replace(
+                  '{count}',
+                  String(selectedFiles.length),
+                )}
+              </Label>
               <div className='flex flex-col gap-2'>
                 {selectedFiles.map((file, index) => (
                   <div
@@ -199,11 +208,11 @@ const EditAppointmentFilesDialog: React.FC<EditAppointmentFilesDialogProps> = ({
               onClick={handleClose}
               disabled={isUploading || isAnyDeleting}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
             <Button type='submit' disabled={isUploading || isAnyDeleting}>
               {isUploading && <Loading className='h-4 w-4 text-white!' />}
-              Upload
+              {dict.appointments.editFilesDialog.upload}
             </Button>
           </div>
         </form>

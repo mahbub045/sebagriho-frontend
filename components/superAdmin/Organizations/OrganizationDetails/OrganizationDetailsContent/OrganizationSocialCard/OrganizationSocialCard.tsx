@@ -1,4 +1,7 @@
+'use client';
+
 import { Card } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { OrganizationDetail } from '@/types/superAdmin/Organizations/OrganizationsType';
 import { Link2 } from 'lucide-react';
 
@@ -34,11 +37,14 @@ const SOCIAL_LINKS = (organization: OrganizationDetail) => [
 ];
 
 const OrganizationSocialCard: React.FC<Props> = ({ organization }) => {
+  const { dict } = useTranslation();
   const links = SOCIAL_LINKS(organization);
 
   return (
     <Card className='border-border/60 p-5 shadow-sm'>
-      <h2 className='text-sm font-semibold'>Social links</h2>
+      <h2 className='text-sm font-semibold'>
+        {dict.organizations.socialCard.title}
+      </h2>
 
       <div className='mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2'>
         {links.map(({ key, label, url, className }) =>

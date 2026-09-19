@@ -3,6 +3,7 @@
 import Loading from '@/components/common/CustomLoader/Loading';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useEditPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
 import {
   PatientDetailsCardProps,
@@ -15,6 +16,7 @@ import { toast } from 'sonner';
 import EditPatientFilesDialog from '../../Dialogs/EditPatientFilesDialog';
 
 const PatientFilesCard: React.FC<PatientDetailsCardProps> = ({ patient }) => {
+  const { dict } = useTranslation();
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
   const [deletingUid, setDeletingUid] = useState<string | null>(null);
 
@@ -37,9 +39,9 @@ const PatientFilesCard: React.FC<PatientDetailsCardProps> = ({ patient }) => {
         payload,
       }).unwrap();
 
-      toast.success('File removed successfully!');
+      toast.success(dict.patients.detail.filesCard.removedSuccessToast);
     } catch {
-      toast.error('Failed to remove file. Please try again.');
+      toast.error(dict.patients.detail.filesCard.removeErrorToast);
     } finally {
       setDeletingUid(null);
     }
@@ -51,7 +53,10 @@ const PatientFilesCard: React.FC<PatientDetailsCardProps> = ({ patient }) => {
         <div className='flex items-center gap-2'>
           <FileText className='text-success h-4 w-4' />
           <h3 className='text-sm font-semibold'>
-            Files ({patient.files?.length ?? 0})
+            {dict.patients.detail.filesCard.title.replace(
+              '{count}',
+              String(patient.files?.length ?? 0),
+            )}
           </h3>
         </div>
         <Button
@@ -60,7 +65,7 @@ const PatientFilesCard: React.FC<PatientDetailsCardProps> = ({ patient }) => {
           onClick={() => setIsOpenEditPatientDialog(true)}
         >
           <Edit />
-          Edit
+          {dict.common.edit}
         </Button>
       </div>
       <div className='flex flex-col gap-2 p-4'>
@@ -123,7 +128,7 @@ const PatientFilesCard: React.FC<PatientDetailsCardProps> = ({ patient }) => {
           })
         ) : (
           <p className='text-muted-foreground text-xs italic'>
-            No files uploaded.
+            {dict.patients.detail.filesCard.empty}
           </p>
         )}
       </div>

@@ -1,28 +1,30 @@
 'use client';
 
 import { ChartConfig } from '@/components/ui/chart';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useGetHomeopathyDashboardDataQuery } from '@/lib/services/endpoints/organization/Homeopathy/Dashboard/DashboardApi';
 import { AlertTriangle, CalendarCheck, TrendingUp } from 'lucide-react';
 import GrowthChartCard from './DashboardComponents/GrowthChartCard';
 import StatCards from './DashboardComponents/StatCards';
 
-const patientGrowthConfig = {
-  count: {
-    label: 'Patients',
-    color: 'var(--color-chart-1)',
-  },
-} satisfies ChartConfig;
-
-const appointmentGrowthConfig = {
-  count: {
-    label: 'Appointments',
-    color: 'var(--color-secondary)',
-  },
-} satisfies ChartConfig;
-
 const DashboardContent: React.FC = () => {
+  const { dict } = useTranslation();
   const { data, isLoading, isError } =
     useGetHomeopathyDashboardDataQuery(undefined);
+
+  const patientGrowthConfig = {
+    count: {
+      label: dict.dashboard.homeopathy.patientsSeriesLabel,
+      color: 'var(--color-chart-1)',
+    },
+  } satisfies ChartConfig;
+
+  const appointmentGrowthConfig = {
+    count: {
+      label: dict.dashboard.homeopathy.appointmentsSeriesLabel,
+      color: 'var(--color-secondary)',
+    },
+  } satisfies ChartConfig;
 
   if (isLoading) {
     return (
@@ -53,10 +55,12 @@ const DashboardContent: React.FC = () => {
       <div className='border-danger/40 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center'>
         <AlertTriangle className='text-danger/50 h-10 w-10' />
 
-        <p className='mt-3 text-sm font-medium'>Failed to load dashboard</p>
+        <p className='mt-3 text-sm font-medium'>
+          {dict.dashboard.homeopathy.failedToLoad}
+        </p>
 
         <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-          Something went wrong while loading the dashboard overview.
+          {dict.dashboard.homeopathy.failedToLoadDescription}
         </p>
       </div>
     );
@@ -75,11 +79,11 @@ const DashboardContent: React.FC = () => {
       {/* HEADER */}
       <div>
         <h1 className='text-xl font-semibold tracking-tight'>
-          Dashboard Overview
+          {dict.dashboard.homeopathy.title}
         </h1>
 
         <p className='text-muted-foreground mt-1 text-sm'>
-          A quick snapshot of your homeopathy practice at a glance.
+          {dict.dashboard.homeopathy.subtitle}
         </p>
       </div>
 
@@ -89,25 +93,25 @@ const DashboardContent: React.FC = () => {
       {/* GROWTH CHARTS */}
       <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
         <GrowthChartCard
-          title='Patient Growth'
-          description='New patient registrations over time'
+          title={dict.dashboard.homeopathy.patientGrowthTitle}
+          description={dict.dashboard.homeopathy.patientGrowthDescription}
           icon={TrendingUp}
           iconClassName='text-primary'
           data={patient_growth}
           config={patientGrowthConfig}
           gradientId='patientGrowthFill'
-          emptyLabel='No patient growth data yet'
+          emptyLabel={dict.dashboard.homeopathy.patientGrowthEmpty}
         />
 
         <GrowthChartCard
-          title='Appointment Growth'
-          description='Appointments booked over time'
+          title={dict.dashboard.homeopathy.appointmentGrowthTitle}
+          description={dict.dashboard.homeopathy.appointmentGrowthDescription}
           icon={CalendarCheck}
           iconClassName='text-secondary'
           data={appointment_growth}
           config={appointmentGrowthConfig}
           gradientId='appointmentGrowthFill'
-          emptyLabel='No appointment growth data yet'
+          emptyLabel={dict.dashboard.homeopathy.appointmentGrowthEmpty}
         />
       </div>
     </div>

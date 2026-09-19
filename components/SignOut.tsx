@@ -1,3 +1,4 @@
+import { localeCookieName } from '@/lib/i18n/config';
 import { getSession, signOut } from 'next-auth/react';
 
 export const handleSignOut = async (
@@ -68,6 +69,10 @@ const clearAllCookies = () => {
   document.cookie.split(';').forEach((cookie) => {
     const name = cookie.split('=')[0].trim();
     if (!name) return;
+
+    // Keep the language cookie so the user's locale survives sign-out,
+    // same as the theme preference above.
+    if (name === localeCookieName) return;
 
     // Clear for current path and root path, with and without domain,
     // to cover cookies set at different path/domain scopes.

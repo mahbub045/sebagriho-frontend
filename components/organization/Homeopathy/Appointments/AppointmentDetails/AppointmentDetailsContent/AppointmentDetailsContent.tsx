@@ -3,6 +3,7 @@
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetAppointmentDetailsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { AlertTriangle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import AppointmentDeleteCard from './AppointmentDeleteCard/AppointmentDeleteCard';
@@ -12,6 +13,7 @@ import AppointmentPatientInfoCard from './AppointmentPatientInfoCard/Appointment
 import AppointmentPrescriptionCard from './AppointmentPrescriptionCard/AppointmentPrescriptionCard';
 
 const AppointmentDetailsContent: React.FC = () => {
+  const { dict } = useTranslation();
   const { appointmentuid } = useParams<{ appointmentuid: string }>();
 
   const {
@@ -133,10 +135,12 @@ const AppointmentDetailsContent: React.FC = () => {
       <Card className='border-danger/40 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center'>
         <AlertTriangle className='text-danger/50 h-10 w-10' />
 
-        <p className='mt-3 text-sm font-medium'>Failed to load appointment</p>
+        <p className='mt-3 text-sm font-medium'>
+          {dict.appointments.details.failedToLoad}
+        </p>
 
         <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-          Something went wrong while loading this appointment&apos;s details.
+          {dict.appointments.details.failedToLoadDescription}
         </p>
       </Card>
     );
@@ -146,11 +150,11 @@ const AppointmentDetailsContent: React.FC = () => {
     <div className='flex flex-col gap-4'>
       <div>
         <h1 className='text-xl font-semibold tracking-tight'>
-          Appointment Details
+          {dict.appointments.details.title}
         </h1>
 
         <p className='text-muted-foreground mt-1 text-sm'>
-          Full record for this patient appointment.
+          {dict.appointments.details.subtitle}
         </p>
       </div>
 

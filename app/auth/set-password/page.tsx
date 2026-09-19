@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useSetPasswordMutation } from '@/lib/services/endpoints/common/SetPasswordApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Eye, EyeOff } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -31,6 +32,7 @@ type FieldErrors = Partial<
 export default function SetPasswordPage() {
   const router = useRouter();
   const { update } = useSession();
+  const { dict } = useTranslation();
   const [setPassword, { isLoading, isError, error }] = useSetPasswordMutation();
 
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
@@ -62,7 +64,7 @@ export default function SetPasswordPage() {
     e.preventDefault();
 
     if (formData.password !== formData.password_confirm) {
-      setMismatchError('Passwords do not match');
+      setMismatchError(dict.authPages.setPassword.passwordMismatch);
       return;
     }
 
@@ -73,10 +75,10 @@ export default function SetPasswordPage() {
       // stops bouncing this user back here on their next navigation.
       await update({ is_password_set: true });
 
-      toast.success('Password set successfully.');
+      toast.success(dict.authPages.setPassword.setSuccess);
       router.push('/');
     } catch {
-      toast.error('Failed to set password. Please check the form.');
+      toast.error(dict.authPages.setPassword.setError);
     }
   };
 
@@ -94,7 +96,7 @@ export default function SetPasswordPage() {
           id={field}
           name={field}
           type={visibility[field] ? 'text' : 'password'}
-          placeholder={`Enter ${label.toLowerCase()}`}
+          placeholder={`${dict.authPages.setPassword.enterPrefix} ${label.toLowerCase()}`}
           value={formData[field]}
           onChange={handleChange}
           required
@@ -106,7 +108,11 @@ export default function SetPasswordPage() {
           type='button'
           onClick={() => toggleVisibility(field)}
           className='text-primary/70 hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition'
-          aria-label={visibility[field] ? 'Hide password' : 'Show password'}
+          aria-label={
+            visibility[field]
+              ? dict.authPages.setPassword.hidePassword
+              : dict.authPages.setPassword.showPassword
+          }
         >
           {visibility[field] ? (
             <EyeOff className='h-4 w-4' />
@@ -154,21 +160,27 @@ export default function SetPasswordPage() {
 
             <div className='mb-5'>
               <p className='text-primary text-[11px] font-semibold tracking-[0.3em] uppercase'>
-                Set password
+                {dict.authPages.setPassword.eyebrow}
               </p>
 
               <h2 className='mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100'>
-                Secure your account
+                {dict.authPages.setPassword.heading}
               </h2>
 
               <p className='mt-1 text-xs text-slate-500 dark:text-slate-400'>
-                Please set a password before you continue.
+                {dict.authPages.setPassword.subheading}
               </p>
             </div>
 
             <form className='space-y-4' onSubmit={handleSubmit}>
-              {renderPasswordField('password', 'New Password')}
-              {renderPasswordField('password_confirm', 'Confirm Password')}
+              {renderPasswordField(
+                'password',
+                dict.authPages.setPassword.newPassword,
+              )}
+              {renderPasswordField(
+                'password_confirm',
+                dict.authPages.setPassword.confirmPassword,
+              )}
 
               {(mismatchError ||
                 (isError &&
@@ -187,7 +199,7 @@ export default function SetPasswordPage() {
                 {isLoading ? (
                   <Loading className='text-white!' />
                 ) : (
-                  'Set password'
+                  dict.authPages.setPassword.submitButton
                 )}
               </Button>
 
@@ -196,7 +208,7 @@ export default function SetPasswordPage() {
                 onClick={() => handleSignOut()}
                 className='text-primary cursor-pointer block w-full text-center text-xs font-medium hover:underline'
               >
-                Sign out instead
+                {dict.authPages.setPassword.signOutInstead}
               </button>
             </form>
           </div>

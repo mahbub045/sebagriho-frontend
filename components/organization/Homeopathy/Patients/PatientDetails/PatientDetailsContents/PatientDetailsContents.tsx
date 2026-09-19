@@ -1,5 +1,6 @@
 'use client';
 import { useGetpatientDetailsQuery } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { Stethoscope } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import PatientCaseHistoryCard from './PatientCaseHistoryCard/PatientCaseHistoryCard';
@@ -11,6 +12,7 @@ import PatientMedicalInfoCard from './PatientMedicalInfoCard/PatientMedicalInfoC
 import PatientPersonalInfoCard from './PatientPersonalInfoCard/PatientPersonalInfoCard';
 
 const PatientDetailsContents: React.FC = () => {
+  const { dict } = useTranslation();
   const params = useParams<{ patientuid: string }>();
   const patientuid = params.patientuid;
 
@@ -37,9 +39,11 @@ const PatientDetailsContents: React.FC = () => {
     return (
       <div className='border-danger mt-2 flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center'>
         <Stethoscope className='text-danger/50 h-10 w-10' />
-        <p className='mt-3 text-sm font-medium'>Failed to load patient</p>
+        <p className='mt-3 text-sm font-medium'>
+          {dict.patients.detail.failedToLoad}
+        </p>
         <p className='text-muted-foreground mt-1 max-w-xs text-sm'>
-          Something went wrong while loading this patient&apos;s details.
+          {dict.patients.detail.failedToLoadDescription}
         </p>
       </div>
     );

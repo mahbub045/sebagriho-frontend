@@ -4,6 +4,7 @@ import Loading from '@/components/common/CustomLoader/Loading';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import {
   AppointmentFile,
   FilesCardProps,
@@ -15,6 +16,7 @@ import { toast } from 'sonner';
 import EditAppointmentFilesDialog from '../../Dialogs/EditAppointmentFilesDialog';
 
 const AppointmentFilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
+  const { dict } = useTranslation();
   const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
   const [deletingUid, setDeletingUid] = useState<string | null>(null);
 
@@ -40,9 +42,9 @@ const AppointmentFilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
         appointmentData: formData,
       }).unwrap();
 
-      toast.success('File removed successfully!');
+      toast.success(dict.appointments.filesCard.removeSuccess);
     } catch {
-      toast.error('Failed to remove file. Please try again.');
+      toast.error(dict.appointments.filesCard.removeError);
     } finally {
       setDeletingUid(null);
     }
@@ -54,7 +56,10 @@ const AppointmentFilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
         <div className='flex items-center gap-2'>
           <FileText className='text-warning h-4 w-4' />
           <h3 className='text-sm font-semibold'>
-            Files ({appointment.files?.length ?? 0})
+            {dict.appointments.filesCard.title.replace(
+              '{count}',
+              String(appointment.files?.length ?? 0),
+            )}
           </h3>
         </div>
 
@@ -64,7 +69,7 @@ const AppointmentFilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
           onClick={() => setIsOpenEditDialog(true)}
         >
           <Edit className='h-3.5 w-3.5' />
-          Edit
+          {dict.appointments.filesCard.edit}
         </Button>
       </div>
 
@@ -116,7 +121,7 @@ const AppointmentFilesCard: React.FC<FilesCardProps> = ({ appointment }) => {
           })
         ) : (
           <p className='text-muted-foreground text-xs italic'>
-            No files uploaded.
+            {dict.appointments.filesCard.noFilesUploaded}
           </p>
         )}
       </div>

@@ -1,11 +1,16 @@
-import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
+'use client';
 
-const index: React.FC = () => {
+import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
+import { useTranslation } from '@/lib/i18n/useTranslation';
+
+const SuperAdminDashboardContainer: React.FC = () => {
+  const { dict } = useTranslation();
+
   return (
     <div>
-      <Breadcrumbs items={[{ label: 'Dashboard' }]} />
+      <Breadcrumbs items={[{ label: dict.nav.dashboard }]} />
     </div>
   );
 };
 
-export default index;
+export default SuperAdminDashboardContainer;

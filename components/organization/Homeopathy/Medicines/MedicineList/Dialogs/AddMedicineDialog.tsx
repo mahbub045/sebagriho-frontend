@@ -18,6 +18,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 import { HP_MEDICINE_INITIAL_STATE } from '@/data/Organization/Medicines/MedicinesData';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useAddMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import {
   AddMedicineDialogProps,
@@ -48,6 +49,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { dict } = useTranslation();
   const [addMedicine, { isLoading, error }] = useAddMedicineMutation();
 
   const [form, setForm] = useState<FormState>(HP_MEDICINE_INITIAL_STATE);
@@ -105,12 +107,10 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
     try {
       await addMedicine(payload).unwrap();
       resetAndClose();
-      toast.success('Medicine added successfully.');
+      toast.success(dict.medicines.dialogs.addMedicine.successToast);
     } catch {
       // error is already surfaced via the `error` state / fieldErrors below
-      toast.error(
-        'Failed to add medicine. Please check the form and try again.',
-      );
+      toast.error(dict.medicines.dialogs.addMedicine.errorToast);
     }
   };
 
@@ -119,10 +119,10 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
       <DialogContent className='max-h-[90vh] overflow-y-auto sm:max-w-185'>
         <DialogHeader>
           <DialogTitle className='text-primary -mb-3 text-lg font-semibold'>
-            Add Medicine
+            {dict.medicines.dialogs.addMedicine.title}
           </DialogTitle>
           <DialogDescription>
-            Fill in the details of the new medicine to add it to the inventory.
+            {dict.medicines.dialogs.addMedicine.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -132,7 +132,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
               <div className='flex flex-col gap-1.5'>
                 <Label htmlFor='name'>
-                  Name
+                  {dict.medicines.dialogs.addMedicine.name}
                   <span className='text-danger'>*</span>
                 </Label>
                 <Input
@@ -141,7 +141,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   type='text'
                   value={form.name}
                   onChange={(e) => updateField('name', e.target.value)}
-                  placeholder='e.g., Montair'
+                  placeholder={dict.medicines.dialogs.addMedicine.namePlaceholder}
                   required
                   aria-invalid={!!fieldErrors.name}
                 />
@@ -151,14 +151,16 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
               </div>
 
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='power'>Power</Label>
+                <Label htmlFor='power'>
+                  {dict.medicines.dialogs.addMedicine.power}
+                </Label>
                 <Input
                   id='power'
                   name='power'
                   type='number'
                   value={form.power}
                   onChange={(e) => updateField('power', e.target.value)}
-                  placeholder='e.g., 30'
+                  placeholder={dict.medicines.dialogs.addMedicine.powerPlaceholder}
                   aria-invalid={!!fieldErrors.power}
                 />
                 {fieldErrors.power && (
@@ -170,14 +172,18 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             {/* Manufacturer + Batch number */}
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='manufacturer'>Manufacturer</Label>
+                <Label htmlFor='manufacturer'>
+                  {dict.medicines.dialogs.addMedicine.manufacturer}
+                </Label>
                 <Input
                   type='text'
                   id='manufacturer'
                   name='manufacturer'
                   value={form.manufacturer}
                   onChange={(e) => updateField('manufacturer', e.target.value)}
-                  placeholder='e.g., Boiron'
+                  placeholder={
+                    dict.medicines.dialogs.addMedicine.manufacturerPlaceholder
+                  }
                   aria-invalid={!!fieldErrors.manufacturer}
                 />
                 {fieldErrors.manufacturer && (
@@ -188,14 +194,18 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
               </div>
 
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='batch_number'>Batch Number</Label>
+                <Label htmlFor='batch_number'>
+                  {dict.medicines.dialogs.addMedicine.batchNumber}
+                </Label>
                 <Input
                   type='text'
                   id='batch_number'
                   name='batch_number'
                   value={form.batch_number}
                   onChange={(e) => updateField('batch_number', e.target.value)}
-                  placeholder='e.g., ARN-2026-001'
+                  placeholder={
+                    dict.medicines.dialogs.addMedicine.batchNumberPlaceholder
+                  }
                   aria-invalid={!!fieldErrors.batch_number}
                 />
                 {fieldErrors.batch_number && (
@@ -209,7 +219,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             {/* Quantity + Unit price */}
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='total_quantity'>Total Quantity</Label>
+                <Label htmlFor='total_quantity'>
+                  {dict.medicines.dialogs.addMedicine.totalQuantity}
+                </Label>
                 <Input
                   id='total_quantity'
                   name='total_quantity'
@@ -218,7 +230,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   onChange={(e) =>
                     updateField('total_quantity', e.target.value)
                   }
-                  placeholder='e.g., 100'
+                  placeholder={
+                    dict.medicines.dialogs.addMedicine.totalQuantityPlaceholder
+                  }
                   aria-invalid={!!fieldErrors.total_quantity}
                 />
                 {fieldErrors.total_quantity && (
@@ -230,7 +244,10 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
 
               <div className='flex flex-col gap-1.5'>
                 <Label htmlFor='unit_price'>
-                  Unit Price({getCurrencySymbol()})
+                  {dict.medicines.dialogs.addMedicine.unitPrice.replace(
+                    '{currency}',
+                    getCurrencySymbol(),
+                  )}
                 </Label>
                 <Input
                   id='unit_price'
@@ -239,7 +256,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   step='0.01'
                   value={form.unit_price}
                   onChange={(e) => updateField('unit_price', e.target.value)}
-                  placeholder='e.g., 25.50'
+                  placeholder={
+                    dict.medicines.dialogs.addMedicine.unitPricePlaceholder
+                  }
                   aria-invalid={!!fieldErrors.unit_price}
                 />
                 {fieldErrors.unit_price && (
@@ -253,7 +272,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             {/* Expiration + Status */}
             <div className='grid grid-cols-1 gap-3'>
               <div className='flex flex-col gap-1.5'>
-                <Label htmlFor='expiration_date'>Expiration Date</Label>
+                <Label htmlFor='expiration_date'>
+                  {dict.medicines.dialogs.addMedicine.expirationDate}
+                </Label>
                 <Input
                   id='expiration_date'
                   name='expiration_date'
@@ -275,13 +296,17 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
 
             {/* Description */}
             <div className='flex flex-col gap-1.5'>
-              <Label htmlFor='description'>Description</Label>
+              <Label htmlFor='description'>
+                {dict.medicines.dialogs.addMedicine.description_field}
+              </Label>
               <Textarea
                 id='description'
                 name='description'
                 value={form.description}
                 onChange={(e) => updateField('description', e.target.value)}
-                placeholder='e.g., Used for bruising and muscle soreness.'
+                placeholder={
+                  dict.medicines.dialogs.addMedicine.descriptionPlaceholder
+                }
                 rows={3}
                 className='field-sizing-fixed'
                 aria-invalid={!!fieldErrors.description}
@@ -294,7 +319,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             {/* Files */}
             <div className='flex flex-col gap-1.5'>
               <div className='flex items-center justify-between'>
-                <Label>Files</Label>
+                <Label>{dict.medicines.dialogs.addMedicine.files}</Label>
 
                 {files.length > 0 && (
                   <button
@@ -305,7 +330,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                     }}
                     className='text-muted-foreground hover:text-danger text-xs font-medium underline-offset-2 hover:underline'
                   >
-                    Clear all
+                    {dict.medicines.dialogs.addMedicine.clearAll}
                   </button>
                 )}
               </div>
@@ -316,7 +341,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
               >
                 <Upload className='text-muted-foreground h-5 w-5' />
                 <span className='text-muted-foreground text-sm'>
-                  Click to upload images
+                  {dict.medicines.dialogs.addMedicine.uploadPrompt}
                 </span>
                 <input
                   id='files'
@@ -369,12 +394,12 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
               onClick={resetAndClose}
               disabled={isLoading}
             >
-              Cancel
+              {dict.common.cancel}
             </Button>
 
             <Button type='submit' disabled={isLoading}>
               {isLoading && <Loader2 className='h-4 w-4 animate-spin' />}
-              Add Medicine
+              {dict.medicines.dialogs.addMedicine.submit}
             </Button>
           </DialogFooter>
         </form>
