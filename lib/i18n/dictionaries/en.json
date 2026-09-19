@@ -32,7 +32,10 @@
   "navbar": {
     "joinReferral": "Join Our Referral Program",
     "language": "Language",
-    "toggleTheme": "Toggle theme"
+    "languageUpdateSuccess": "Language updated successfully",
+    "languageUpdateError": "Failed to update language",
+    "toggleTheme": "Toggle theme",
+    "joinReferralProgram": "Join Our Referral Program"
   },
   "auth": {
     "signIn": "Sign In",

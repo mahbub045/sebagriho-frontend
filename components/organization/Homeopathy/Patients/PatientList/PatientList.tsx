@@ -190,7 +190,10 @@ const PatientList: React.FC = () => {
 
         {/* Status */}
         <Select
-          items={homeopathicPatientStatusOptions}
+          items={[
+            { value: 'ALL', label: dict.patients.list.allStatus },
+            ...homeopathicPatientStatusOptions,
+          ]}
           value={status}
           onValueChange={(value) => {
             setStatus(value as PatientStatus | 'ALL');
@@ -214,7 +217,10 @@ const PatientList: React.FC = () => {
 
         {/* Miasm */}
         <Select
-          items={miasmTypeOptions}
+          items={[
+            { value: 'ALL', label: dict.patients.list.allMiasm },
+            ...miasmTypeOptions,
+          ]}
           value={miasmType}
           onValueChange={(value) => {
             setMiasmType(value as MiasmType | 'ALL');

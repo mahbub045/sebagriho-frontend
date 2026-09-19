@@ -231,7 +231,10 @@ const AppointmentList: React.FC = () => {
 
         {/* Miasm (filters via patient relation) */}
         <Select
-          items={miasmTypeOptions}
+          items={[
+            { value: 'ALL', label: dict.appointments.list.allMiasm },
+            ...miasmTypeOptions,
+          ]}
           value={miasmType}
           onValueChange={(value) => {
             setMiasmType(value as MiasmType | 'ALL');
