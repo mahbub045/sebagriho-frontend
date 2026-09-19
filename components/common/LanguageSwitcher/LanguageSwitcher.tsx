@@ -8,9 +8,16 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
-import { locales, localeLabels, type Locale } from '@/lib/i18n/config';
+import { localeLabels, locales, type Locale } from '@/lib/i18n/config';
+import bn from '@/lib/i18n/dictionaries/bn.json';
+import en from '@/lib/i18n/dictionaries/en.json';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { useUpdateProfileInfoMutation } from '@/lib/services/endpoints/common/ProfileInfoApi';
+import { cn } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+
+const dictionaries: Record<Locale, typeof en> = { en, bn };
 
 const localeFlags: Record<Locale, string> = {
   en: '🇬🇧',
@@ -19,6 +26,26 @@ const localeFlags: Record<Locale, string> = {
 
 export function LanguageSwitcher() {
   const { locale, dict, changeLocale } = useTranslation();
+  const { status } = useSession();
+  const [updateProfileInfo] = useUpdateProfileInfoMutation();
+
+  const handleLocaleChange = async (value: Locale) => {
+    changeLocale(value);
+
+    // No session yet (e.g. signin page) — nothing to persist server-side,
+    // and /auth/me would just fail unauthenticated.
+    if (status !== 'authenticated') return;
+
+    const payload = new FormData();
+    payload.append('language', value.toUpperCase());
+    try {
+      await updateProfileInfo(payload).unwrap();
+      toast.success(dictionaries[value].navbar.languageUpdateSuccess);
+    } catch (error) {
+      console.error('Error updating profile info:', error);
+      toast.error(dictionaries[value].navbar.languageUpdateError);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -35,11 +62,17 @@ export function LanguageSwitcher() {
       <DropdownMenuContent align='end'>
         <DropdownMenuRadioGroup
           value={locale}
-          onValueChange={(value) => changeLocale(value as Locale)}
+          onValueChange={(value) => handleLocaleChange(value as Locale)}
         >
           {locales.map((code) => (
-            <DropdownMenuRadioItem key={code} value={code} className='cursor-pointer gap-2'>
-              <span className='text-base leading-none'>{localeFlags[code]}</span>
+            <DropdownMenuRadioItem
+              key={code}
+              value={code}
+              className='cursor-pointer gap-2'
+            >
+              <span className='text-base leading-none'>
+                {localeFlags[code]}
+              </span>
               <span className='font-bengali'>{localeLabels[code]}</span>
             </DropdownMenuRadioItem>
           ))}

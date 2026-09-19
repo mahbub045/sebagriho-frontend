@@ -12,7 +12,7 @@ import EditPatientPersonalInfoDialog from '../../Dialogs/EditPatientPersonalInfo
 const PatientPersonalInfoCard: React.FC<PatientDetailsCardProps> = ({
   patient,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
   const notAvailable = dict.patients.detail.personalInfoCard.notAvailable;
   return (
@@ -44,7 +44,7 @@ const PatientPersonalInfoCard: React.FC<PatientDetailsCardProps> = ({
               .replace(
                 '{gender}',
                 patient.user.gender
-                  ? formatChoiceFieldValue(patient.user.gender)
+                  ? formatChoiceFieldValue(patient.user.gender, locale)
                   : notAvailable,
               )}
           </p>
@@ -55,7 +55,7 @@ const PatientPersonalInfoCard: React.FC<PatientDetailsCardProps> = ({
           </p>
           <p className='font-medium'>
             {patient.user.blood_group
-              ? formatChoiceFieldValue(patient.user.blood_group)
+              ? formatChoiceFieldValue(patient.user.blood_group, locale)
               : notAvailable}
           </p>
         </div>

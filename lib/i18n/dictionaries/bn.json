@@ -32,7 +32,10 @@
   "navbar": {
     "joinReferral": "আমাদের রেফারেল প্রোগ্রামে যোগ দিন",
     "language": "ভাষা",
-    "toggleTheme": "থিম পরিবর্তন করুন"
+    "languageUpdateSuccess": "ভাষা সফলভাবে পরিবর্তন করা হয়েছে",
+    "languageUpdateError": "ভাষা পরিবর্তন করা যায়নি",
+    "toggleTheme": "থিম পরিবর্তন করুন",
+    "joinReferralProgram": "আমাদের রেফারেল প্রোগ্রামে যোগ দিন"
   },
   "auth": {
     "signIn": "সাইন ইন",
@@ -421,7 +424,8 @@
         "title": "ইনভেন্টরি",
         "totalQuantity": "মোট পরিমাণ",
         "unitPrice": "একক মূল্য",
-        "notSpecified": "উল্লেখ করা হয়নি"
+        "notSpecified": "উল্লেখ করা হয়নি",
+        "expirationDate": "মেয়াদ উত্তীর্ণের তারিখ"
       },
       "overviewCard": {
         "power": "শক্তি:",
@@ -817,7 +821,7 @@
       "eyebrow": "সাইন ইন",
       "heading": "আপনার অ্যাকাউন্ট অ্যাক্সেস করুন",
       "phoneNumber": "ফোন নম্বর",
-      "countryCode": "(+৮৮) বিডি",
+      "countryCode": "(+88) বিডি",
       "phonePlaceholder": "ফোন নম্বর লিখুন",
       "password": "পাসওয়ার্ড",
       "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",

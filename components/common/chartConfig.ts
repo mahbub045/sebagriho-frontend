@@ -1,4 +1,5 @@
 import { ChartConfig } from '@/components/ui/chart';
+import type { Locale } from '@/lib/i18n/config';
 import { formatChoiceFieldValue } from '@/utils/formatters';
 
 export const STATUS_COLORS = [
@@ -12,10 +13,11 @@ export const STATUS_COLORS = [
 
 export const buildStatusConfig = (
   statuses: { status: string }[],
+  locale: Locale,
 ): ChartConfig =>
   statuses.reduce((config, item, index) => {
     config[item.status] = {
-      label: formatChoiceFieldValue(item.status),
+      label: formatChoiceFieldValue(item.status, locale),
       color: STATUS_COLORS[index % STATUS_COLORS.length],
     };
     return config;

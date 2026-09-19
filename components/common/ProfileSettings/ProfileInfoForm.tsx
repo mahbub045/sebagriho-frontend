@@ -15,6 +15,7 @@ import {
 import {
   BLOOD_GROUP_OPTIONS,
   GENDER_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 import { useUpdateProfileInfoMutation } from '@/lib/services/endpoints/common/ProfileInfoApi';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -43,13 +44,16 @@ const buildFormData = (profile: ProfileInfo): ProfileFormData => ({
 });
 
 const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [updateProfileInfo, { isLoading, isError, error }] =
     useUpdateProfileInfoMutation();
 
   const [formData, setFormData] = useState<ProfileFormData>(() =>
     buildFormData(profile),
   );
+
+  const genderOptions = localizeOptions(GENDER_OPTIONS, locale);
+  const bloodGroupOptions = localizeOptions(BLOOD_GROUP_OPTIONS, locale);
 
   const fieldErrors: ProfileFieldErrors =
     (error as { data?: ProfileFieldErrors })?.data ?? {};
@@ -178,7 +182,7 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
           <div className='flex flex-col gap-1.5'>
             <Label htmlFor='gender'>{dict.profileSettings.personalInfo.gender}</Label>
             <Select
-              items={GENDER_OPTIONS}
+              items={genderOptions}
               id='gender'
               name='gender'
               value={formData.gender}
@@ -196,7 +200,7 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
                 />
               </SelectTrigger>
               <SelectContent>
-                {GENDER_OPTIONS.map((option) => (
+                {genderOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
@@ -215,7 +219,7 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
               {dict.profileSettings.personalInfo.bloodGroup}
             </Label>
             <Select
-              items={BLOOD_GROUP_OPTIONS}
+              items={bloodGroupOptions}
               id='blood_group'
               name='blood_group'
               value={formData.blood_group}
@@ -233,7 +237,7 @@ const ProfileInfoForm: React.FC<Props> = ({ profile }) => {
                 />
               </SelectTrigger>
               <SelectContent>
-                {BLOOD_GROUP_OPTIONS.map((option) => (
+                {bloodGroupOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>

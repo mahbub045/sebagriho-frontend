@@ -27,6 +27,7 @@ import {
   BLOOD_GROUP_OPTIONS,
   GENDER_OPTIONS,
   MIASM_TYPE_OPTIONS,
+  localizeOptions,
 } from '@/data/common/ChoiceFields';
 
 import { useAddPatientMutation } from '@/lib/services/endpoints/organization/Homeopathy/Patients/PatientsApi';
@@ -62,11 +63,15 @@ const FieldError = ({ message }: { message?: string }) =>
   message ? <p className='text-danger text-xs'>{message}</p> : null;
 
 const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [addPatient, { isLoading }] = useAddPatientMutation();
 
   const [formValues, setFormValues] =
     useState<AddPatientFormValues>(DEFAULT_VALUES);
+
+  const bloodGroupOptions = localizeOptions(BLOOD_GROUP_OPTIONS, locale);
+  const genderOptions = localizeOptions(GENDER_OPTIONS, locale);
+  const miasmTypeOptions = localizeOptions(MIASM_TYPE_OPTIONS, locale);
 
   const [errors, setErrors] = useState<FieldErrors>({});
   const [apiErrors, setApiErrors] = useState<FieldErrorMap>();
@@ -367,7 +372,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                 </Label>
 
                 <Select
-                  items={GENDER_OPTIONS}
+                  items={genderOptions}
                   value={formValues.gender}
                   onValueChange={(value) =>
                     updateField('gender', value as PatientGender)
@@ -384,7 +389,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                   </SelectTrigger>
 
                   <SelectContent>
-                    {GENDER_OPTIONS.map((option) => (
+                    {genderOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -481,7 +486,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                   </Label>
 
                   <Select
-                    items={BLOOD_GROUP_OPTIONS}
+                    items={bloodGroupOptions}
                     value={formValues.blood_group}
                     onValueChange={(value) =>
                       updateField('blood_group', value as string)
@@ -500,7 +505,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                     </SelectTrigger>
 
                     <SelectContent>
-                      {BLOOD_GROUP_OPTIONS.map((option) => (
+                      {bloodGroupOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
@@ -516,7 +521,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                   </Label>
 
                   <Select
-                    items={MIASM_TYPE_OPTIONS}
+                    items={miasmTypeOptions}
                     value={formValues.miasm_type}
                     onValueChange={(value) =>
                       updateField('miasm_type', value as MiasmType)
@@ -535,7 +540,7 @@ const AddPatientDialog = ({ isOpen, onClose }: AddPatientDialogProps) => {
                     </SelectTrigger>
 
                     <SelectContent>
-                      {MIASM_TYPE_OPTIONS.map((option) => (
+                      {miasmTypeOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>

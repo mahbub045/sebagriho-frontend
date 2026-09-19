@@ -75,7 +75,7 @@ export interface MedicineFormData {
 export interface MedicineInventoryFormData {
   total_quantity: string;
   unit_price: string;
-  expiration_date: string;
+  expiration_date: string | null;
 }
 
 export interface MedicineFilesFormData {

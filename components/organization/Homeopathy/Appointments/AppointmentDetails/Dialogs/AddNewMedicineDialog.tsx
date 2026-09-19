@@ -33,7 +33,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { MEAL_TIMING_OPTIONS } from '@/data/common/ChoiceFields';
+import {
+  MEAL_TIMING_OPTIONS,
+  localizeOptions,
+} from '@/data/common/ChoiceFields';
 import { useEditAppointmentMutation } from '@/lib/services/endpoints/organization/Homeopathy/Appointments/AppointmentsApi';
 import { useGetMedicinesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -64,7 +67,7 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
   onClose,
   appointmentUid,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [medicinePopoverOpen, setMedicinePopoverOpen] = useState(false);
   const [medicineSearchInput, setMedicineSearchInput] = useState('');
   const [selectedMedicines, setSelectedMedicines] = useState<
@@ -88,6 +91,8 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
     });
 
   const [editAppointment, { isLoading }] = useEditAppointmentMutation();
+
+  const mealTimingOptions = localizeOptions(MEAL_TIMING_OPTIONS, locale);
 
   const toggleMedicine = (medicine: MedicineOption) => {
     setSelectedMedicines((current) => {
@@ -347,7 +352,7 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
                     />
 
                     <Select
-                      items={MEAL_TIMING_OPTIONS}
+                      items={mealTimingOptions}
                       value={medicine.meal_timing}
                       onValueChange={(value) =>
                         updateMedicineField(
@@ -366,7 +371,7 @@ const AddNewMedicineDialog: React.FC<AddNewMedicineDialogProps> = ({
                       </SelectTrigger>
 
                       <SelectContent>
-                        {MEAL_TIMING_OPTIONS.map((option) => (
+                        {mealTimingOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>

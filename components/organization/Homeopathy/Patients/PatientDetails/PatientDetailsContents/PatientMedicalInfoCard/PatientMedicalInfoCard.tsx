@@ -14,7 +14,7 @@ import EditPatientMedicalInfoDialog from '../../Dialogs/EditPatientMedicalInfoDi
 const PatientMedicalInfoCard: React.FC<PatientDetailsCardProps> = ({
   patient,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
   const miasmClass =
     (patient.miasm_type && MIASM_STYLES[patient.miasm_type]) ??
@@ -49,7 +49,7 @@ const PatientMedicalInfoCard: React.FC<PatientDetailsCardProps> = ({
             className={`mt-1 text-[10px] font-medium ${miasmClass}`}
           >
             {patient.miasm_type
-              ? formatChoiceFieldValue(patient.miasm_type)
+              ? formatChoiceFieldValue(patient.miasm_type, locale)
               : dict.patients.detail.medicalInfoCard.notSpecified}
           </Badge>
         </div>

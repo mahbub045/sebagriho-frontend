@@ -2,6 +2,7 @@
 
 import AuthPageSidePanel from '@/components/common/AuthPageSidePanel/AuthPageSidePanel';
 import Loading from '@/components/common/CustomLoader/Loading';
+import { LanguageSwitcher } from '@/components/common/LanguageSwitcher/LanguageSwitcher';
 import { handleSignOut } from '@/components/SignOut';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -134,7 +135,8 @@ export default function SetPasswordPage() {
         <AuthPageSidePanel />
 
         <div className='relative flex items-center justify-center p-6 sm:p-8 lg:p-9'>
-          <div className='absolute top-4 right-4'>
+          <div className='absolute top-4 right-4 flex items-center gap-2'>
+            <LanguageSwitcher />
             <ThemeToggle />
           </div>
 

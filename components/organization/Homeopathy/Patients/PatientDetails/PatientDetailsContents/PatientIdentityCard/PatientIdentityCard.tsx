@@ -19,7 +19,7 @@ import UpdatePatientIdentityDailog from '../../Dialogs/EditPatientIdentityDailog
 const PatientIdentityCard: React.FC<PatientDetailsCardProps> = ({
   patient,
 }) => {
-  const { dict } = useTranslation();
+  const { dict, locale } = useTranslation();
   const statusClass = STATUS_STYLES[patient.status] ?? STATUS_STYLES.INACTIVE;
   const [isOpenEditPatientDialog, setIsOpenEditPatientDialog] = useState(false);
 
@@ -46,7 +46,7 @@ const PatientIdentityCard: React.FC<PatientDetailsCardProps> = ({
                 variant='outline'
                 className={`text-[11px] font-medium ${statusClass}`}
               >
-                {formatChoiceFieldValue(patient.status)}
+                {formatChoiceFieldValue(patient.status, locale)}
               </Badge>
             </div>
 

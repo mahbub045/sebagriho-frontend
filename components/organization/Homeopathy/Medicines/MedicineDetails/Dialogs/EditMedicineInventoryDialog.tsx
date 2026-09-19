@@ -60,7 +60,7 @@ const EditMedicineInventoryDialog: React.FC<
   const getInitialData = (): MedicineInventoryFormData => ({
     total_quantity: medicine?.total_quantity?.toString() ?? '',
     unit_price: medicine?.unit_price?.toString() ?? '',
-    expiration_date: medicine?.expiration_date ?? '',
+    expiration_date: medicine?.expiration_date?.split('T')[0] ?? '',
   });
 
   const [formData, setFormData] =
@@ -83,11 +83,15 @@ const EditMedicineInventoryDialog: React.FC<
 
     const changedFields = getChangedFields(formData, initialData);
 
+    const payload = {
+      ...changedFields,
+      ...('expiration_date' in changedFields && {
+        expiration_date: formData.expiration_date || null,
+      }),
+    };
+
     try {
-      await editMedicine({
-        medicineUid: medicine.uid,
-        payload: changedFields,
-      }).unwrap();
+      await editMedicine({ medicineUid: medicine.uid, payload }).unwrap();
       toast.success(dict.medicines.dialogs.editInventory.successToast);
       onClose();
     } catch (err) {
@@ -157,7 +161,7 @@ const EditMedicineInventoryDialog: React.FC<
             <Input
               type='date'
               id='expiration_date'
-              value={formData.expiration_date}
+              value={formData.expiration_date ?? ''}
               onChange={(e) => handleChange('expiration_date', e.target.value)}
               aria-invalid={!!getFieldError(error, 'expiration_date')}
             />
