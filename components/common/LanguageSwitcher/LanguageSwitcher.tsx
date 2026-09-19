@@ -20,11 +20,12 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
-          'cursor-pointer border border-gray-200 dark:border-gray-700',
+          buttonVariants({ variant: 'ghost', size: 'sm' }),
+          'cursor-pointer gap-1.5 border border-gray-200 px-2 dark:border-gray-700',
         )}
       >
         <Languages className='h-4 w-4' />
+        <span className='text-xs font-medium uppercase'>{locale}</span>
         <span className='sr-only'>{dict.navbar.language}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
