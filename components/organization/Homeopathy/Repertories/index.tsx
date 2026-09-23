@@ -1,5 +1,6 @@
 import Breadcrumbs from '@/components/common/Breadcrumbs/Breadcrumbs';
 import { getDictionary } from '@/lib/i18n/getDictionary';
+import RepertoryList from './RepertoryList/RepertoryList';
 
 const HomeopathyRepertoriesContainer: React.FC = async () => {
   const dict = await getDictionary();
@@ -17,6 +18,7 @@ const HomeopathyRepertoriesContainer: React.FC = async () => {
           },
         ]}
       />
+      <RepertoryList />
     </div>
   );
 };
