@@ -33,6 +33,13 @@ export interface RubricListProps extends RepertoryEntryListProps {
   onToggleRubric: (rubric: SelectedRubric) => void;
 }
 
+export type ChapterListProps = RepertoryEntryListProps;
+
+export interface ChapterRubricsProps extends RepertoryEntryListProps {
+  chapterUid: string;
+  chapterLabel: string;
+}
+
 export interface RepertoryAnalysisProps extends RepertoryEntryListProps {
   selectedRubrics: SelectedRubric[];
   onRemoveRubric: (uid: string) => void;

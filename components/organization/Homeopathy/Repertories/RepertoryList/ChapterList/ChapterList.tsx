@@ -12,15 +12,17 @@ import {
 } from '@/components/ui/pagination';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useGetRepertoriesChaptersQuery } from '@/lib/services/endpoints/organization/Homeopathy/Repertories/RepertoriesApi';
-import { RepertoryEntryListProps } from '@/types/Organization/Homeopathy/Repertories/RepertoriesType';
+import { ChapterListProps } from '@/types/Organization/Homeopathy/Repertories/RepertoriesType';
 import { PAGE_LIMIT } from '@/utils/constants';
-import { ListTree } from 'lucide-react';
+import { ChevronRight, ListTree } from 'lucide-react';
 import { useState } from 'react';
 import { getEntryLabel, toCount, toEntries } from '../utils';
+import ChapterRubrics from './ChapterRubrics/ChapterRubrics';
 
-const ChapterList: React.FC<RepertoryEntryListProps> = ({ repertoryUid }) => {
+const ChapterList: React.FC<ChapterListProps> = ({ repertoryUid }) => {
   const { dict } = useTranslation();
   const [page, setPage] = useState(1);
+  const [expandedUid, setExpandedUid] = useState<string | null>(null);
 
   const {
     data: chapters,
@@ -101,18 +103,44 @@ const ChapterList: React.FC<RepertoryEntryListProps> = ({ repertoryUid }) => {
           isFetching ? 'pointer-events-none opacity-60' : ''
         }`}
       >
-        {entries.map((entry, index) => (
-          <div
-            key={entry.uid ?? index}
-            className='flex items-center gap-3 px-4 py-3 text-sm'
-          >
-            <ListTree className='text-secondary h-4 w-4 shrink-0' />
+        {entries.map((entry, index) => {
+          const isExpanded = !!entry.uid && expandedUid === entry.uid;
 
-            <span className='min-w-0 flex-1 truncate'>
-              {getEntryLabel(entry)}
-            </span>
-          </div>
-        ))}
+          return (
+            <div key={entry.uid ?? index}>
+              <button
+                type='button'
+                disabled={!entry.uid}
+                onClick={() =>
+                  setExpandedUid(isExpanded ? null : (entry.uid ?? null))
+                }
+                className={`flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
+                  isExpanded ? 'bg-muted/40 font-medium' : 'hover:bg-muted/40'
+                }`}
+              >
+                <ChevronRight
+                  className={`text-muted-foreground h-4 w-4 shrink-0 transition-transform ${
+                    isExpanded ? 'rotate-90' : ''
+                  }`}
+                />
+
+                <ListTree className='text-secondary h-4 w-4 shrink-0' />
+
+                <span className='min-w-0 flex-1 truncate'>
+                  {getEntryLabel(entry)}
+                </span>
+              </button>
+
+              {isExpanded && entry.uid && (
+                <ChapterRubrics
+                  repertoryUid={repertoryUid}
+                  chapterUid={entry.uid}
+                  chapterLabel={getEntryLabel(entry) ?? ''}
+                />
+              )}
+            </div>
+          );
+        })}
       </Card>
 
       <div className='flex items-center justify-between'>
