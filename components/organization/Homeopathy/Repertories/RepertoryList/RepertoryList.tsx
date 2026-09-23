@@ -9,6 +9,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { setRepertoryActiveTab } from '@/lib/features/repertories/repertoriesSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useGetHomeopathyRepertoriesQuery } from '@/lib/services/endpoints/organization/Homeopathy/Repertories/RepertoriesApi';
 import {
@@ -25,7 +27,8 @@ import RubricList from './RubricList/RubricList';
 const RepertoryList: React.FC = () => {
   const { dict } = useTranslation();
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<RepertoryTab>('rubrics');
+  const dispatch = useAppDispatch();
+  const activeTab = useAppSelector((state) => state.repertories.activeTab);
   const [selectedRubrics, setSelectedRubrics] = useState<SelectedRubric[]>(
     [],
   );
@@ -136,7 +139,9 @@ const RepertoryList: React.FC = () => {
 
             <Tabs
               value={activeTab}
-              onValueChange={(value) => setActiveTab(value as RepertoryTab)}
+              onValueChange={(value) =>
+                dispatch(setRepertoryActiveTab(value as RepertoryTab))
+              }
             >
               <TabsList className='border-border/60 bg-muted/40 h-auto w-fit gap-1 rounded-lg border p-0'>
                 <TabsTrigger
