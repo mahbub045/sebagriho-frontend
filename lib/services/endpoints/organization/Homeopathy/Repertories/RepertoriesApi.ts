@@ -8,16 +8,25 @@ export const HomeopathyRepertoriesApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getRepertoriesChapters: builder.query({
-      query: ({ repertoryUid }) => ({
-        url: `/homeopathy/repertories/${repertoryUid}/chapters`,
-        method: 'GET',
-      }),
-    }),
     getRepertoriesRubrics: builder.query({
-      query: ({ repertoryUid }) => ({
+      query: ({ repertoryUid, ...params }) => ({
         url: `/homeopathy/repertories/${repertoryUid}/rubrics`,
         method: 'GET',
+        params,
+      }),
+    }),
+    getRepertoriesChapters: builder.query({
+      query: ({ repertoryUid, ...params }) => ({
+        url: `/homeopathy/repertories/${repertoryUid}/chapters`,
+        method: 'GET',
+        params,
+      }),
+    }),
+    repertoryAnalysis: builder.mutation({
+      query: ({ repertoryUid, payload }) => ({
+        url: `/homeopathy/repertories/${repertoryUid}/analysis`,
+        method: 'POST',
+        body: payload,
       }),
     }),
   }),
@@ -25,6 +34,7 @@ export const HomeopathyRepertoriesApi = baseApi.injectEndpoints({
 
 export const {
   useGetHomeopathyRepertoriesQuery,
-  useGetRepertoriesChaptersQuery,
   useGetRepertoriesRubricsQuery,
+  useGetRepertoriesChaptersQuery,
+  useRepertoryAnalysisMutation,
 } = HomeopathyRepertoriesApi;

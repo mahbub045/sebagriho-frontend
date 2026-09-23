@@ -286,6 +286,37 @@
     "comingSoonShort": "Coming soon",
     "thankYou": "Thank you for your patience"
   },
+  "repertories": {
+    "list": {
+      "title": "Repertories",
+      "subtitle": "Browse the repertory books available to your organization.",
+      "selectBook": "Select a book",
+      "rubrics": "Rubrics",
+      "chapters": "Chapters",
+      "errorTitle": "Failed to load repertories",
+      "errorDescription": "Something went wrong while loading the repertory list.",
+      "emptyTitle": "No repertories yet",
+      "emptyDescription": "Repertory books will appear here once they are available.",
+      "rubricsError": "Failed to load rubrics",
+      "chaptersError": "Failed to load chapters",
+      "noRubrics": "No rubrics found for this book.",
+      "noChapters": "No chapters found for this book.",
+      "showingResults": "Showing {from} to {to} of {total}",
+      "searchRubrics": "Search rubrics...",
+      "noMatchingRubrics": "No rubrics match your search."
+    },
+    "analysis": {
+      "title": "Analysis",
+      "clearAll": "Clear all",
+      "selectHint": "Select rubrics to see matching remedies.",
+      "selectedRubrics": "{count} rubrics selected",
+      "remove": "Remove",
+      "error": "Failed to run the analysis. Please try again.",
+      "remediesFound": "{count} remedies found",
+      "noRemedies": "No remedies match the selected rubrics.",
+      "grade": "Grade"
+    }
+  },
   "medicines": {
     "breadcrumbs": {
       "dashboard": "Dashboard",
