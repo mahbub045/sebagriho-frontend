@@ -3,7 +3,7 @@ x-frontend: &frontend
     context: .
     dockerfile: dockerfile
 
-  image: landkeeper-frontend:latest
+  image: sebagriho-frontend:latest
 
   restart: unless-stopped
 
@@ -18,14 +18,14 @@ x-frontend: &frontend
     start_period: 10s
 
 services:
-  frontend_a:
+  sebagriho_frontend_a:
     <<: *frontend
-    container_name: frontend_a
+    container_name: sebagriho_frontend_a
     ports:
       - '7000:7000'
 
-  frontend_b:
+  sebagriho_frontend_b:
     <<: *frontend
-    container_name: frontend_b
+    container_name: sebagriho_frontend_b
     ports:
       - '7001:7000'
