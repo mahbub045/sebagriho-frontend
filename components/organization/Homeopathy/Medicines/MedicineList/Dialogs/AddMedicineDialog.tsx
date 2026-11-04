@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, Upload, X } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
+import Loading from '@/components/common/CustomLoader/Loading';
 import { HP_MEDICINE_INITIAL_STATE } from '@/data/Organization/Medicines/MedicinesData';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { useAddMedicineMutation } from '@/lib/services/endpoints/organization/Homeopathy/Medicines/MedicinesApi';
@@ -141,7 +142,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   type='text'
                   value={form.name}
                   onChange={(e) => updateField('name', e.target.value)}
-                  placeholder={dict.medicines.dialogs.addMedicine.namePlaceholder}
+                  placeholder={
+                    dict.medicines.dialogs.addMedicine.namePlaceholder
+                  }
                   required
                   aria-invalid={!!fieldErrors.name}
                 />
@@ -160,7 +163,9 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
                   type='number'
                   value={form.power}
                   onChange={(e) => updateField('power', e.target.value)}
-                  placeholder={dict.medicines.dialogs.addMedicine.powerPlaceholder}
+                  placeholder={
+                    dict.medicines.dialogs.addMedicine.powerPlaceholder
+                  }
                   aria-invalid={!!fieldErrors.power}
                 />
                 {fieldErrors.power && (
@@ -398,7 +403,7 @@ const AddMedicineDialog: React.FC<AddMedicineDialogProps> = ({
             </Button>
 
             <Button type='submit' disabled={isLoading}>
-              {isLoading && <Loader2 className='h-4 w-4 animate-spin' />}
+              {isLoading && <Loading className='h-4 w-4' />}
               {dict.medicines.dialogs.addMedicine.submit}
             </Button>
           </DialogFooter>

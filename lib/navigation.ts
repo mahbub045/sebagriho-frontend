@@ -1,4 +1,5 @@
 import {
+  BookOpen,
   Building2,
   LayoutDashboard,
   Pill,
@@ -59,6 +60,11 @@ export const buildItems = (
         label: nav.appointments,
         href: '/organization/homeopathy/appointments',
         icon: Stethoscope,
+      },
+      {
+        label: nav.repertories,
+        href: '/organization/homeopathy/repertories',
+        icon: BookOpen,
       },
       {
         label: nav.medicines,

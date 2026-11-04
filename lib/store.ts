@@ -4,6 +4,7 @@ import authReducer from './features/auth/authSlice';
 import localeReducer, {
   type LocaleState,
 } from './features/locale/localeSlice';
+import repertoriesReducer from './features/repertories/repertoriesSlice';
 import { authApi } from './services/authApi';
 import { baseApi } from './services/baseApi';
 
@@ -17,6 +18,7 @@ export const makeStore = (preloadedState?: { locale: LocaleState }) => {
     reducer: {
       auth: authReducer,
       appointments: appointmentsReducer,
+      repertories: repertoriesReducer,
       locale: localeReducer,
       [baseApi.reducerPath]: baseApi.reducer,
       [authApi.reducerPath]: authApi.reducer,
